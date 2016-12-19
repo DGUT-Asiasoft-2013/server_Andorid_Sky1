@@ -8,16 +8,16 @@ import org.springframework.stereotype.Repository;
 
 import com.cloudage.membercenter.entity.Comment;
 
-//PagingAndSortingRepository¾ß±¸ÁË·­Ò³µÄĞ§¹û
+//PagingAndSortingRepository
 @Repository
 public interface ICommentRepository extends PagingAndSortingRepository<Comment, Integer>{
 
 	
-	//´ËÖĞµ÷ÓÃµÄbookĞèÒª¸úCommentÀàÀïµÄ¶¨ÒåµÄÒ»Ñù
+	//æ‰¾æŸæœ¬ä¹¦çš„æ‰€æœ‰è¯„è®º
 	@Query("from Comment comment where comment.book.id = ?1")
-	Page<Comment> findCommentNum(int userId,Pageable page);         //ÕÒÆÀÂÛ
+	Page<Comment> findCommentNum(int userId,Pageable page);        
 	
-	//Ä³¸öÈËÊÕµ½µÄËùÓĞÆÀÂÛ
+	//æ‰¾æŸä¸ªäººçš„æ‰€æœ‰è¯„è®º
 	@Query("from Comment comment where comment.book.user.id = ?1")
 	Page<Comment> findAllCommentofAuthor(int userId,Pageable page);
 }

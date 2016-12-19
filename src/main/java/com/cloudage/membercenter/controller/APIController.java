@@ -28,7 +28,7 @@ import com.cloudage.membercenter.service.ICommentService;
 import com.cloudage.membercenter.service.IUserService;
 
 /*
- * 
+ * 控制类，用于实现各种方法
  */
 @RestController
 @RequestMapping("/api")
@@ -50,8 +50,9 @@ public class APIController {
 
 
 
-
-
+	/*
+	 * 注册操作
+	 */
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
 	public User register(
 			@RequestParam(name = "num") String num,
@@ -82,7 +83,7 @@ public class APIController {
 	}
 
 	/*
-	 * 
+	 * 登录操作
 	 */
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public User Login(
@@ -104,7 +105,7 @@ public class APIController {
 	}
 
 	/*
-	 * 
+	 * 获得当前用户
 	 */
 	@RequestMapping(value = "/me", method = RequestMethod.GET)
 	public User getCurrentUser(HttpServletRequest request) {
@@ -120,7 +121,7 @@ public class APIController {
 	}
 
 	/*
-	 * 
+	 * 获得邮件
 	 */
 	@RequestMapping(value = "/email", method = RequestMethod.POST)
 	public boolean Email(
@@ -142,6 +143,16 @@ public class APIController {
 
 	}
 
+	/**
+	 * @RequestMapping(value = "/book/{book_id}/comment")里面的book_id必须跟
+	 * @PathVariable(value = "book_id") int book_id中，int的变量一样，如果想不一样，则
+	 * 在其前面加value = "book_id"，但这个必须跟
+	 *  @RequestMapping(value = "/book/{book_id}/comment")里面的book_id一样
+	 * @param content
+	 * @param book_id
+	 * @param request
+	 * @return
+	 */
 	@RequestMapping(value = "/book/{book_id}/comment", method = RequestMethod.POST)
 	public Comment addComment(@RequestParam(name = "content") String content,
 			@PathVariable(value = "book_id") int book_id, HttpServletRequest request) {
@@ -157,6 +168,16 @@ public class APIController {
 
 	}
 
+	/**
+	 * @RequestMapping(value = "/book/{book_id}/comment")里面的book_id必须跟
+	 * @PathVariable(value = "book_id") int book_id中，int的变量一样，如果想不一样，则
+	 * 在其前面加value = "book_id"，但这个必须跟
+	 *  @RequestMapping(value = "/book/{book_id}/comment")里面的book_id一样
+	 * @param content
+	 * @param book_id
+	 * @param request
+	 * @return
+	 */
 	@RequestMapping("/book/{book_id}/comment/{page}")
 	public Page<Comment> getCommentofArtical(
 			@PathVariable(value="book_id") int book_id,
@@ -166,7 +187,14 @@ public class APIController {
 	}
 
 	/*
-	 * 
+	 * @RequestMapping(value = "/book/{book_id}/comment")里面的book_id必须跟
+	 * @PathVariable(value = "book_id") int book_id中，int的变量一样，如果想不一样，则
+	 * 在其前面加value = "book_id"，但这个必须跟
+	 *  @RequestMapping(value = "/book/{book_id}/comment")里面的book_id一样
+	 * @param content
+	 * @param book_id
+	 * @param request
+	 * @return
 	 */
 	@RequestMapping("/article/{book_id}/comment")
 	public Page<Comment> getCommentofArtical(
@@ -175,93 +203,21 @@ public class APIController {
 		return commentService.findCommentNumofBook(book_id, 0);
 	}
 
-	//
+	/**
+	 * @RequestMapping(value = "/book/{book_id}/comment")里面的book_id必须跟
+	 * @PathVariable(value = "book_id") int book_id中，int的变量一样，如果想不一样，则
+	 * 在其前面加value = "book_id"，但这个必须跟
+	 *  @RequestMapping(value = "/book/{book_id}/comment")里面的book_id一样
+	 * @param content
+	 * @param book_id
+	 * @param request
+	 * @return
+	 */
 	@RequestMapping("/comments")
 	public Page<Comment> getAllCommentsOfAuthor(HttpServletRequest request)
 	{
-		//
+		//获得当前用户
 		User user=getCurrentUser(request);
 		return commentService.findAllCommentofAuthor(user.getId(), 0);
 	}
-
-
-
-	@RequestMapping(value = "/register", method = RequestMethod.POST)
-	public User register(@RequestParam(name = "num") String num, @RequestParam(name = "password") String password,
-			@RequestParam(name = "email") String email, @RequestParam(name = "name") String name, MultipartFile avatar,
-			HttpServletRequest request) {
-		User user = new User();
-		user.setAccount(num);
-		user.setPasswordHash(password);
-		user.setName(name);
-		user.setEmail(email);
-
-		if (avatar != null) {
-			try {
-				String realPath = request.getSession().getServletContext().getRealPath("/WEB-INF/upload");
-				FileUtils.copyInputStreamToFile(avatar.getInputStream(), new File(realPath, num + ".png"));
-				user.setAvatar("upload/" + num + ".png"); //
-
-			} catch (Exception e) {
-				// TODO: handle exception
-			}
-
-		}
-		return userService.save(user);
-	}
-
-	/*
-	 * 
-	 */
-	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public User Login(@RequestParam String num, @RequestParam String password, HttpServletRequest request) {
-		Map<String, String[]> params = request.getParameterMap();
-
-		User user = userService.findNum(num); //
-		// 
-		if (user != null && user.getPasswordHash().equals(password)) {
-			request.getSession().setAttribute("user", user);
-			return user;
-		} else {
-
-			return null;
-		}
-
-	}
-
-	/*
-	 * 
-	 */
-	@RequestMapping(value = "/me", method = RequestMethod.GET)
-	public User getCurrentUser(HttpServletRequest request) {
-		Object object = request.getSession().getAttribute("user");
-		if (object instanceof User) {
-			// 
-			return (User) object;
-		} else {
-			return null;
-		}
-
-	}
-
-	/*
-	 * 
-	 */
-	@RequestMapping(value = "/email", method = RequestMethod.POST)
-	public boolean Email(@RequestParam String email, @RequestParam String password, HttpServletRequest request) {
-
-		User user = userService.findEmail(email); //
-		// 
-		if (user == null) {
-			return false;
-		} else {
-			// 
-			user.setPasswordHash(password);
-			// 
-			userService.save(user);
-			return true;
-		}
-
-	}
-
 }

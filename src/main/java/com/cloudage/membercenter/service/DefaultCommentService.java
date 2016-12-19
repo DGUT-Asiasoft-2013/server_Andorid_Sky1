@@ -13,7 +13,7 @@ import com.cloudage.membercenter.entity.Comment;
 import com.cloudage.membercenter.repository.ICommentRepository;
 
 /*
- * ÊµÏÖÀà
+ * å®žçŽ°ç±»
  */
 @Component
 @Service
@@ -30,16 +30,16 @@ public class DefaultCommentService implements ICommentService {
 
 	@Override
 	public Page<Comment> findCommentNumofBook(int userId, int page) {
-		// ÅÅÐò
+		// ï¿½ï¿½ï¿½ï¿½
 		Sort sort = new Sort(Direction.DESC, "createDate");
-		PageRequest request = new PageRequest(page, 50, sort); // ÀïÃæµÄ20Îª¿ÉÒÔÉèÖÃ×î¶àÓÐ20Ìõ
+		PageRequest request = new PageRequest(page, 50, sort); // ï¿½ï¿½ï¿½ï¿½ï¿½20Îªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½20ï¿½ï¿½
 
 		return iCommentRepository.findCommentNum(userId, request);
 	}
 
 	@Override
 	public Page<Comment> findAllCommentofAuthor(int userId, int page) {
-		// ÅÅÐò
+		// ï¿½ï¿½ï¿½ï¿½
 		Sort sort = new Sort(Direction.DESC, "createDate");
 		PageRequest request = new PageRequest(page, 60, sort);
 

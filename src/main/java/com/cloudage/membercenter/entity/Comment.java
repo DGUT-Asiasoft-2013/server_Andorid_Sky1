@@ -6,7 +6,7 @@ import javax.persistence.ManyToOne;
 import com.cloudage.membercenter.util.DateRecord;
 
 /**
- * ÆÀÂÛ±í
+ * è¯„è®º
  * @author Administrator
  *
  */
@@ -14,10 +14,10 @@ import com.cloudage.membercenter.util.DateRecord;
 public class Comment extends DateRecord{
 
 	
-	String content;       //ÆÀÂÛÄÚÈİ
-	User commentor;        //ÆÀÂÛÕß
+	String content;       //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	User commentor;        //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	
-	Book book;          //Êé
+	Book book;          //ï¿½ï¿½
 	
 	@ManyToOne(optional=false)
 	public Book getBook() {

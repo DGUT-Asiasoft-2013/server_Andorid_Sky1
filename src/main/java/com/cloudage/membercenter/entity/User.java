@@ -13,12 +13,12 @@ import com.cloudage.membercenter.util.BaseEntity;
 @Entity
 public class User extends BaseEntity{
 
-	String account;               //
-	String passwordHash;          //
-	String name;                  //
-	String avatar;                //
-	String email;                 //
-	String phoneNumb;            //
+	String account;               //账号
+	String passwordHash;          //密码
+	String name;                  //用户名
+	String avatar;                //头像
+	String email;                 //邮箱
+	String phoneNumb;            //电话号码
 	String qq;                   //qq
 
 	@Column(nullable=false)
