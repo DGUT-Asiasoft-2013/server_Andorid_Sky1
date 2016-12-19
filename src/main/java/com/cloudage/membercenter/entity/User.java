@@ -12,7 +12,7 @@ public class User extends BaseEntity{
 	String name;
 	String avatar;
 	String email;
-	String phoneNumb;//ÊÖ»úºÅ±ØÌî(ÁªÏµ·½·¨)
+	String phoneNumb;//æ‰‹æœºå·å¿…å¡«(è”ç³»æ–¹æ³•)
 	String qq;
 	
 

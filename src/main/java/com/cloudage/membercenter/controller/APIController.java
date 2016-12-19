@@ -18,7 +18,7 @@ import com.cloudage.membercenter.entity.User;
 import com.cloudage.membercenter.service.IUserService;
 
 /*
- * ´´½¨Ò»¸ö±í¾ÍÒªÖØĞÂĞ´ÄÇ4¸ö¶«Î÷
+ * åˆ›å»ºä¸€ä¸ªè¡¨å°±è¦é‡æ–°å†™é‚£4ä¸ªä¸œè¥¿
  */
 @RestController
 @RequestMapping("/api")
@@ -56,7 +56,7 @@ public class APIController {
 			try {
 				String realPath=request.getSession().getServletContext().getRealPath("/WEB-INF/upload");
 				FileUtils.copyInputStreamToFile(avatar.getInputStream(), new File(realPath,num+".png"));
-				user.setAvatar("upload/"+num+".png");           //±£´æÍ·Ïñ
+				user.setAvatar("upload/"+num+".png");           //ä¿å­˜å¤´åƒ
 				
 			} catch (Exception e) {
 				// TODO: handle exception
@@ -68,7 +68,7 @@ public class APIController {
 	}
 	
 	/*
-	 * ÏÂÃæÎªµÇÂ¼²Ù×÷µÄ·½·¨
+	 * ä¸‹é¢ä¸ºç™»å½•æ“ä½œçš„æ–¹æ³•
 	 */
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public User Login(
@@ -77,8 +77,8 @@ public class APIController {
 			HttpServletRequest request) {
 		Map<String, String[]> params = request.getParameterMap();
 		
-		User user =userService.findNum(num);           //ÕÒµ½ÕË»§
-		//ÅĞ¶ÏÓÃ»§ÊÇ·ñÎª¿Õ²¢ÇÒÃÜÂëÊÇ·ñÕıÈ·
+		User user =userService.findNum(num);           //æ‰¾åˆ°è´¦æˆ·
+		//åˆ¤æ–­ç”¨æˆ·æ˜¯å¦ä¸ºç©ºå¹¶ä¸”å¯†ç æ˜¯å¦æ­£ç¡®
 		if (user!=null && user.getPasswordHash().equals(password)) {
 			request.getSession().setAttribute("user", user);
 			return user;
@@ -90,13 +90,13 @@ public class APIController {
 	}
 	
 	/*
-	 * ·µ»Øµ±Ç°ÓÃ»§
+	 * è¿”å›å½“å‰ç”¨æˆ·
 	 */
 	@RequestMapping(value = "/me", method = RequestMethod.GET)
 	public User getCurrentUser(HttpServletRequest request) {
 		Object object=request.getSession().getAttribute("user");
 		if (object instanceof User) {
-			//ÅĞ¶ÏobjectÊÇ·ñÎªUserµÄÊµÀı,Èç¹ûÊÇÔò·µ»Øtrue£¬·ñÔò·µ»Øfalse
+			//åˆ¤æ–­objectæ˜¯å¦ä¸ºUserçš„å®ä¾‹,å¦‚æœæ˜¯åˆ™è¿”å›trueï¼Œå¦åˆ™è¿”å›false
 			return (User) object;
 		}
 		else {
@@ -106,7 +106,7 @@ public class APIController {
 	}
 	
 	/*
-	 * ÏÂÃæÎª·µ»Øemail·½·¨
+	 * ä¸‹é¢ä¸ºè¿”å›emailæ–¹æ³•
 	 */
 	@RequestMapping(value = "/email", method = RequestMethod.POST)
 	public boolean Email(
@@ -114,14 +114,14 @@ public class APIController {
 			@RequestParam String password,
 			HttpServletRequest request) {
 		
-		User user =userService.findEmail(email);           //»ñµÃemail
-		//ÅĞ¶ÏÓÃ»§ÊÇ·ñÎª¿Õ
+		User user =userService.findEmail(email);           //è·å¾—email
+		//åˆ¤æ–­ç”¨æˆ·æ˜¯å¦ä¸ºç©º
 		if (user==null) {
 			return false;
 		}else {
-			//ÖØĞÂÉèÖÃÃÜÂë
+			//é‡æ–°è®¾ç½®å¯†ç 
 			user.setPasswordHash(password);
-			//±£´æÃÜÂë
+			//ä¿å­˜å¯†ç 
 			userService.save(user);
 			return true;
 		}
