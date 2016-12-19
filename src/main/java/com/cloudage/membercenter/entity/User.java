@@ -6,19 +6,19 @@ import javax.persistence.Entity;
 import com.cloudage.membercenter.util.BaseEntity;
 
 /**
- * 用户
+ * 
  * @author Administrator
  *
  */
 @Entity
 public class User extends BaseEntity{
 
-	String account;               //账户
-	String passwordHash;          //密码
-	String name;                  //用户名
-	String avatar;                //头像
-	String email;                 //邮件
-	String phoneNumb;            //手机号必填(联系方法)
+	String account;               //
+	String passwordHash;          //
+	String name;                  //
+	String avatar;                //
+	String email;                 //
+	String phoneNumb;            //
 	String qq;                   //qq
 
 	@Column(nullable=false)
