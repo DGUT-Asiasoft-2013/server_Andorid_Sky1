@@ -12,6 +12,7 @@ import com.cloudage.membercenter.util.BaseEntity;
  */
 @Entity
 public class User extends BaseEntity{
+
 	String account;               //账户
 	String passwordHash;          //密码
 	String name;                  //用户名
@@ -19,7 +20,6 @@ public class User extends BaseEntity{
 	String email;                 //邮件
 	String phoneNumb;            //手机号必填(联系方法)
 	String qq;                   //qq
-	
 
 	@Column(nullable=false)
 	public String getPhoneNumb() {
