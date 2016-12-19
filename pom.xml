@@ -282,6 +282,7 @@
 					</webApp>
 					<reload>automatic</reload>
 					<scanIntervalSeconds>1</scanIntervalSeconds>
+					
 				</configuration>
 			</plugin>
 		</plugins>
