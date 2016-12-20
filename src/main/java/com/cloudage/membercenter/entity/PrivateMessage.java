@@ -4,6 +4,8 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
+
 import com.cloudage.membercenter.util.BaseEntity;
 
 @Entity
@@ -12,19 +14,21 @@ public class PrivateMessage extends BaseEntity{
 	User privateMessageSender;//私信发送者
 	Date createDate;//私信发送时间
 	String privateText;//私信的文字内容
-	
+	@ManyToOne(optional=false)
 	public User getPrivataeMessageReceiver() {
 		return privataeMessageReceiver;
 	}
-	public void setPrivataeMessageReceiver(User privataeMessageReceiver) {
-		this.privataeMessageReceiver = privataeMessageReceiver;
-	}
+	@ManyToOne(optional=false)
 	public User getPrivateMessageSender() {
 		return privateMessageSender;
 	}
 	public void setPrivateMessageSender(User privateMessageSender) {
 		this.privateMessageSender = privateMessageSender;
 	}
+	public void setPrivataeMessageReceiver(User privataeMessageReceiver) {
+		this.privataeMessageReceiver = privataeMessageReceiver;
+	}
+
 	
 	@Column(updatable=false)
 	public Date getCreateDate() {
