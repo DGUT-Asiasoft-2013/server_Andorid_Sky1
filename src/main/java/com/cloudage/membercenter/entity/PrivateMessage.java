@@ -10,10 +10,10 @@ import com.cloudage.membercenter.util.BaseEntity;
 
 @Entity
 public class PrivateMessage extends BaseEntity{
-	User privataeMessageReceiver;//私信接收者
-	User privateMessageSender;//私信发送者
-	Date createDate;//私信发送时间
-	String privateText;//私信的文字内容
+	User privataeMessageReceiver;
+	User privateMessageSender;
+	Date createDate;
+	String privateText;
 	@ManyToOne(optional=false)
 	public User getPrivataeMessageReceiver() {
 		return privataeMessageReceiver;

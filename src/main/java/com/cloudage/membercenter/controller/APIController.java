@@ -247,6 +247,58 @@ public class APIController {
 
 
 
+	/***
+	 * 
+	 * 存入图书信息
+	 * 
+	 * */
+	@RequestMapping(value="/books",method=RequestMethod.POST)
+	public Book addBook(
+			@RequestParam String title,
+			@RequestParam String author,
+			@RequestParam String price,
+			@RequestParam String text,
+			@RequestParam String publisher,
+			@RequestParam String book_isbn,
+			@RequestParam String tag,
+			@RequestParam String summary,
+			HttpServletRequest request){
+		User currentUser = getCurrentUser(request);
+		Book book = new Book();
+		book.setTitle(title);
+		book.setAuthor(author);
+		book.setPrice(price);
+		book.setText(text);
+		book.setPublisher(publisher);
+		book.setISBN(book_isbn);
+		book.setTag(tag);
+		book.setSummary(summary);
+		return bookService.save(book);
+	}
+
+	//获取出售图书列表
+	@RequestMapping("/books/{page}")
+	public Page<Book> getFeeds(@PathVariable int page){
+		return bookService.getBooks(page);
+	}
+	@RequestMapping("/books")
+	public Page<Book> getFeeds(){
+		return getFeeds(0);
+	}
+
+	//搜索图书--------(根据 图书名称|图书作者|ISBN|卖家 搜索)
+	@RequestMapping(value="/book/s/{keyword}")
+	public Page<Book> fingTextByKeyword(
+			@PathVariable String keyword,
+			@RequestParam(defaultValue="0") int page){
+		return bookService.findTextByKeyword(keyword, page);
+	}
+	
+	
+
+
+
+
 	/**
 	 * 鍔熻兘:淇濆瓨绉佷俊鍐呭
 	 * @param String text:绉佷俊鐨勬枃瀛椾俊鎭�
@@ -271,5 +323,6 @@ public class APIController {
 
 
 	}
+
 }
 

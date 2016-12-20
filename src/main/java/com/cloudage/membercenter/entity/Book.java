@@ -6,38 +6,85 @@ import com.cloudage.membercenter.util.DateRecord;
 
 @Entity
 public class Book extends DateRecord{
-	//ÓÃ»§(Âô¼Ò)
+
 	User user;
 
-	//Í¼ÊéIDÔÚDateRecordÀïÃæ
-	//ÆäÖĞ°üº¬´´½¨Ê±¼äºÍ±à¼­Ê±¼ä£¬¼´³öÊÛ(·¢²¼)Ê±¼ä
+	//å›¾ä¹¦æ ‡é¢˜
+	private String title;	
+	//å›¾ä¹¦ä½œè€…
+	private String author;
+	//å›¾ä¹¦å‡ºç‰ˆç¤¾
+	private String publisher;
+	//å›¾ä¹¦ISBNç 
+	private String isbn;
+	//å›¾ä¹¦ä»·æ ¼
+	private String price;
+	//å›¾ä¹¦æ ‡ç­¾
+	private String tag;
+	//å›¾ä¹¦æ‘˜è¦
+	private String summary;
+	//å–å®¶å¤‡æ³¨
+	private String text;
 
-	//Í¼ÊéISBNÂë
-	String ISBN;
-	//Í¼Êé³öÊÛ¼Û¸ñ
-	String Price;
 
 
-
-	@ManyToOne(optional=false) //1¸öÈË³öÊÛ¶à±¾Êé¼®£¬Ò²¿ÉÒÔ¶à¸öÈËÂò
+	
+	@ManyToOne(optional=false) //1ä¸ªäººå‡ºå”®å¤šæœ¬ä¹¦ç±ï¼Œä¹Ÿå¯ä»¥å¤šä¸ªäººä¹°
 	public User getUser() {
 		return user;
 	}
 	public void setUser(User user) {
 		this.user = user;
 	}
-
+	public String getText() {
+		return text;
+	}
+	public void setText(String text) {
+		this.text = text;
+	}
+	public String getTitle() {
+		return title;
+	}
+	public void setTitle(String title) {
+		this.title = title;
+	}
+	public String getAuthor() {
+		return author;
+	}
+	public void setAuthor(String author) {
+		this.author = author;
+	}
+	public String getPublisher() {
+		return publisher;
+	}
+	public void setPublisher(String publisher) {
+		this.publisher = publisher;
+	}
+	
 	public String getISBN() {
-		return ISBN;
+		return isbn;
 	}
 	public void setISBN(String iSBN) {
-		ISBN = iSBN;
+		isbn = iSBN;
 	}
-
 	public String getPrice() {
-		return Price;
+		return price;
 	}
 	public void setPrice(String price) {
-		Price = price;
+
+		this.price = price;
 	}
+	public String getTag() {
+		return tag;
+	}
+	public void setTag(String tag) {
+		this.tag = tag;
+	}
+	public String getSummary() {
+		return summary;
+	}
+	public void setSummary(String summary) {
+		this.summary = summary;
+	}
+
 }
