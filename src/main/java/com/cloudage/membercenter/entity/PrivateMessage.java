@@ -10,10 +10,10 @@ import com.cloudage.membercenter.util.BaseEntity;
 
 @Entity
 public class PrivateMessage extends BaseEntity{
-	User privataeMessageReceiver;//ç§ä¿¡æ¥æ”¶è€…
-	User privateMessageSender;//ç§ä¿¡å‘é€è€…
-	Date createDate;//ç§ä¿¡å‘é€æ—¶é—´
-	String privateText;//ç§ä¿¡çš„æ–‡å­—å†…å®¹
+	User privataeMessageReceiver;//Ë½ĞÅ½ÓÊÕÕß
+	User privateMessageSender;//Ë½ĞÅ·¢ËÍÕß
+	Date createDate;//Ë½ĞÅ·¢ËÍÊ±¼ä
+	String privateText;//Ë½ĞÅµÄÎÄ×ÖÄÚÈİ
 	@ManyToOne(optional=false)
 	public User getPrivataeMessageReceiver() {
 		return privataeMessageReceiver;

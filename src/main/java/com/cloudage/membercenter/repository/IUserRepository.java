@@ -10,11 +10,11 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 @Repository
 public interface IUserRepository extends PagingAndSortingRepository<User, Integer>{
 
-	//æ­¤ä¸­è°ƒç”¨çš„accountéœ€è¦è·ŸUserç±»é‡Œçš„å®šä¹‰çš„ä¸€æ ·
+	//´ËÖĞµ÷ÓÃµÄaccountĞèÒª¸úUserÀàÀïµÄ¶¨ÒåµÄÒ»Ñù
 	@Query("from User u where u.account=?1")
 	User findNum(String num);
 	
-	//æ­¤ä¸­è°ƒç”¨çš„emailéœ€è¦è·ŸUserç±»é‡Œçš„å®šä¹‰çš„ä¸€æ ·
+	//´ËÖĞµ÷ÓÃµÄemailĞèÒª¸úUserÀàÀïµÄ¶¨ÒåµÄÒ»Ñù
 	@Query("from User u where u.email=?1")
 	User findEmail(String email);
 }

@@ -6,20 +6,20 @@ import com.cloudage.membercenter.util.DateRecord;
 
 @Entity
 public class Book extends DateRecord{
-	//ç”¨æˆ·(å–å®¶)
+	//ÓÃ»§(Âô¼Ò)
 	User user;
 
-	//å›¾ä¹¦IDåœ¨DateRecordé‡Œé¢
-	//å…¶ä¸­åŒ…å«åˆ›å»ºæ—¶é—´å’Œç¼–è¾‘æ—¶é—´ï¼Œå³å‡ºå”®(å‘å¸ƒ)æ—¶é—´
+	//Í¼ÊéIDÔÚDateRecordÀïÃæ
+	//ÆäÖĞ°üº¬´´½¨Ê±¼äºÍ±à¼­Ê±¼ä£¬¼´³öÊÛ(·¢²¼)Ê±¼ä
 
-	//å›¾ä¹¦ISBNç 
+	//Í¼ÊéISBNÂë
 	String ISBN;
-	//å›¾ä¹¦å‡ºå”®ä»·æ ¼
+	//Í¼Êé³öÊÛ¼Û¸ñ
 	String Price;
 
 
 
-	@ManyToOne(optional=false) //1ä¸ªäººå‡ºå”®å¤šæœ¬ä¹¦ç±ï¼Œä¹Ÿå¯ä»¥å¤šä¸ªäººä¹°
+	@ManyToOne(optional=false) //1¸öÈË³öÊÛ¶à±¾Êé¼®£¬Ò²¿ÉÒÔ¶à¸öÈËÂò
 	public User getUser() {
 		return user;
 	}

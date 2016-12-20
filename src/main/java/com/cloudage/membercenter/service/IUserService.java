@@ -5,13 +5,14 @@ import com.cloudage.membercenter.entity.User;
 public interface IUserService {
 	User create(String account, String passwordHash);
 	
-	User save(User user);              //å®šä¹‰userçš„save()æ–¹æ³•ï¼Œä½¿å¾—æ³¨å†Œçš„æ—¶å€™ä¿å­˜æ•°æ®
-	User findNum(String num);           //å®šä¹‰userçš„findNum()æ–¹æ³•ï¼Œä½¿å¾—ç™»å½•çš„æ—¶å€™æ‰¾åˆ°ä¸€å®¶æ³¨å†Œçš„æ•°æ®
-	User findEmail(String email);       //å®šä¹‰userçš„findEmail()æ–¹æ³•ï¼Œä½¿å¾—ç™»å½•çš„æ—¶å€™æ‰¾åˆ°ä¸€å®¶æ³¨å†Œçš„email
+	User save(User user);              //¶¨ÒåuserµÄsave()·½·¨£¬Ê¹µÃ×¢²áµÄÊ±ºò±£´æÊı¾İ
+	User findNum(String num);           //¶¨ÒåuserµÄfindNum()·½·¨£¬Ê¹µÃµÇÂ¼µÄÊ±ºòÕÒµ½Ò»¼Ò×¢²áµÄÊı¾İ
+	User findEmail(String email);       //¶¨ÒåuserµÄfindEmail()·½·¨£¬Ê¹µÃµÇÂ¼µÄÊ±ºòÕÒµ½Ò»¼Ò×¢²áµÄemail
 	
 	
 	void login(String account, String passwordHash);
 	User getCurrentUser();
 	boolean changePassword(String newPasswordHash);
 	void logout();
+
 }

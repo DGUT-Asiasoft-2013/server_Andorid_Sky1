@@ -1,4 +1,3 @@
-
 package com.cloudage.membercenter.controller;
 
 import java.io.File;
@@ -43,7 +42,7 @@ public class APIController {
 
 	@Autowired
 	ICommentService commentService;
-	
+
 	@Autowired
 	IPrivateMessageService privateMessageService;
 
@@ -59,10 +58,12 @@ public class APIController {
 	 */
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
 	public User register(
-			@RequestParam(name = "num") String num,
-			@RequestParam(name = "password") String password, 
-			@RequestParam(name = "email") String email,
-			@RequestParam(name = "name") String name,
+			@RequestParam(name = "num") String num,//账号
+			@RequestParam(name = "password") String password, //密码
+			@RequestParam(name = "email") String email,//邮箱
+			@RequestParam(name = "name") String name,//昵称
+			@RequestParam(name = "phoneNumb") String phoneNumb,//电话号码
+			@RequestParam(name = "qq") String qq,//QQ
 			MultipartFile avatar,
 			HttpServletRequest request) {
 		User user = new User();
@@ -70,6 +71,8 @@ public class APIController {
 		user.setPasswordHash(password);
 		user.setName(name);
 		user.setEmail(email);
+		user.setPhoneNumb(phoneNumb);
+		user.setQq(qq);
 
 		if (avatar!=null) {
 			try {
@@ -108,6 +111,23 @@ public class APIController {
 
 	}
 
+	//忘记密码，重设密码
+	@RequestMapping(value="/passwordrecover",method=RequestMethod.POST)
+	public boolean resetPassword(
+			@RequestParam String email,
+			@RequestParam String passwordHash){
+		User user=userService.findEmail(email);
+		if(user==null){
+			return false;
+		}else{
+			user.setPasswordHash(passwordHash);
+			userService.save(user);
+			return true;
+		}
+	}
+
+
+
 	/*
 	 * 获得当前用户
 	 */
@@ -130,7 +150,7 @@ public class APIController {
 	@RequestMapping(value = "/email", method = RequestMethod.POST)
 	public boolean Email(
 			@RequestParam String email,
-			@RequestParam String password,
+			//@RequestParam String password,
 			HttpServletRequest request) {
 
 		User user =userService.findEmail(email);           //
@@ -139,7 +159,7 @@ public class APIController {
 			return false;
 		}else {
 			//
-			user.setPasswordHash(password);
+			//user.setPasswordHash(password);
 			//
 			userService.save(user);
 			return true;
@@ -224,30 +244,32 @@ public class APIController {
 		User user=getCurrentUser(request);
 		return commentService.findAllCommentofAuthor(user.getId(), 0);
 	}
-	
+
+
 
 	/**
-	 * 功能:保存私信内容
-	 * @param String text:私信的文字信息
-	 * @param User receiver:私信的接收人
+	 * 鍔熻兘:淇濆瓨绉佷俊鍐呭
+	 * @param String text:绉佷俊鐨勬枃瀛椾俊鎭�
+	 * @param User receiver:绉佷俊鐨勬帴鏀朵汉
 	 * @param request
 	 * @return PrivateMessage
 	 */
-	
+
 	@RequestMapping(value = "/privateMessage",method = RequestMethod.POST)
 	public PrivateMessage savePrivateMessage(@RequestParam String text,@RequestParam User receiver,
-			
+
 			HttpServletRequest request
 			){
-		
-		User user = getCurrentUser(request);//获取当前用户
+
+		User user = getCurrentUser(request);//鑾峰彇褰撳墠鐢ㄦ埛
 		PrivateMessage privateMessage = new PrivateMessage();
 		privateMessage.setPrivateMessageSender(user);
 		privateMessage.setPrivataeMessageReceiver(receiver);
 		privateMessage.setPrivateText(text);
 		return privateMessageService.save(privateMessage);
-		
-		
-		
+
+
+
 	}
 }
+
