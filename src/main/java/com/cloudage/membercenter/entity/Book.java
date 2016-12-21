@@ -19,17 +19,16 @@ public class Book extends DateRecord {
 	private String isbn;
 	// 图书价格
 	private float price;
-
-
 	// 图书标签
 	private String tag;
 	// 图书摘要
 	private String summary;
 	// 卖家备注
 	private String text;
-
 	// 书本数量
 	private int booknumber;
+	//图书照片
+	private String bookavatar;
 
 	@ManyToOne(optional = false) // 1个人出售多本书籍，也可以多个人买
 	public User getUser() {
@@ -38,6 +37,19 @@ public class Book extends DateRecord {
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+	
+	public String getIsbn() {
+		return isbn;
+	}
+	public void setIsbn(String isbn) {
+		this.isbn = isbn;
+	}
+	public String getBookavatar() {
+		return bookavatar;
+	}
+	public void setBookavatar(String bookavatar) {
+		this.bookavatar = bookavatar;
 	}
 
 	public String getText() {
@@ -72,16 +84,6 @@ public class Book extends DateRecord {
 		this.publisher = publisher;
 	}
 
-	public String getISBN() {
-		return isbn;
-	}
-
-	public void setISBN(String iSBN) {
-		isbn = iSBN;
-	}
-
-	
-
 	public float getPrice() {
 		return price;
 	}
@@ -104,14 +106,6 @@ public class Book extends DateRecord {
 
 	public void setSummary(String summary) {
 		this.summary = summary;
-	}
-
-	public String getIsbn() {
-		return isbn;
-	}
-
-	public void setIsbn(String isbn) {
-		this.isbn = isbn;
 	}
 
 	public int getBooknumber() {
