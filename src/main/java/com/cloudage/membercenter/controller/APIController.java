@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.cloudage.membercenter.entity.Article;
 import com.cloudage.membercenter.entity.Book;
 import com.cloudage.membercenter.entity.Comment;
 import com.cloudage.membercenter.entity.PrivateMessage;
@@ -48,6 +47,7 @@ public class APIController {
 
 	@Autowired
 	ISubscribeService subscribeService;
+	
 	@Autowired
 	IPrivateMessageService privateMessageService;
 
@@ -321,37 +321,37 @@ public class APIController {
 		}
 
 //	传卖家的id，返回卖家的订阅数
-	@RequestMapping("/saler/{saler_name}/subscribe")
-	public int countSubscribe(@PathVariable int saler_name){
-		return subscribeService.countSubscribe(saler_name);
+	@RequestMapping("/saler/{saler_id}/subscribe")
+	public int countSubscribe(@PathVariable int saler_id){
+		return subscribeService.countSubscribe(saler_id);
 	}
 //	传卖家的id，检查我是否订阅该卖家
-	@RequestMapping("/saler/{saler_name}/issubscribe")
-	public boolean checkSubscribe(@PathVariable int saler_name,HttpServletRequest request){
+	@RequestMapping("/saler/{saler_id}/issubscribe")
+	public boolean checkSubscribe(@PathVariable int saler_id,HttpServletRequest request){
 		User me = getCurrentUser(request);
-		return subscribeService.checkSubscribe(me.getId(), saler_name);
+		return subscribeService.checkSubscribe(me.getId(), saler_id);
 	}
 //	传用户，返回用户订阅的卖家
-	@RequestMapping(value="/user_name/subscribe")
-	public List<User> getBookByUserName(@PathVariable int user_name){
-		return subscribeService.findAllByUser(user_name);
+	@RequestMapping(value="/user_id/subscribe")
+	public List<User> getBookByUserName(@PathVariable int user_id){
+		return subscribeService.findAllByUser(user_id);
 	}
 //传一个boolean，为真，添加订阅关系，为假，取消订阅关系，并返回卖家的被订阅数
-	@RequestMapping(value="/saler/{saler_name}/subscribe",method = RequestMethod.POST)
+	@RequestMapping(value="/saler/{saler_id}/subscribe",method = RequestMethod.POST)
 	public int changeSubscribe(
-			@PathVariable int saler_name,
+			@PathVariable int saler_id,
 			@RequestParam boolean subscribe,
 			HttpServletRequest request
 			){
 		User me = getCurrentUser(request);
-		User saler = userService.findOne(saler_name);
+		User saler = userService.findOne(saler_id);
 
 		if(subscribe)
 			subscribeService.addSubscribe(me, saler);
 		else
 			subscribeService.removeSubscribe(me, saler);
 		
-		return subscribeService.countSubscribe(saler_name);
+		return subscribeService.countSubscribe(saler_id);
 	}
 }
 

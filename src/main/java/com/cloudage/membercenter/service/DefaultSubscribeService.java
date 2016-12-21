@@ -50,10 +50,7 @@ public class DefaultSubscribeService implements ISubscribeService{
 	}
 
 	@Override
-	public List<User> findAllByUser(int user_name) {
-		// TODO Auto-generated method stub
-		return subscribeRepo.findAllByMe(user_name);
+	public List<User> findAllByUser(int meId) {
+		return subscribeRepo.findAllByMe(meId);
 	}
-
-	
 }
