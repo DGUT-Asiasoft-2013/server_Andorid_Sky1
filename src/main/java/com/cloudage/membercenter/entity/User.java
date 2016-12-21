@@ -12,7 +12,7 @@ import com.cloudage.membercenter.util.BaseEntity;
  */
 @Entity
 public class User extends BaseEntity{
-
+	
 	String account;               //账号
 	String passwordHash;          //密码
 	String name;                  //用户名

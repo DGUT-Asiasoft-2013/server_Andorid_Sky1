@@ -5,11 +5,11 @@ import com.cloudage.membercenter.entity.User;
 public interface IUserService {
 	User create(String account, String passwordHash);
 	
-	User save(User user);              //¶¨ÒåuserµÄsave()·½·¨£¬Ê¹µÃ×¢²áµÄÊ±ºò±£´æÊý¾Ý
-	User findNum(String num);           //¶¨ÒåuserµÄfindNum()·½·¨£¬Ê¹µÃµÇÂ¼µÄÊ±ºòÕÒµ½Ò»¼Ò×¢²áµÄÊý¾Ý
-	User findEmail(String email);       //¶¨ÒåuserµÄfindEmail()·½·¨£¬Ê¹µÃµÇÂ¼µÄÊ±ºòÕÒµ½Ò»¼Ò×¢²áµÄemail
+	User save(User user);              //ï¿½ï¿½ï¿½ï¿½userï¿½ï¿½save()ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¹ï¿½ï¿½×¢ï¿½ï¿½ï¿½Ê±ï¿½ò±£´ï¿½ï¿½ï¿½ï¿½ï¿½
+	User findNum(String num);           //ï¿½ï¿½ï¿½ï¿½userï¿½ï¿½findNum()ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¹ï¿½Ãµï¿½Â¼ï¿½ï¿½Ê±ï¿½ï¿½ï¿½Òµï¿½Ò»ï¿½ï¿½×¢ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	User findEmail(String email);       //ï¿½ï¿½ï¿½ï¿½userï¿½ï¿½findEmail()ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¹ï¿½Ãµï¿½Â¼ï¿½ï¿½Ê±ï¿½ï¿½ï¿½Òµï¿½Ò»ï¿½ï¿½×¢ï¿½ï¿½ï¿½email
 	
-	
+	User findOne(int userName);//é€šè¿‡nameå¯»æ‰¾user
 	void login(String account, String passwordHash);
 	User getCurrentUser();
 	boolean changePassword(String newPasswordHash);

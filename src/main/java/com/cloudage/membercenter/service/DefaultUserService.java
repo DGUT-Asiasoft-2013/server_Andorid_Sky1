@@ -9,7 +9,7 @@ import com.cloudage.membercenter.entity.User;
 import com.cloudage.membercenter.repository.IUserRepository;
 
 /*
- *  ÊµÏÖÀà
+ *  Êµï¿½ï¿½ï¿½ï¿½
  */
 @Component
 @Service
@@ -20,7 +20,7 @@ public class DefaultUserService implements IUserService {
 	IUserRepository userRepo;
 	
 	/*
-	 * ÊµÀý»¯save(User user)·½·¨
+	 * Êµï¿½ï¿½ï¿½ï¿½save(User user)ï¿½ï¿½ï¿½ï¿½
 	 * (non-Javadoc)
 	 * @see com.cloudage.membercenter.service.IUserService#save(com.cloudage.membercenter.entity.User)
 	 */
@@ -29,7 +29,7 @@ public class DefaultUserService implements IUserService {
 	}
 	
 	/*
-	 * ÊµÀý»¯findNum(String num)·½·¨
+	 * Êµï¿½ï¿½ï¿½ï¿½findNum(String num)ï¿½ï¿½ï¿½ï¿½
 	 * (non-Javadoc)
 	 * @see com.cloudage.membercenter.service.IUserService#findNum(com.cloudage.membercenter.entity.User)
 	 */
@@ -39,13 +39,13 @@ public class DefaultUserService implements IUserService {
 	}
 
 	/*
-	 * ÊµÀý»¯findEmail(String email)·½·¨
+	 * Êµï¿½ï¿½ï¿½ï¿½findEmail(String email)ï¿½ï¿½ï¿½ï¿½
 	 * (non-Javadoc)
 	 * @see com.cloudage.membercenter.service.IUserService#findEmail(java.lang.String)
 	 */
 	@Override
 	public User findEmail(String email) {
-		// ÀûÓÃuserRepoµ÷ÓÃfindEmail()·½·¨ÊÇÒòÎªÆäÔÚIUserRepository¶¨ÒåÁËselect...Óï¾ä
+		// ï¿½ï¿½ï¿½ï¿½userRepoï¿½ï¿½ï¿½ï¿½findEmail()ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½ï¿½ï¿½IUserRepositoryï¿½ï¿½ï¿½ï¿½ï¿½ï¿½select...ï¿½ï¿½ï¿½
 		return userRepo.findEmail(email);
 	}
 
@@ -80,6 +80,11 @@ public class DefaultUserService implements IUserService {
 	public void logout() {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public User findOne(int userName) {
+		return userRepo.findOne(userName);
 	}
 
 	

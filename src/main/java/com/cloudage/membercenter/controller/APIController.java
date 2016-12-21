@@ -18,13 +18,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.cloudage.membercenter.entity.Article;
 import com.cloudage.membercenter.entity.Book;
 import com.cloudage.membercenter.entity.Comment;
 import com.cloudage.membercenter.entity.PrivateMessage;
 import com.cloudage.membercenter.entity.User;
 import com.cloudage.membercenter.service.IBookService;
 import com.cloudage.membercenter.service.ICommentService;
-import com.cloudage.membercenter.service.IPrivateMessageService;
+import com.cloudage.membercenter.service.ISubscribeService;
 import com.cloudage.membercenter.service.IUserService;
 
 /*
@@ -43,6 +44,8 @@ public class APIController {
 	@Autowired
 	ICommentService commentService;
 
+	@Autowired
+	ISubscribeService subscribeService;
 	@Autowired
 	IPrivateMessageService privateMessageService;
 
@@ -245,8 +248,6 @@ public class APIController {
 		return commentService.findAllCommentofAuthor(user.getId(), 0);
 	}
 
-
-
 	/***
 	 * 
 	 * 存入图书信息
@@ -295,11 +296,6 @@ public class APIController {
 			@RequestParam(defaultValue="0") int page){
 		return bookService.findTextByKeyword(keyword, page);
 	}
-	
-	
-
-
-
 
 	/**
 	 * 鍔熻兘:淇濆瓨绉佷俊鍐呭
@@ -309,22 +305,56 @@ public class APIController {
 	 * @return PrivateMessage
 	 */
 
-	@RequestMapping(value = "/privateMessage",method = RequestMethod.POST)
-	public PrivateMessage savePrivateMessage(@RequestParam String text,@RequestParam User receiver,
 
+	@RequestMapping(value = "/privateMessage",method = RequestMethod.POST)
+
+	public PrivateMessage savePrivateMessage(@RequestParam String privateText,
+			@RequestParam String receiverAccount,
+			@RequestParam String chatType,
 			HttpServletRequest request
 			){
-
-		User user = getCurrentUser(request);//鑾峰彇褰撳墠鐢ㄦ埛
+		
+		//User user = getCurrentUser(request);//获取当前用户
+		
+		//测试
+		User user = userService.findNum("hh");
+		User receiver = userService.findNum(receiverAccount);//找到私信接收者
 		PrivateMessage privateMessage = new PrivateMessage();
 		privateMessage.setPrivateMessageSender(user);
 		privateMessage.setPrivataeMessageReceiver(receiver);
-		privateMessage.setPrivateText(text);
+		privateMessage.setPrivateText(privateText);
+		privateMessage.setChatType(chatType);
 		return privateMessageService.save(privateMessage);
 
+		}
 
-
+//	传卖家的id，返回卖家的订阅数
+	@RequestMapping("/saler/{saler_id}/subscribe")
+	public int countSubscribe(@PathVariable int saler_id){
+		return subscribeService.countSubscribe(saler_id);
 	}
+//	传卖家的id，检查我是否订阅该卖家
+	@RequestMapping("/saler/{saler_id}/issubscribe")
+	public boolean checkSubscribe(@PathVariable int saler_id,HttpServletRequest request){
+		User me = getCurrentUser(request);
+		return subscribeService.checkSubscribe(me.getId(), saler_id);
+	}
+//传一个boolean，为真，添加订阅关系，为假，取消订阅关系，并返回卖家的被订阅数
+	@RequestMapping(value="/saler/{saler_id}/subscribe",method = RequestMethod.POST)
+	public int changeSubscribe(
+			@PathVariable int saler_id,
+			@RequestParam boolean subscribe,
+			HttpServletRequest request
+			){
+		User me = getCurrentUser(request);
+		User saler = userService.findOne(saler_id);
 
+		if(subscribe)
+			subscribeService.addSubscribe(me, saler);
+		else
+			subscribeService.removeSubscribe(me, saler);
+		
+		return subscribeService.countSubscribe(saler_id);
+	}
 }
 
