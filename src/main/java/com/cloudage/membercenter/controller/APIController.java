@@ -1,11 +1,13 @@
 package com.cloudage.membercenter.controller;
 
 import java.io.File;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.io.FileUtils;
+import org.junit.runners.Parameterized.Parameters;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.data.domain.Page;
@@ -46,6 +48,7 @@ public class APIController {
 
 	@Autowired
 	ISubscribeService subscribeService;
+	
 	@Autowired
 	IPrivateMessageService privateMessageService;
 
@@ -338,6 +341,11 @@ public class APIController {
 	public boolean checkSubscribe(@PathVariable int saler_id,HttpServletRequest request){
 		User me = getCurrentUser(request);
 		return subscribeService.checkSubscribe(me.getId(), saler_id);
+	}
+//	传用户，返回用户订阅的卖家
+	@RequestMapping(value="/user_id/subscribe")
+	public List<User> getBookByUserName(@PathVariable int user_id){
+		return subscribeService.findAllByUser(user_id);
 	}
 //传一个boolean，为真，添加订阅关系，为假，取消订阅关系，并返回卖家的被订阅数
 	@RequestMapping(value="/saler/{saler_id}/subscribe",method = RequestMethod.POST)
