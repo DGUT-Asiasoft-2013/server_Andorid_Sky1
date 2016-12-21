@@ -26,4 +26,6 @@ public interface IBookRepository extends PagingAndSortingRepository<Book, Intege
 	@Query("from Book book where book.title like %?1% or book.author like %?1% or book.ISBN like %?1% or book.user.name like %?1% or book.tag like %?1% or book.publisher like %?1%")
 	Page<Book> findTextByKeyword(String keyword,Pageable page);
 	
+	@Query("from Book book where book.user.id = ?1")
+	List<Book> findAllByUser(int book_user_id);
 }

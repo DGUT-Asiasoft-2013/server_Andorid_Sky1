@@ -14,9 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.cloudage.membercenter.entity.Book;
 import com.cloudage.membercenter.repository.IBookRepository;
 
-/*
- *  ÊµÏÖÀà
- */
+//ä¹¦çš„å®žçŽ°
 @Component
 @Service
 @Transactional
@@ -63,6 +61,12 @@ public class DefaultBookService implements IBookService{
 		PageRequest pageRequest = new PageRequest(page, 10, sort);
 		return iBookRepository.findTextByKeyword(keyword,pageRequest);
 		
+	}
+
+
+	@Override
+	public List<Book> findAllByUser(int book_user_id) {
+		return iBookRepository.findAllByUser(book_user_id);
 	}
 	
 	
