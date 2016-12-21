@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import com.cloudage.membercenter.entity.Book;
 
 
+
 @Repository
 public interface IBookRepository extends PagingAndSortingRepository<Book, Integer>{
 

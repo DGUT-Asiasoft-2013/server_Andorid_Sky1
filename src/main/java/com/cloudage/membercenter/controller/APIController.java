@@ -26,6 +26,7 @@ import com.cloudage.membercenter.entity.PrivateMessage;
 import com.cloudage.membercenter.entity.User;
 import com.cloudage.membercenter.service.IBookService;
 import com.cloudage.membercenter.service.ICommentService;
+import com.cloudage.membercenter.service.IPrivateMessageService;
 import com.cloudage.membercenter.service.ISubscribeService;
 import com.cloudage.membercenter.service.IUserService;
 
@@ -259,12 +260,13 @@ public class APIController {
 	public Book addBook(
 			@RequestParam String title,
 			@RequestParam String author,
-			@RequestParam String price,
+			@RequestParam float price,
 			@RequestParam String text,
 			@RequestParam String publisher,
 			@RequestParam String book_isbn,
 			@RequestParam String tag,
 			@RequestParam String summary,
+			@RequestParam int booknumber, 
 			HttpServletRequest request){
 		User currentUser = getCurrentUser(request);
 		Book book = new Book();
@@ -276,6 +278,7 @@ public class APIController {
 		book.setISBN(book_isbn);
 		book.setTag(tag);
 		book.setSummary(summary);
+		book.setBooknumber(booknumber);
 		return bookService.save(book);
 	}
 
@@ -307,17 +310,25 @@ public class APIController {
 
 
 	@RequestMapping(value = "/privateMessage",method = RequestMethod.POST)
-	public PrivateMessage savePrivateMessage(
-			@RequestParam String text,
-			@RequestParam User receiver,
-			HttpServletRequest request){
 
-		User user = getCurrentUser(request);//鑾峰彇褰撳墠鐢ㄦ埛
+	public PrivateMessage savePrivateMessage(@RequestParam String privateText,
+			@RequestParam String receiverAccount,
+			@RequestParam String chatType,
+			HttpServletRequest request
+			){
+		
+		//User user = getCurrentUser(request);//获取当前用户
+		
+		//测试
+		User user = userService.findNum("hh");
+		User receiver = userService.findNum(receiverAccount);//找到私信接收者
 		PrivateMessage privateMessage = new PrivateMessage();
 		privateMessage.setPrivateMessageSender(user);
 		privateMessage.setPrivataeMessageReceiver(receiver);
-		privateMessage.setPrivateText(text);
+		privateMessage.setPrivateText(privateText);
+		privateMessage.setChatType(chatType);
 		return privateMessageService.save(privateMessage);
+
 		}
 
 //	传卖家的id，返回卖家的订阅数

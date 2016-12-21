@@ -8,6 +8,7 @@ import com.cloudage.membercenter.entity.Book;
 import com.cloudage.membercenter.entity.User;
 
 public interface IBookService {
+
 	
 	Book findOne(int id);
 	
@@ -17,4 +18,5 @@ public interface IBookService {
 	Page<Book> getBooks(int page);//分页
 	Book save(Book book);//保存图书信息
 	Page<Book> findTextByKeyword(String keyword,int page);
+
 }
