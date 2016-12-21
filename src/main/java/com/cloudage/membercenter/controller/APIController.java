@@ -235,19 +235,23 @@ public class APIController {
 	 */
 	
 	@RequestMapping(value = "/privateMessage",method = RequestMethod.POST)
-	public PrivateMessage savePrivateMessage(@RequestParam String text,@RequestParam User receiver,
-			
+	public PrivateMessage savePrivateMessage(@RequestParam String privateText,
+			@RequestParam String receiverAccount,
+			@RequestParam String chatType,
 			HttpServletRequest request
 			){
 		
-		User user = getCurrentUser(request);//获取当前用户
+		//User user = getCurrentUser(request);//获取当前用户
+		
+		//测试
+		User user = userService.findNum("hh");
+		User receiver = userService.findNum(receiverAccount);//找到私信接收者
 		PrivateMessage privateMessage = new PrivateMessage();
 		privateMessage.setPrivateMessageSender(user);
 		privateMessage.setPrivataeMessageReceiver(receiver);
-		privateMessage.setPrivateText(text);
+		privateMessage.setPrivateText(privateText);
+		privateMessage.setChatType(chatType);
 		return privateMessageService.save(privateMessage);
-		
-		
 		
 	}
 }
