@@ -262,6 +262,7 @@ public class APIController {
 			@RequestParam String book_isbn,
 			@RequestParam String tag,
 			@RequestParam String summary,
+			MultipartFile bookavatar,
 			HttpServletRequest request){
 		User currentUser = getCurrentUser(request);
 		Book book = new Book();
@@ -270,9 +271,19 @@ public class APIController {
 		book.setPrice(price);
 		book.setText(text);
 		book.setPublisher(publisher);
-		book.setISBN(book_isbn);
+		book.setIsbn(book_isbn);
 		book.setTag(tag);
 		book.setSummary(summary);
+		//存储图书照片
+		if (bookavatar!=null) {
+			try {
+				String realPath=request.getSession().getServletContext().getRealPath("/WEB-INF/upload/books");
+				FileUtils.copyInputStreamToFile(bookavatar.getInputStream(), new File(realPath,title+".png"));
+				book.setBookavatar("upload/"+title+".png");           //
+
+			} catch (Exception e) {
+			}
+		}
 		return bookService.save(book);
 	}
 

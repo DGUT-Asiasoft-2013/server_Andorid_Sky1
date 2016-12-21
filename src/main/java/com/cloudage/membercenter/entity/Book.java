@@ -25,6 +25,8 @@ public class Book extends DateRecord{
 	private String summary;
 	//卖家备注
 	private String text;
+	//图书照片
+	private String bookavatar;
 
 
 
@@ -35,6 +37,19 @@ public class Book extends DateRecord{
 	}
 	public void setUser(User user) {
 		this.user = user;
+	}
+	
+	public String getIsbn() {
+		return isbn;
+	}
+	public void setIsbn(String isbn) {
+		this.isbn = isbn;
+	}
+	public String getBookavatar() {
+		return bookavatar;
+	}
+	public void setBookavatar(String bookavatar) {
+		this.bookavatar = bookavatar;
 	}
 	public String getText() {
 		return text;
@@ -59,13 +74,6 @@ public class Book extends DateRecord{
 	}
 	public void setPublisher(String publisher) {
 		this.publisher = publisher;
-	}
-	
-	public String getISBN() {
-		return isbn;
-	}
-	public void setISBN(String iSBN) {
-		isbn = iSBN;
 	}
 	public String getPrice() {
 		return price;
