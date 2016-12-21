@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import com.cloudage.membercenter.entity.Book;
 
-//PagingAndSortingRepository具备了翻页的效果
+//PagingAndSortingRepository
 @Repository
 public interface IBookRepository extends PagingAndSortingRepository<Book, Integer>{
 

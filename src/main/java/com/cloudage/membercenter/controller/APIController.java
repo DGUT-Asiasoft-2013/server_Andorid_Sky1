@@ -21,11 +21,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.cloudage.membercenter.entity.Book;
 import com.cloudage.membercenter.entity.Comment;
-import com.cloudage.membercenter.entity.PrivateMessage;
 import com.cloudage.membercenter.entity.User;
 import com.cloudage.membercenter.service.IBookService;
 import com.cloudage.membercenter.service.ICommentService;
-import com.cloudage.membercenter.service.IPrivateMessageService;
 import com.cloudage.membercenter.service.IUserService;
 
 /*
@@ -43,9 +41,7 @@ public class APIController {
 
 	@Autowired
 	ICommentService commentService;
-	
-	@Autowired
-	IPrivateMessageService privateMessageService;
+
 
 	@RequestMapping(value = "/hello", method = RequestMethod.GET)
 	public @ResponseBody String hello() {
@@ -224,7 +220,7 @@ public class APIController {
 		User user=getCurrentUser(request);
 		return commentService.findAllCommentofAuthor(user.getId(), 0);
 	}
-	
+
 
 	/**
 	 * 功能:保存私信内容
@@ -233,21 +229,7 @@ public class APIController {
 	 * @param request
 	 * @return PrivateMessage
 	 */
-	
-	@RequestMapping(value = "/privateMessage",method = RequestMethod.POST)
-	public PrivateMessage savePrivateMessage(@RequestParam String text,@RequestParam User receiver,
-			
-			HttpServletRequest request
-			){
-		
-		User user = getCurrentUser(request);//获取当前用户
-		PrivateMessage privateMessage = new PrivateMessage();
-		privateMessage.setPrivateMessageSender(user);
-		privateMessage.setPrivataeMessageReceiver(receiver);
-		privateMessage.setPrivateText(text);
-		return privateMessageService.save(privateMessage);
-		
-		
-		
-	}
+
+
+
 }
