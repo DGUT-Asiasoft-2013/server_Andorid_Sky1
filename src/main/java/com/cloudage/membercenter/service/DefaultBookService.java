@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.cloudage.membercenter.entity.Book;
+import com.cloudage.membercenter.entity.User;
 import com.cloudage.membercenter.repository.IBookRepository;
 
 //书的实现
@@ -22,25 +23,21 @@ public class DefaultBookService implements IBookService{
 
 	@Autowired
 	IBookRepository iBookRepository;
-	
-	
+
 	@Override
 	public Book findOne(int id) {
 		return iBookRepository.findOne(id);
 	}
-
 
 	@Override
 	public List<Book> findAllByBookTitle(Book book) {
 		return iBookRepository.findAllByBookTitle(book);
 	}
 
-
 	@Override
 	public List<Book> findAllByAuthor(Book book) {
 		return iBookRepository.findAllByAuthor(book);
 	}
-
 
 	@Override
 	public Book save(Book book) {
@@ -54,20 +51,15 @@ public class DefaultBookService implements IBookService{
 		return iBookRepository.findAll(pageRequest);
 	}
 
-
 	@Override
 	public Page<Book> findTextByKeyword(String keyword, int page) {
 		Sort sort = new Sort(Direction.DESC, "createDate");
 		PageRequest pageRequest = new PageRequest(page, 10, sort);
 		return iBookRepository.findTextByKeyword(keyword,pageRequest);
-		
 	}
-
 
 	@Override
 	public List<Book> findAllByUser(int book_user_id) {
 		return iBookRepository.findAllByUser(book_user_id);
 	}
-	
-	
 }

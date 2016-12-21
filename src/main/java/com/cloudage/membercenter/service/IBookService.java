@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 
 import com.cloudage.membercenter.entity.Book;
+import com.cloudage.membercenter.entity.User;
 
 public interface IBookService {
 	
