@@ -257,12 +257,13 @@ public class APIController {
 	public Book addBook(
 			@RequestParam String title,
 			@RequestParam String author,
-			@RequestParam String price,
+			@RequestParam float price,
 			@RequestParam String text,
 			@RequestParam String publisher,
 			@RequestParam String book_isbn,
 			@RequestParam String tag,
 			@RequestParam String summary,
+			@RequestParam int booknumber, 
 			HttpServletRequest request){
 		User currentUser = getCurrentUser(request);
 		Book book = new Book();
@@ -274,6 +275,7 @@ public class APIController {
 		book.setISBN(book_isbn);
 		book.setTag(tag);
 		book.setSummary(summary);
+		book.setBooknumber(booknumber);
 		return bookService.save(book);
 	}
 
