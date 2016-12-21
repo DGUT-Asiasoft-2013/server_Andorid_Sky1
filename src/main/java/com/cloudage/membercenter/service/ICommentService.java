@@ -1,14 +1,15 @@
 package com.cloudage.membercenter.service;
 
 import org.springframework.data.domain.Page;
+import org.springframework.stereotype.Repository;
 
 import com.cloudage.membercenter.entity.Comment;
 
 public interface ICommentService {
 
-	Comment save(Comment comment); // ±£´æÆÀÂÛ
+	Comment save(Comment comment); // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
-	Page<Comment> findCommentNumofBook(int userId, int page); // ÕÒÄ³±¾ÊéµÄÆÀÂÛ
+	Page<Comment> findCommentNumofBook(int userId, int page); // ï¿½ï¿½Ä³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
-	Page<Comment> findAllCommentofAuthor(int userId, int page); // ÕÒÄ³¸öÈËµÄËùÓĞÆÀÂÛ
+	Page<Comment> findAllCommentofAuthor(int userId, int page); // ï¿½ï¿½Ä³ï¿½ï¿½ï¿½Ëµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 }

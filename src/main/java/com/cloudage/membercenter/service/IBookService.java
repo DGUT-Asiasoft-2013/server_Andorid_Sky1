@@ -4,5 +4,5 @@ import com.cloudage.membercenter.entity.Book;
 
 public interface IBookService {
 
-	Book findOne(int id);//урндуб
+	Book findOne(int id);
 }

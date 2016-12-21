@@ -8,8 +8,8 @@ import org.springframework.stereotype.Repository;
 
 import com.cloudage.membercenter.entity.Book;
 
-//PagingAndSortingRepository¾ß±¸ÁË·­Ò³µÄÐ§¹û
-@Repository
+//PagingAndSortingRepositoryï¿½ß±ï¿½ï¿½Ë·ï¿½Ò³ï¿½ï¿½Ð§ï¿½ï¿½
+
 public interface IBookRepository extends PagingAndSortingRepository<Book, Integer>{
 
 	@Query("from Book book where book.user.id = ?1")
