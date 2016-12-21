@@ -10,11 +10,15 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 @Repository
 public interface IUserRepository extends PagingAndSortingRepository<User, Integer>{
 
-	//此中调用的account需要跟User类里的定义的一样
+	//���е��õ�account��Ҫ��User����Ķ����һ��
 	@Query("from User u where u.account=?1")
 	User findNum(String num);
 	
-	//此中调用的email需要跟User类里的定义的一样
+	
+	@Query("from User u where u.name=?1")
+	User findOne(int name);
+	
+	//���е��õ�email��Ҫ��User����Ķ����һ��
 	@Query("from User u where u.email=?1")
 	User findEmail(String email);
 }

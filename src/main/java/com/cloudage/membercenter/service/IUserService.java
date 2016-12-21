@@ -5,13 +5,14 @@ import com.cloudage.membercenter.entity.User;
 public interface IUserService {
 	User create(String account, String passwordHash);
 	
-	User save(User user);              //定义user的save()方法，使得注册的时候保存数据
-	User findNum(String num);           //定义user的findNum()方法，使得登录的时候找到一家注册的数据
-	User findEmail(String email);       //定义user的findEmail()方法，使得登录的时候找到一家注册的email
+	User save(User user);              //����user��save()������ʹ��ע���ʱ�򱣴�����
+	User findNum(String num);           //����user��findNum()������ʹ�õ�¼��ʱ���ҵ�һ��ע�������
+	User findEmail(String email);       //����user��findEmail()������ʹ�õ�¼��ʱ���ҵ�һ��ע���email
 	
-	
+	User findOne(int userName);//通过name寻找user
 	void login(String account, String passwordHash);
 	User getCurrentUser();
 	boolean changePassword(String newPasswordHash);
 	void logout();
+
 }

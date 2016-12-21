@@ -12,6 +12,7 @@ import com.cloudage.membercenter.util.BaseEntity;
 
 @Entity
 public class PrivateMessage extends BaseEntity{
+
 	String chatType;//消息的类型,"send"表示是发送的,"receive"表示是接收的
 	User privataeMessageReceiver;//私信接收者
 	User privateMessageSender;//私信发送者
@@ -24,6 +25,7 @@ public class PrivateMessage extends BaseEntity{
 	public void setChatType(String chatType) {
 		this.chatType = chatType;
 	}
+
 	@ManyToOne(optional=false)
 	public User getPrivataeMessageReceiver() {
 		return privataeMessageReceiver;

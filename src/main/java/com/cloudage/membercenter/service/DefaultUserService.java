@@ -9,7 +9,7 @@ import com.cloudage.membercenter.entity.User;
 import com.cloudage.membercenter.repository.IUserRepository;
 
 /*
- * 实现类
+ *  ʵ����
  */
 @Component
 @Service
@@ -20,7 +20,7 @@ public class DefaultUserService implements IUserService {
 	IUserRepository userRepo;
 	
 	/*
-	 * 实例化save(User user)方法
+	 * ʵ����save(User user)����
 	 * (non-Javadoc)
 	 * @see com.cloudage.membercenter.service.IUserService#save(com.cloudage.membercenter.entity.User)
 	 */
@@ -29,7 +29,7 @@ public class DefaultUserService implements IUserService {
 	}
 	
 	/*
-	 * 实例化findNum(String num)方法
+	 * ʵ����findNum(String num)����
 	 * (non-Javadoc)
 	 * @see com.cloudage.membercenter.service.IUserService#findNum(com.cloudage.membercenter.entity.User)
 	 */
@@ -39,13 +39,13 @@ public class DefaultUserService implements IUserService {
 	}
 
 	/*
-	 * 实例化findEmail(String email)方法
+	 * ʵ����findEmail(String email)����
 	 * (non-Javadoc)
 	 * @see com.cloudage.membercenter.service.IUserService#findEmail(java.lang.String)
 	 */
 	@Override
 	public User findEmail(String email) {
-		// 利用userRepo调用findEmail()方法是因为其在IUserRepository定义了select...语句
+		// ����userRepo����findEmail()��������Ϊ����IUserRepository������select...���
 		return userRepo.findEmail(email);
 	}
 
@@ -80,6 +80,11 @@ public class DefaultUserService implements IUserService {
 	public void logout() {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public User findOne(int userName) {
+		return userRepo.findOne(userName);
 	}
 
 	

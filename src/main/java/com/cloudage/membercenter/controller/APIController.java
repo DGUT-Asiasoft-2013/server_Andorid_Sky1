@@ -1,4 +1,3 @@
-
 package com.cloudage.membercenter.controller;
 
 import java.io.File;
@@ -19,13 +18,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.cloudage.membercenter.entity.Article;
 import com.cloudage.membercenter.entity.Book;
 import com.cloudage.membercenter.entity.Comment;
 import com.cloudage.membercenter.entity.PrivateMessage;
 import com.cloudage.membercenter.entity.User;
 import com.cloudage.membercenter.service.IBookService;
 import com.cloudage.membercenter.service.ICommentService;
-import com.cloudage.membercenter.service.IPrivateMessageService;
+import com.cloudage.membercenter.service.ISubscribeService;
 import com.cloudage.membercenter.service.IUserService;
 
 /*
@@ -43,7 +43,9 @@ public class APIController {
 
 	@Autowired
 	ICommentService commentService;
-	
+
+	@Autowired
+	ISubscribeService subscribeService;
 	@Autowired
 	IPrivateMessageService privateMessageService;
 
@@ -59,10 +61,12 @@ public class APIController {
 	 */
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
 	public User register(
-			@RequestParam(name = "num") String num,
-			@RequestParam(name = "password") String password, 
-			@RequestParam(name = "email") String email,
-			@RequestParam(name = "name") String name,
+			@RequestParam(name = "num") String num,//账号
+			@RequestParam(name = "password") String password, //密码
+			@RequestParam(name = "email") String email,//邮箱
+			@RequestParam(name = "name") String name,//昵称
+			@RequestParam(name = "phoneNumb") String phoneNumb,//电话号码
+			@RequestParam(name = "qq") String qq,//QQ
 			MultipartFile avatar,
 			HttpServletRequest request) {
 		User user = new User();
@@ -70,6 +74,8 @@ public class APIController {
 		user.setPasswordHash(password);
 		user.setName(name);
 		user.setEmail(email);
+		user.setPhoneNumb(phoneNumb);
+		user.setQq(qq);
 
 		if (avatar!=null) {
 			try {
@@ -108,6 +114,23 @@ public class APIController {
 
 	}
 
+	//忘记密码，重设密码
+	@RequestMapping(value="/passwordrecover",method=RequestMethod.POST)
+	public boolean resetPassword(
+			@RequestParam String email,
+			@RequestParam String passwordHash){
+		User user=userService.findEmail(email);
+		if(user==null){
+			return false;
+		}else{
+			user.setPasswordHash(passwordHash);
+			userService.save(user);
+			return true;
+		}
+	}
+
+
+
 	/*
 	 * 获得当前用户
 	 */
@@ -130,7 +153,7 @@ public class APIController {
 	@RequestMapping(value = "/email", method = RequestMethod.POST)
 	public boolean Email(
 			@RequestParam String email,
-			@RequestParam String password,
+			//@RequestParam String password,
 			HttpServletRequest request) {
 
 		User user =userService.findEmail(email);           //
@@ -139,7 +162,7 @@ public class APIController {
 			return false;
 		}else {
 			//
-			user.setPasswordHash(password);
+			//user.setPasswordHash(password);
 			//
 			userService.save(user);
 			return true;
@@ -224,17 +247,65 @@ public class APIController {
 		User user=getCurrentUser(request);
 		return commentService.findAllCommentofAuthor(user.getId(), 0);
 	}
-	
+
+	/***
+	 * 
+	 * 存入图书信息
+	 * 
+	 * */
+	@RequestMapping(value="/books",method=RequestMethod.POST)
+	public Book addBook(
+			@RequestParam String title,
+			@RequestParam String author,
+			@RequestParam String price,
+			@RequestParam String text,
+			@RequestParam String publisher,
+			@RequestParam String book_isbn,
+			@RequestParam String tag,
+			@RequestParam String summary,
+			HttpServletRequest request){
+		User currentUser = getCurrentUser(request);
+		Book book = new Book();
+		book.setTitle(title);
+		book.setAuthor(author);
+		book.setPrice(price);
+		book.setText(text);
+		book.setPublisher(publisher);
+		book.setISBN(book_isbn);
+		book.setTag(tag);
+		book.setSummary(summary);
+		return bookService.save(book);
+	}
+
+	//获取出售图书列表
+	@RequestMapping("/books/{page}")
+	public Page<Book> getFeeds(@PathVariable int page){
+		return bookService.getBooks(page);
+	}
+	@RequestMapping("/books")
+	public Page<Book> getFeeds(){
+		return getFeeds(0);
+	}
+
+	//搜索图书--------(根据 图书名称|图书作者|ISBN|卖家 搜索)
+	@RequestMapping(value="/book/s/{keyword}")
+	public Page<Book> fingTextByKeyword(
+			@PathVariable String keyword,
+			@RequestParam(defaultValue="0") int page){
+		return bookService.findTextByKeyword(keyword, page);
+	}
 
 	/**
-	 * 功能:保存私信内容
-	 * @param String text:私信的文字信息
-	 * @param User receiver:私信的接收人
+	 * 鍔熻兘:淇濆瓨绉佷俊鍐呭
+	 * @param String text:绉佷俊鐨勬枃瀛椾俊鎭�
+	 * @param User receiver:绉佷俊鐨勬帴鏀朵汉
 	 * @param request
 	 * @return PrivateMessage
 	 */
-	
+
+
 	@RequestMapping(value = "/privateMessage",method = RequestMethod.POST)
+
 	public PrivateMessage savePrivateMessage(@RequestParam String privateText,
 			@RequestParam String receiverAccount,
 			@RequestParam String chatType,
@@ -252,6 +323,36 @@ public class APIController {
 		privateMessage.setPrivateText(privateText);
 		privateMessage.setChatType(chatType);
 		return privateMessageService.save(privateMessage);
+
+		}
+
+//	传卖家的id，返回卖家的订阅数
+	@RequestMapping("/saler/{saler_id}/subscribe")
+	public int countSubscribe(@PathVariable int saler_id){
+		return subscribeService.countSubscribe(saler_id);
+	}
+//	传卖家的id，检查我是否订阅该卖家
+	@RequestMapping("/saler/{saler_id}/issubscribe")
+	public boolean checkSubscribe(@PathVariable int saler_id,HttpServletRequest request){
+		User me = getCurrentUser(request);
+		return subscribeService.checkSubscribe(me.getId(), saler_id);
+	}
+//传一个boolean，为真，添加订阅关系，为假，取消订阅关系，并返回卖家的被订阅数
+	@RequestMapping(value="/saler/{saler_id}/subscribe",method = RequestMethod.POST)
+	public int changeSubscribe(
+			@PathVariable int saler_id,
+			@RequestParam boolean subscribe,
+			HttpServletRequest request
+			){
+		User me = getCurrentUser(request);
+		User saler = userService.findOne(saler_id);
+
+		if(subscribe)
+			subscribeService.addSubscribe(me, saler);
+		else
+			subscribeService.removeSubscribe(me, saler);
 		
+		return subscribeService.countSubscribe(saler_id);
 	}
 }
+

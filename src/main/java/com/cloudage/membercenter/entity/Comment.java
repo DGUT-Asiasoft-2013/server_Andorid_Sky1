@@ -14,10 +14,10 @@ import com.cloudage.membercenter.util.DateRecord;
 public class Comment extends DateRecord{
 
 	
-	String content;       //��������
-	User commentor;        //������
+	String content;       
+	User commentor;       
 	
-	Book book;          //��
+	Book book;         
 	
 	@ManyToOne(optional=false)
 	public Book getBook() {
