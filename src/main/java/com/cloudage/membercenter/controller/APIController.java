@@ -310,7 +310,6 @@ public class APIController {
 
 
 	@RequestMapping(value = "/privateMessage",method = RequestMethod.POST)
-
 	public PrivateMessage savePrivateMessage(@RequestParam String privateText,
 			@RequestParam String receiverAccount,
 			@RequestParam String chatType,
