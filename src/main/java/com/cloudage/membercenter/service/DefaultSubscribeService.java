@@ -1,5 +1,7 @@
 package com.cloudage.membercenter.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
@@ -45,5 +47,10 @@ public class DefaultSubscribeService implements ISubscribeService{
 	@Override
 	public boolean checkSubscribe(int meId, int salerId) {
 		return subscribeRepo.checkSubscribeExsists(meId, salerId)>0;
+	}
+
+	@Override
+	public List<User> findAllByUser(int meId) {
+		return subscribeRepo.findAllByMe(meId);
 	}
 }

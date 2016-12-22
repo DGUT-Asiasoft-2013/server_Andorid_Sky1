@@ -1,6 +1,7 @@
 package com.cloudage.membercenter.controller;
 
 import java.io.File;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -46,6 +47,7 @@ public class APIController {
 
 	@Autowired
 	ISubscribeService subscribeService;
+	
 	@Autowired
 	IPrivateMessageService privateMessageService;
 
@@ -253,7 +255,7 @@ public class APIController {
 	 * 存入图书信息
 	 * 
 	 * */
-	@RequestMapping(value="/books",method=RequestMethod.POST)
+	@RequestMapping(value="/sellbooks",method=RequestMethod.POST)
 	public Book addBook(
 			@RequestParam String title,
 			@RequestParam String author,
@@ -264,6 +266,7 @@ public class APIController {
 			@RequestParam String tag,
 			@RequestParam String summary,
 			@RequestParam int booknumber, 
+			MultipartFile bookavatar,//存放图片
 			HttpServletRequest request){
 		User currentUser = getCurrentUser(request);
 		Book book = new Book();
@@ -272,10 +275,21 @@ public class APIController {
 		book.setPrice(price);
 		book.setText(text);
 		book.setPublisher(publisher);
-		book.setISBN(book_isbn);
+		book.setIsbn(book_isbn);
 		book.setTag(tag);
 		book.setSummary(summary);
 		book.setBooknumber(booknumber);
+		book.setUser(currentUser);
+		if (bookavatar!=null) {
+			try {
+				String realPath=request.getSession().getServletContext().getRealPath("/WEB-INF/upload/books");
+				FileUtils.copyInputStreamToFile(bookavatar.getInputStream(), new File(realPath,title+".png"));
+				book.setBookavatar("upload/"+title+".png");           //
+
+			} catch (Exception e) {
+			}
+		}
+		
 		return bookService.save(book);
 	}
 
@@ -306,6 +320,7 @@ public class APIController {
 	 */
 
 
+
 	@RequestMapping(value = "/privateMessage",method = RequestMethod.POST)
 
 	public PrivateMessage savePrivateMessage(@RequestParam String privateText,
@@ -317,16 +332,28 @@ public class APIController {
 		//User user = getCurrentUser(request);//获取当前用户
 		
 		//测试
-		User user = userService.findNum("hh");
+		User user = userService.findNum("gg");
 		User receiver = userService.findNum(receiverAccount);//找到私信接收者
 		PrivateMessage privateMessage = new PrivateMessage();
 		privateMessage.setPrivateMessageSender(user);
-		privateMessage.setPrivataeMessageReceiver(receiver);
+		privateMessage.setPrivateMessageReceiver(receiver);
 		privateMessage.setPrivateText(privateText);
 		privateMessage.setChatType(chatType);
 		return privateMessageService.save(privateMessage);
 
 		}
+	
+	@RequestMapping(value= "/findPrivateMessage/{senderId}")
+	public Page<PrivateMessage> findPrivateMessageByReceiverId( @PathVariable int senderId,
+	
+			
+			@RequestParam(defaultValue="0") int page
+		
+			){
+		User user = userService.findNum("gg");
+	
+return privateMessageService.findPrivateMessagesByReveiverId(user.getId(),senderId, page);
+	}
 
 //	传卖家的id，返回卖家的订阅数
 	@RequestMapping("/saler/{saler_id}/subscribe")
@@ -338,6 +365,11 @@ public class APIController {
 	public boolean checkSubscribe(@PathVariable int saler_id,HttpServletRequest request){
 		User me = getCurrentUser(request);
 		return subscribeService.checkSubscribe(me.getId(), saler_id);
+	}
+//	传用户，返回用户订阅的卖家
+	@RequestMapping(value="/user_id/subscribe")
+	public List<User> getBookByUserName(@PathVariable int user_id){
+		return subscribeService.findAllByUser(user_id);
 	}
 //传一个boolean，为真，添加订阅关系，为假，取消订阅关系，并返回卖家的被订阅数
 	@RequestMapping(value="/saler/{saler_id}/subscribe",method = RequestMethod.POST)
