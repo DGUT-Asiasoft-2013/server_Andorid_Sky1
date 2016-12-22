@@ -280,7 +280,6 @@ public class APIController {
 		book.setSummary(summary);
 		book.setBooknumber(booknumber);
 		book.setUser(currentUser);
-		
 		if (bookavatar!=null) {
 			try {
 				String realPath=request.getSession().getServletContext().getRealPath("/WEB-INF/upload/books");
@@ -321,7 +320,9 @@ public class APIController {
 	 */
 
 
+
 	@RequestMapping(value = "/privateMessage",method = RequestMethod.POST)
+
 	public PrivateMessage savePrivateMessage(@RequestParam String privateText,
 			@RequestParam String receiverAccount,
 			@RequestParam String chatType,
@@ -331,16 +332,28 @@ public class APIController {
 		//User user = getCurrentUser(request);//获取当前用户
 		
 		//测试
-		User user = userService.findNum("hh");
+		User user = userService.findNum("gg");
 		User receiver = userService.findNum(receiverAccount);//找到私信接收者
 		PrivateMessage privateMessage = new PrivateMessage();
 		privateMessage.setPrivateMessageSender(user);
-		privateMessage.setPrivataeMessageReceiver(receiver);
+		privateMessage.setPrivateMessageReceiver(receiver);
 		privateMessage.setPrivateText(privateText);
 		privateMessage.setChatType(chatType);
 		return privateMessageService.save(privateMessage);
 
 		}
+	
+	@RequestMapping(value= "/findPrivateMessage/{senderId}")
+	public Page<PrivateMessage> findPrivateMessageByReceiverId( @PathVariable int senderId,
+	
+			
+			@RequestParam(defaultValue="0") int page
+		
+			){
+		User user = userService.findNum("gg");
+	
+return privateMessageService.findPrivateMessagesByReveiverId(user.getId(),senderId, page);
+	}
 
 //	传卖家的id，返回卖家的订阅数
 	@RequestMapping("/saler/{saler_id}/subscribe")
