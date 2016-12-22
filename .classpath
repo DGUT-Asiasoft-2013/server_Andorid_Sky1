@@ -27,7 +27,6 @@
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
-	<classpathentry kind="src" path="/AppearanceActivity"/>
 	<classpathentry kind="lib" path="C:/Users/Administrator/.m2/repository/org/springframework/spring-web/4.3.2.RELEASE/spring-web-4.3.2.RELEASE.jar">
 		<attributes>
 			<attribute name="maven.pomderived" value="true"/>
@@ -38,6 +37,5 @@
 			<attribute name="maven.scope" value="compile"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="src" path="/MemberCenter2"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
