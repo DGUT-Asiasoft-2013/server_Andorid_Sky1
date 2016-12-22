@@ -49,8 +49,12 @@ public class DefaultSubscribeService implements ISubscribeService{
 		return subscribeRepo.checkSubscribeExsists(meId, salerId)>0;
 	}
 
+//	@Override
+//	public Page<User> findAllByUser(int meId) {
+//		return subscribeRepo.findAllByMe(meId);
+//	}
 	@Override
-	public List<User> findAllByUser(int meId) {
+	public List<Subscribe> findAllByUser(int meId) {
 		return subscribeRepo.findAllByMe(meId);
 	}
 }

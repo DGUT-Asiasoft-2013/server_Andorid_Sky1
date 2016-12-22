@@ -15,4 +15,5 @@ public interface IUserService {
 	boolean changePassword(String newPasswordHash);
 	void logout();
 
+
 }

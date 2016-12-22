@@ -9,13 +9,15 @@ import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.PrePersist;
+
+import com.cloudage.membercenter.util.BaseEntity;
 /**
  * 订阅
  * @author Administrator
  *
  */
 @Entity
-public class Subscribe {
+public class Subscribe{
 	@Embeddable
 	public static class Key implements Serializable{
 		User me;

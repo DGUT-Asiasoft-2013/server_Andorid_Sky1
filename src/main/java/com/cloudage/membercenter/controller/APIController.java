@@ -5,9 +5,9 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.io.FileUtils;
-import org.junit.runners.Parameterized.Parameters;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.data.domain.Page;
@@ -23,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.cloudage.membercenter.entity.Book;
 import com.cloudage.membercenter.entity.Comment;
 import com.cloudage.membercenter.entity.PrivateMessage;
+import com.cloudage.membercenter.entity.Subscribe;
 import com.cloudage.membercenter.entity.User;
 import com.cloudage.membercenter.service.IBookService;
 import com.cloudage.membercenter.service.ICommentService;
@@ -48,7 +49,7 @@ public class APIController {
 
 	@Autowired
 	ISubscribeService subscribeService;
-	
+
 	@Autowired
 	IPrivateMessageService privateMessageService;
 
@@ -149,6 +150,12 @@ public class APIController {
 		}
 
 	}
+	//	@RequestMapping(value="/me", method=RequestMethod.GET)
+	//	public User getCurrentUser(HttpServletRequest request){
+	//		HttpSession session = request.getSession(true);
+	//		Integer uid = (Integer) session.getAttribute("uid");
+	//		return userService.findById(uid);
+	//	}
 
 	/*
 	 * 获得邮件
@@ -256,7 +263,7 @@ public class APIController {
 	 * 存入图书信息
 	 * 
 	 * */
-	@RequestMapping(value="/books",method=RequestMethod.POST)
+	@RequestMapping(value="/sellbooks",method=RequestMethod.POST)
 	public Book addBook(
 			@RequestParam String title,
 			@RequestParam String author,
@@ -267,6 +274,7 @@ public class APIController {
 			@RequestParam String tag,
 			@RequestParam String summary,
 			@RequestParam int booknumber, 
+			MultipartFile bookavatar,//存放图片
 			HttpServletRequest request){
 		User currentUser = getCurrentUser(request);
 		Book book = new Book();
@@ -275,10 +283,21 @@ public class APIController {
 		book.setPrice(price);
 		book.setText(text);
 		book.setPublisher(publisher);
-		book.setISBN(book_isbn);
+		book.setIsbn(book_isbn);
 		book.setTag(tag);
 		book.setSummary(summary);
 		book.setBooknumber(booknumber);
+		book.setUser(currentUser);
+		if (bookavatar!=null) {
+			try {
+				String realPath=request.getSession().getServletContext().getRealPath("/WEB-INF/upload/books");
+				FileUtils.copyInputStreamToFile(bookavatar.getInputStream(), new File(realPath,title+".png"));
+				book.setBookavatar("upload/"+title+".png");           //
+
+			} catch (Exception e) {
+			}
+		}
+
 		return bookService.save(book);
 	}
 
@@ -310,15 +329,14 @@ public class APIController {
 
 
 	@RequestMapping(value = "/privateMessage",method = RequestMethod.POST)
-
 	public PrivateMessage savePrivateMessage(@RequestParam String privateText,
 			@RequestParam String receiverAccount,
 			@RequestParam String chatType,
 			HttpServletRequest request
 			){
-		
+
 		//User user = getCurrentUser(request);//获取当前用户
-		
+
 		//测试
 		User user = userService.findNum("hh");
 		User receiver = userService.findNum(receiverAccount);//找到私信接收者
@@ -329,26 +347,26 @@ public class APIController {
 		privateMessage.setChatType(chatType);
 		return privateMessageService.save(privateMessage);
 
-		}
+	}
 
-//	传卖家的id，返回卖家的订阅数
+	//	传卖家的id，返回卖家的订阅数
 	@RequestMapping("/saler/{saler_id}/subscribe")
 	public int countSubscribe(@PathVariable int saler_id){
 		return subscribeService.countSubscribe(saler_id);
 	}
-//	传卖家的id，检查我是否订阅该卖家
+	//	传卖家的id，检查我是否订阅该卖家
 	@RequestMapping("/saler/{saler_id}/issubscribe")
 	public boolean checkSubscribe(@PathVariable int saler_id,HttpServletRequest request){
 		User me = getCurrentUser(request);
 		return subscribeService.checkSubscribe(me.getId(), saler_id);
 	}
-//	传用户，返回用户订阅的卖家
-	@RequestMapping(value="/user_id/subscribe")
-	public List<User> getBookByUserName(@PathVariable int user_id){
+	//	传用户，返回用户订阅的卖家
+	@RequestMapping(value="/{user_id}/subscribe")
+	public List<Subscribe> getSalerByUserName(@PathVariable int user_id){
 		return subscribeService.findAllByUser(user_id);
 	}
-//传一个boolean，为真，添加订阅关系，为假，取消订阅关系，并返回卖家的被订阅数
-	@RequestMapping(value="/saler/{saler_id}/subscribe",method = RequestMethod.POST)
+	//传一个boolean，为真，添加订阅关系，为假，取消订阅关系，并返回卖家的被订阅数
+	@RequestMapping(value="/saler/{saler_id}/{subscribe}",method = RequestMethod.POST)
 	public int changeSubscribe(
 			@PathVariable int saler_id,
 			@RequestParam boolean subscribe,
@@ -361,7 +379,7 @@ public class APIController {
 			subscribeService.addSubscribe(me, saler);
 		else
 			subscribeService.removeSubscribe(me, saler);
-		
+
 		return subscribeService.countSubscribe(saler_id);
 	}
 }

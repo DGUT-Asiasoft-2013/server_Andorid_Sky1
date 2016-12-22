@@ -86,6 +86,9 @@ public class DefaultUserService implements IUserService {
 	public User findOne(int userName) {
 		return userRepo.findOne(userName);
 	}
+	
+	
+
 
 	
 	

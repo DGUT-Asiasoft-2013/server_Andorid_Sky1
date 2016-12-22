@@ -16,7 +16,7 @@ public class DefaultPrivateMessage implements IPrivateMessageService {
 	IPrivateMessageRepository iPrivateMessage;
 	@Override
 	public PrivateMessage save(PrivateMessage privateMessage) {
-	return	 iPrivateMessage.save(privateMessage);
+		return	 iPrivateMessage.save(privateMessage);
 	}
 
 }
