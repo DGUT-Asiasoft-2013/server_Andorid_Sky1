@@ -2,6 +2,8 @@ package com.cloudage.membercenter.entity;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
+
 import com.cloudage.membercenter.util.DateRecord;
 
 @Entity
@@ -45,6 +47,7 @@ public class Book extends DateRecord {
 	public void setIsbn(String isbn) {
 		this.isbn = isbn;
 	}
+	
 	public String getBookavatar() {
 		return bookavatar;
 	}
@@ -107,7 +110,7 @@ public class Book extends DateRecord {
 	public void setSummary(String summary) {
 		this.summary = summary;
 	}
-
+    
 	public int getBooknumber() {
 		return booknumber;
 	}
