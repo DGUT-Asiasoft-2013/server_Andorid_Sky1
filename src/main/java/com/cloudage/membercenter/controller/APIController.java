@@ -285,7 +285,7 @@ public class APIController {
 			try {
 				String realPath=request.getSession().getServletContext().getRealPath("/WEB-INF/upload/books");
 				FileUtils.copyInputStreamToFile(bookavatar.getInputStream(), new File(realPath,title+".png"));
-				book.setBookavatar("upload/"+title+".png");           //
+				book.setBookavatar("upload/books/"+title+".png");           //
 
 			} catch (Exception e) {
 			}
