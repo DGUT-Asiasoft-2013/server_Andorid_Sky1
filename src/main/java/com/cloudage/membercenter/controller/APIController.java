@@ -225,7 +225,7 @@ public class APIController {
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping(value="/article/{book_id}/comment")
+	@RequestMapping(value="/book/{book_id}/comment")
 	public Page<Comment> getCommentofArtical(
 			@PathVariable(value="book_id") int book_id) {
 
@@ -284,7 +284,7 @@ public class APIController {
 			try {
 				String realPath=request.getSession().getServletContext().getRealPath("/WEB-INF/upload/books");
 				FileUtils.copyInputStreamToFile(bookavatar.getInputStream(), new File(realPath,title+".png"));
-				book.setBookavatar("upload/books/"+title+".png");           //
+				book.setBookavatar("upload/books/"+title+".png");           //存放图片的路径
 
 			} catch (Exception e) {
 			}
