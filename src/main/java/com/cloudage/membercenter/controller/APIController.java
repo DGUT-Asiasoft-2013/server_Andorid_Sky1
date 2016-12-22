@@ -312,49 +312,51 @@ public class APIController {
 	}
 
 	/**
-	 * 鍔熻兘:淇濆瓨绉佷俊鍐呭
-	 * @param String text:绉佷俊鐨勬枃瀛椾俊鎭�
-	 * @param User receiver:绉佷俊鐨勬帴鏀朵汉
-	 * @param request
-	 * @return PrivateMessage
+	 * 2016-12-22 19:01:20
+	 * 接收发送消息的接口
+	 * @param String private:私信的具体内容
+	 * @param String receiverAccount :私信接收者的帐号
+	 * 
 	 */
+		@RequestMapping(value = "/privateMessage",method = RequestMethod.POST)
 
-
-
-	@RequestMapping(value = "/privateMessage",method = RequestMethod.POST)
-
-	public PrivateMessage savePrivateMessage(@RequestParam String privateText,
-			@RequestParam String receiverAccount,
-			@RequestParam String chatType,
-			HttpServletRequest request
-			){
-		
-		//User user = getCurrentUser(request);//获取当前用户
-		
-		//测试
-		User user = userService.findNum("gg");
-		User receiver = userService.findNum(receiverAccount);//找到私信接收者
-		PrivateMessage privateMessage = new PrivateMessage();
-		privateMessage.setPrivateMessageSender(user);
-		privateMessage.setPrivateMessageReceiver(receiver);
-		privateMessage.setPrivateText(privateText);
-		privateMessage.setChatType(chatType);
-		return privateMessageService.save(privateMessage);
-
-		}
-	
-	@RequestMapping(value= "/findPrivateMessage/{senderId}")
-	public Page<PrivateMessage> findPrivateMessageByReceiverId( @PathVariable int senderId,
-	
+		public PrivateMessage savePrivateMessage(@RequestParam String privateText,
+				@RequestParam String receiverAccount,
+				HttpServletRequest request
+				){
 			
-			@RequestParam(defaultValue="0") int page
-		
-			){
-		User user = userService.findNum("gg");
-	
-return privateMessageService.findPrivateMessagesByReveiverId(user.getId(),senderId, page);
-	}
+			User user = getCurrentUser(request);//获取当前用户
+			
+			/*//测试
+			User user = userService.findNum("gg");*/
+			User receiver = userService.findNum(receiverAccount);//找到私信接收者
+			PrivateMessage privateMessage = new PrivateMessage();
+			privateMessage.setPrivateMessageSender(user);
+			privateMessage.setPrivateMessageReceiver(receiver);
+			privateMessage.setPrivateText(privateText);
+			return privateMessageService.save(privateMessage);
 
+			}
+		
+		/**
+		 * 2016-12-22 19:06:02
+		 * 查找私信的内容
+		 * @param senderId
+		 * @param page
+		 * @param request
+		 * @return  Page<PrivateMessage>
+		 */
+		@RequestMapping(value= "/findPrivateMessage/{receiverId}")
+		public Page<PrivateMessage> findPrivateMessageByReceiverId( @PathVariable int receiverId,
+				@RequestParam(defaultValue="0") int page,
+				HttpServletRequest request
+			
+				){
+			//User user = userService.findNum("gg"); //测试数据
+			User user = getCurrentUser(request);//
+		
+	    return privateMessageService.findPrivateMessagesByReveiverId(receiverId,user.getId(), page);
+		}
 //	传卖家的id，返回卖家的订阅数
 	@RequestMapping("/saler/{saler_id}/subscribe")
 	public int countSubscribe(@PathVariable int saler_id){
