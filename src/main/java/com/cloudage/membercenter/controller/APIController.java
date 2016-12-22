@@ -255,7 +255,7 @@ public class APIController {
 	 * 存入图书信息
 	 * 
 	 * */
-	@RequestMapping(value="/books",method=RequestMethod.POST)
+	@RequestMapping(value="/sellbooks",method=RequestMethod.POST)
 	public Book addBook(
 			@RequestParam String title,
 			@RequestParam String author,
