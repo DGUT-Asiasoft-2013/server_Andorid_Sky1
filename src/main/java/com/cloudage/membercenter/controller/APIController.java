@@ -279,7 +279,7 @@ public class APIController {
 		book.setTag(tag);
 		book.setSummary(summary);
 		book.setBooknumber(booknumber);
-		
+		book.setUser(currentUser);
 		if (bookavatar!=null) {
 			try {
 				String realPath=request.getSession().getServletContext().getRealPath("/WEB-INF/upload/books");
