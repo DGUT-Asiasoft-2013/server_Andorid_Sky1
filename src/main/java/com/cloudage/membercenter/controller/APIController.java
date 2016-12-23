@@ -30,6 +30,7 @@ import com.cloudage.membercenter.service.ICommentService;
 import com.cloudage.membercenter.service.IPrivateMessageService;
 import com.cloudage.membercenter.service.ISubscribeService;
 import com.cloudage.membercenter.service.IUserService;
+import com.mysql.jdbc.log.Log;
 
 /*
  * 控制类，用于实现各种方法
@@ -382,15 +383,15 @@ public class APIController {
 		return subscribeService.findAllByUser(user_id);
 	}
 	//传一个boolean，为真，添加订阅关系，为假，取消订阅关系，并返回卖家的被订阅数
-	@RequestMapping(value="/saler/{saler_id}/{subscribe}",method = RequestMethod.POST)
+	@RequestMapping(value="/saler/{saler_id}/subscribe",method = RequestMethod.POST)
 	public int changeSubscribe(
 			@PathVariable int saler_id,
 			@RequestParam boolean subscribe,
 			HttpServletRequest request
 			){
 		User me = getCurrentUser(request);
+//		User saler =  subscribeService.findAllByUser(saler_id).get(0).getId().getSaler();
 		User saler = userService.findOne(saler_id);
-
 		if(subscribe)
 			subscribeService.addSubscribe(me, saler);
 		else

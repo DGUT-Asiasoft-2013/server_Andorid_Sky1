@@ -83,9 +83,11 @@ public class DefaultUserService implements IUserService {
 	}
 
 	@Override
-	public User findOne(int userName) {
-		return userRepo.findOne(userName);
+	public User findOne(int userId) {
+		return userRepo.findOne(userId);
 	}
+
+	
 	
 	
 

@@ -13,4 +13,5 @@ public interface ISubscribeService {
 	int countSubscribe(int salerId);
 	boolean checkSubscribe(int userId, int salerId);
 	List<Subscribe> findAllByUser(int meId);
+	Subscribe findById(int saler_id);
 }

@@ -21,4 +21,7 @@ public interface ISubscribeRepository extends PagingAndSortingRepository<Subscri
 //	搜索买家是否订阅过该卖家
 	@Query("select count(*) from Subscribe subscribe where subscribe.id.me.id = ?1 and subscribe.id.saler.id = ?2")
 	int checkSubscribeExsists(int meId, int salerId);
+//	通过卖家id寻找卖家
+	@Query("from Subscribe subscribe where subscribe.id.saler.id = ?1")
+	Subscribe findById(int saler_id);
 }
