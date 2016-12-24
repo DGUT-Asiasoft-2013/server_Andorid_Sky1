@@ -23,6 +23,7 @@ public class DefaultPrivateMessage implements IPrivateMessageService {
 
 	@Override
 	public PrivateMessage save(PrivateMessage privateMessage) {
+
 		return	 iPrivateMessageRepo.save(privateMessage);
 	}
 	@Override

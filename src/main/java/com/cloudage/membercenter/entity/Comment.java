@@ -19,6 +19,7 @@ public class Comment extends DateRecord{
 	
 	Book book;         
 	
+	//解析的时候忽略
 	@ManyToOne(optional=false)
 	public Book getBook() {
 		return book;

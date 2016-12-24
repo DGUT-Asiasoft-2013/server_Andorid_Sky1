@@ -21,8 +21,8 @@ public interface IUserRepository extends PagingAndSortingRepository<User, Intege
 	User findNum(String num);
 	
 	
-	@Query("from User u where u.name=?1")
-	User findOne(int name);
+	@Query("from User u where u.id=?1")
+	User findOne(int user_id);
 	
 	//���е��õ�email��Ҫ��User����Ķ����һ��
 	@Query("from User u where u.email=?1")
