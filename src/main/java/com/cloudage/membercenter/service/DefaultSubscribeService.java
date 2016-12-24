@@ -25,10 +25,11 @@ public class DefaultSubscribeService implements ISubscribeService{
 		key.setMe(me);
 		key.setSaler(saler);
 		
-		Subscribe lk = new Subscribe();
-		lk.setId(key);
-		subscribeRepo.save(lk);
+		Subscribe s = new Subscribe();
+		s.setId(key);
+		subscribeRepo.save(s);
 	}
+	
 
 	@Override
 	public void removeSubscribe(User me, User saler) {
@@ -49,8 +50,17 @@ public class DefaultSubscribeService implements ISubscribeService{
 		return subscribeRepo.checkSubscribeExsists(meId, salerId)>0;
 	}
 
+//	@Override
+//	public Page<User> findAllByUser(int meId) {
+//		return subscribeRepo.findAllByMe(meId);
+//	}
 	@Override
-	public List<User> findAllByUser(int meId) {
+	public List<Subscribe> findAllByUser(int meId) {
 		return subscribeRepo.findAllByMe(meId);
+	}
+
+	@Override
+	public Subscribe findById(int saler_id) {
+		return subscribeRepo.findById(saler_id);
 	}
 }

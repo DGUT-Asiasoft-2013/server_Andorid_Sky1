@@ -62,4 +62,13 @@ public class DefaultBookService implements IBookService{
 	public List<Book> findAllByUser(int book_user_id) {
 		return iBookRepository.findAllByUser(book_user_id);
 	}
+
+	@Override
+	public Page<Book> getBooksByType(String tag, int page) {
+		Sort sort = new Sort(Direction.DESC, "createDate");
+		PageRequest pageRequest = new PageRequest(page, 10, sort);
+		return iBookRepository.getBooksByType(tag,pageRequest);
+	}
+	
+	
 }

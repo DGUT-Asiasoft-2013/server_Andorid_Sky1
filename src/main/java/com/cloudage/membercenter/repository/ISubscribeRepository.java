@@ -2,6 +2,7 @@ package com.cloudage.membercenter.repository;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
@@ -16,8 +17,11 @@ public interface ISubscribeRepository extends PagingAndSortingRepository<Subscri
 	int subscribeCountsOfSaler(int salerId);
 //	搜索所有用户订阅过的卖家
 	@Query("from Subscribe subscribe where subscribe.id.me.id = ?1")
-	List<User> findAllByMe(int meId);
+	List<Subscribe> findAllByMe(int meId);
 //	搜索买家是否订阅过该卖家
 	@Query("select count(*) from Subscribe subscribe where subscribe.id.me.id = ?1 and subscribe.id.saler.id = ?2")
 	int checkSubscribeExsists(int meId, int salerId);
+//	通过卖家id寻找卖家
+	@Query("from Subscribe subscribe where subscribe.id.saler.id = ?1")
+	Subscribe findById(int saler_id);
 }
