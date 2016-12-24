@@ -319,7 +319,6 @@ public class APIController {
 	 * 
 	 */
 		@RequestMapping(value = "/privateMessage",method = RequestMethod.POST)
-
 		public PrivateMessage savePrivateMessage(@RequestParam String privateText,
 				@RequestParam String receiverAccount,
 				HttpServletRequest request
@@ -356,6 +355,28 @@ public class APIController {
 			User user = getCurrentUser(request);//
 		
 	    return privateMessageService.findPrivateMessagesByReveiverId(receiverId,user.getId(), page);
+		}
+		/**
+		 * 2016-12-23 18:28:39
+		 * 查找私信的列表
+		 * @param request
+		 * @return
+		 */
+	/*	@RequestMapping(value = "/getPrivateMessageList")
+		public Page<PrivateMessage> getPrivateMessageList(@RequestParam(defaultValue="1") int a,
+				@RequestParam(defaultValue="0") int page,
+				HttpServletRequest request){
+			User user = getCurrentUser(request);
+			
+			return privateMessageService.getPrivateMessageList(a,page);
+		}*/
+		
+		@RequestMapping(value = "/getPrivateMessageList")
+		public Page<User> getPrivateMessageList(@RequestParam(defaultValue="0") int page,
+				HttpServletRequest request){
+			User user = getCurrentUser(request);
+			
+			return privateMessageService.findAllOtherUsersByNum(user.getAccount(),page);
 		}
 //	传卖家的id，返回卖家的订阅数
 	@RequestMapping("/saler/{saler_id}/subscribe")
