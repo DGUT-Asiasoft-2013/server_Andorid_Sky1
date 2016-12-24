@@ -21,10 +21,12 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.cloudage.membercenter.entity.Book;
+import com.cloudage.membercenter.entity.Bookbus;
 import com.cloudage.membercenter.entity.Comment;
 import com.cloudage.membercenter.entity.PrivateMessage;
 import com.cloudage.membercenter.entity.Subscribe;
 import com.cloudage.membercenter.entity.User;
+import com.cloudage.membercenter.service.IBookBusService;
 import com.cloudage.membercenter.service.IBookService;
 import com.cloudage.membercenter.service.ICommentService;
 import com.cloudage.membercenter.service.IPrivateMessageService;
@@ -53,16 +55,53 @@ public class APIController {
 
 	@Autowired
 	IPrivateMessageService privateMessageService;
+	
+	@Autowired
+	IBookBusService bookBusService;
 
 	@RequestMapping(value = "/hello", method = RequestMethod.GET)
 	public @ResponseBody String hello() {
 		return "HELLO WORLD";
 	}
 
+	
+	/**
+	 * 下面为加入购物车
+	 * @PathVariable int book_id必须与
+	 * @RequestMapping(value = "/book/{book_id}/bookbus", method = RequestMethod.POST)
+	 * 里面的book_id相同，否则就必须加@PathVariable(value = "book_id") int book_id，里面的value必须与@RequestMapping里面的相同
+	 * @return
+	 * @RequestParam(name="content") String content,its content is client need to add
+	 * @PathVariable(value="article_id") ,its content is client not need to add
+	 */
+	@RequestMapping(value = "/book/{book_id}/bookbus", method = RequestMethod.POST)
+	public int addToBookbus(
+			@PathVariable int book_id,
+			@RequestParam boolean isAddBookToBus,
+			HttpServletRequest request) {
+		//获得当前用户
+		User currentuser=getCurrentUser(request);
+		//找到当前书
+		Book book=bookService.findOne(book_id);
+		
+		if (isAddBookToBus) {
+			
+			//加入购物车
+			bookBusService.addBookbus(currentuser, book);
+		}
+		else {
+			//移除购物车
+			bookBusService.removeBookFromBus(currentuser, book);
+		}
+		return bookBusService.CountBook(book_id);          //return add to bookbus'number
+		
+	}
 
 
 	/*
 	 * 娉ㄥ唽鎿嶄綔
+	 * @RequestParam(name="content") String content,its content is client need to add
+	 * @PathVariable(value="article_id") ,its content is client not need to add
 	 */
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
 	public User register(
@@ -248,9 +287,9 @@ public class APIController {
 	}
 
 	/**
-	 * @RequestMapping(value = "/book/{book_id}/comment")閲岄潰鐨刡ook_id蹇呴』璺�
-	 * @PathVariable(value = "book_id") int book_id涓紝int鐨勫彉閲忎竴鏍凤紝濡傛灉鎯充笉涓�鏍凤紝鍒�
-	 * 鍦ㄥ叾鍓嶉潰鍔爒alue = "book_id"锛屼絾杩欎釜蹇呴』璺�
+	 * @RequestMapping(value = "/book/{book_id}/comment")里面的book_id必须与
+	 * @PathVariable(value = "book_id") int book_id里面的int类型的相同，如果要不同
+	 * 否则就设置value = "book_id"与/{book_id}相同
 	 *  @RequestMapping(value = "/book/{book_id}/comment")閲岄潰鐨刡ook_id涓�鏍�
 	 * @param content
 	 * @param book_id
@@ -265,6 +304,16 @@ public class APIController {
 		return commentService.findAllCommentofAuthor(user.getId(), 0);
 	}
 
+	/**
+	 * get CurrentUser‘s all add to bookbus'book
+	 */
+	@RequestMapping(value="/bookbus")
+	public Page<Bookbus> getAllbookAddtoBookBus(HttpServletRequest request)
+	{
+		//get currentuser
+		User user=getCurrentUser(request);
+		return bookBusService.findCurrentUserAllBookAddtoBookBus(user.getId(), 0);
+	}
 	/***
 	 * 
 	 * 瀛樺叆鍥句功淇℃伅
