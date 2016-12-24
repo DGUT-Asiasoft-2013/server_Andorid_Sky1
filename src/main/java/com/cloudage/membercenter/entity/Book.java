@@ -2,13 +2,13 @@ package com.cloudage.membercenter.entity;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
-import javax.persistence.Transient;
 
 import com.cloudage.membercenter.util.DateRecord;
 
 @Entity
 public class Book extends DateRecord {
 
+	//出售者saler
 	User user;
 
 	// 图书标题
