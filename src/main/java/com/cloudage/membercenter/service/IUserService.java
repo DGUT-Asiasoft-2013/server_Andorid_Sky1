@@ -9,10 +9,13 @@ public interface IUserService {
 	User findNum(String num);           //����user��findNum()������ʹ�õ�¼��ʱ���ҵ�һ��ע�������
 	User findEmail(String email);       //����user��findEmail()������ʹ�õ�¼��ʱ���ҵ�һ��ע���email
 	
-	User findOne(int userName);//通过name寻找user
+	User findOne(int userId);//通过id寻找user
 	void login(String account, String passwordHash);
 	User getCurrentUser();
 	boolean changePassword(String newPasswordHash);
 	void logout();
+
+	
+
 
 }

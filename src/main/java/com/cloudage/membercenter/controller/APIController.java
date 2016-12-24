@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,7 @@ import com.cloudage.membercenter.entity.Book;
 import com.cloudage.membercenter.entity.Bookbus;
 import com.cloudage.membercenter.entity.Comment;
 import com.cloudage.membercenter.entity.PrivateMessage;
+import com.cloudage.membercenter.entity.Subscribe;
 import com.cloudage.membercenter.entity.User;
 import com.cloudage.membercenter.service.IBookBusService;
 import com.cloudage.membercenter.service.IBookService;
@@ -30,6 +32,7 @@ import com.cloudage.membercenter.service.ICommentService;
 import com.cloudage.membercenter.service.IPrivateMessageService;
 import com.cloudage.membercenter.service.ISubscribeService;
 import com.cloudage.membercenter.service.IUserService;
+import com.mysql.jdbc.log.Log;
 
 /*
  * 鎺у埗绫伙紝鐢ㄤ簬瀹炵幇鍚勭鏂规硶
@@ -49,7 +52,7 @@ public class APIController {
 
 	@Autowired
 	ISubscribeService subscribeService;
-	
+
 	@Autowired
 	IPrivateMessageService privateMessageService;
 	
@@ -187,6 +190,7 @@ public class APIController {
 		}
 
 	}
+
 	
 	/**
 	 * 退出登录，去掉session
@@ -349,7 +353,7 @@ public class APIController {
 			} catch (Exception e) {
 			}
 		}
-		
+
 		return bookService.save(book);
 	}
 
@@ -362,13 +366,32 @@ public class APIController {
 	public Page<Book> getFeeds(){
 		return getFeeds(0);
 	}
-
+	
 	//鎼滅储鍥句功--------(鏍规嵁 鍥句功鍚嶇О|鍥句功浣滆�厊ISBN|鍗栧 鎼滅储)
 	@RequestMapping(value="/book/s/{keyword}")
 	public Page<Book> fingTextByKeyword(
 			@PathVariable String keyword,
 			@RequestParam(defaultValue="0") int page){
+		return findTextByKeyword(keyword, page);
+	}
+	//搜索的加载更多
+	@RequestMapping(value="/book/s/{keyword}/{page}")
+	public Page<Book> findTextByKeyword(
+			@PathVariable String keyword,
+			@PathVariable int page){
 		return bookService.findTextByKeyword(keyword, page);
+	}
+	
+	//根据图书标签搜索图书(图书分类)
+	@RequestMapping("/books/{tag}/class/{page}")
+	public Page<Book> findBooksByType(
+			@PathVariable String tag,
+			@PathVariable int page){
+		return bookService.getBooksByType(tag,page);
+	}
+	@RequestMapping("/books/{tag}/class")
+	public Page<Book> getBooksByType(@PathVariable String tag){
+		return findBooksByType(tag,0);
 	}
 
 	/**
@@ -422,18 +445,18 @@ public class APIController {
 	public int countSubscribe(@PathVariable int saler_id){
 		return subscribeService.countSubscribe(saler_id);
 	}
-//	浼犲崠瀹剁殑id锛屾鏌ユ垜鏄惁璁㈤槄璇ュ崠瀹�
+	//	传卖家的id，检查我是否订阅该卖家
 	@RequestMapping("/saler/{saler_id}/issubscribe")
 	public boolean checkSubscribe(@PathVariable int saler_id,HttpServletRequest request){
 		User me = getCurrentUser(request);
 		return subscribeService.checkSubscribe(me.getId(), saler_id);
 	}
-//	浼犵敤鎴凤紝杩斿洖鐢ㄦ埛璁㈤槄鐨勫崠瀹�
-	@RequestMapping(value="/user_id/subscribe")
-	public List<User> getBookByUserName(@PathVariable int user_id){
+	//	传用户，返回用户订阅的卖家
+	@RequestMapping(value="/{user_id}/subscribe")
+	public List<Subscribe> getSalerByUserName(@PathVariable int user_id){
 		return subscribeService.findAllByUser(user_id);
 	}
-//浼犱竴涓猙oolean锛屼负鐪燂紝娣诲姞璁㈤槄鍏崇郴锛屼负鍋囷紝鍙栨秷璁㈤槄鍏崇郴锛屽苟杩斿洖鍗栧鐨勮璁㈤槄鏁�
+	//传一个boolean，为真，添加订阅关系，为假，取消订阅关系，并返回卖家的被订阅数
 	@RequestMapping(value="/saler/{saler_id}/subscribe",method = RequestMethod.POST)
 	public int changeSubscribe(
 			@PathVariable int saler_id,
@@ -441,13 +464,13 @@ public class APIController {
 			HttpServletRequest request
 			){
 		User me = getCurrentUser(request);
+//		User saler =  subscribeService.findAllByUser(saler_id).get(0).getId().getSaler();
 		User saler = userService.findOne(saler_id);
-
 		if(subscribe)
 			subscribeService.addSubscribe(me, saler);
 		else
 			subscribeService.removeSubscribe(me, saler);
-		
+
 		return subscribeService.countSubscribe(saler_id);
 	}
 }
