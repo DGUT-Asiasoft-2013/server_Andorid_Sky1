@@ -22,12 +22,12 @@ public class Subscribe{
 	public static class Key implements Serializable{
 		User me;
 		User saler;
-		
+
 		@ManyToOne(optional=false)
 		public User getMe() {
 			return me;
 		}
-		
+
 		public void setMe(User me) {
 			this.me = me;
 		}
@@ -35,12 +35,12 @@ public class Subscribe{
 		public User getSaler() {
 			return saler;
 		}
-		
+
 		public void setSaler(User saler) {
 			this.saler = saler;
 		}
-		
-		
+
+
 		@Override
 		public boolean equals(Object obj) {
 			if(obj instanceof Key){
@@ -50,13 +50,13 @@ public class Subscribe{
 				return false;
 			}
 		}
-		
+
 		@Override
 		public int hashCode() {
 			return saler.getId();
 		}
 	}
-	
+
 	Key id;
 	Date createDate;
 
