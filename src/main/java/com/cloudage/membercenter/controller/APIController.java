@@ -393,6 +393,21 @@ public class APIController {
 	public Page<Book> getBooksByType(@PathVariable String tag){
 		return findBooksByType(tag,0);
 	}
+	
+	//根据图书标签和关键字搜索图书
+	@RequestMapping("/books/{keyword}/and/{tag}/class/{page}")
+	public Page<Book> findBooksByKeywordAndType(
+			@PathVariable String keyword,
+			@PathVariable String tag,
+			@PathVariable int page){
+		return bookService.getBooksByKeywordAndType(keyword,tag,page);
+	}
+	@RequestMapping("/books/{keyword}/and/{tag}/class")
+	public Page<Book> getBooksByKeywordAndType(
+			@PathVariable String keyword,
+			@PathVariable String tag){
+		return findBooksByKeywordAndType(keyword,tag,0);
+	}
 
 	/**
 	 * 2016-12-22 19:01:20

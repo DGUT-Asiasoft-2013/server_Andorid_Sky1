@@ -20,5 +20,5 @@ public interface IBookService {
 	Book save(Book book);//保存图书信息
 	Page<Book> findTextByKeyword(String keyword,int page);//通过关键字搜索图书
 	Page<Book> getBooksByType(String tag,int page);//根据标签(类型)获取图书
-
+	Page<Book> getBooksByKeywordAndType(String keyword,String tag,int page);//根据关键字在类型中搜索图书
 }

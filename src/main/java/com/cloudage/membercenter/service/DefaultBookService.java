@@ -70,5 +70,11 @@ public class DefaultBookService implements IBookService{
 		return iBookRepository.getBooksByType(tag,pageRequest);
 	}
 	
+	public Page<Book> getBooksByKeywordAndType(String keyword,String tag,int page){
+		Sort sort = new Sort(Direction.DESC, "createDate");
+		PageRequest pageRequest = new PageRequest(page, 10, sort);
+		return iBookRepository.getBooksByKeywordAndType(keyword,tag,pageRequest);
+	}
+	
 	
 }
