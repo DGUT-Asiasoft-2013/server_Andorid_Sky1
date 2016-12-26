@@ -13,12 +13,6 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="src" output="target/test-classes" path="src/test/java">
-		<attributes>
-			<attribute name="optional" value="true"/>
-			<attribute name="maven.pomderived" value="true"/>
-		</attributes>
-	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.m2e.MAVEN2_CLASSPATH_CONTAINER">
 		<attributes>
 			<attribute name="maven.pomderived" value="true"/>
@@ -47,8 +41,5 @@
 			<attribute name="maven.scope" value="compile"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/Administrator/git/jar/hibernate-core-5.1.1.Final.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Administrator/git/jar/spring-web-4.3.2.RELEASE.jar"/>
-	<classpathentry kind="src" path="/AppearanceActivity"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
