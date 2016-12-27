@@ -244,6 +244,30 @@ public class APIController {
 		userService.save(user);
 		return true;
 	}
+	
+	/**
+	 * change qq
+	 * @param qq
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value="/change/avatar",method=RequestMethod.POST)
+	public User resetAvatar(
+			MultipartFile avatar,
+			HttpServletRequest request){
+		User user=getCurrentUser(request);
+		try {
+			String realPath=request.getSession().getServletContext().getRealPath("/WEB-INF/upload");
+			FileUtils.copyInputStreamToFile(avatar.getInputStream(), new File(realPath,user.getAccount()+".png"));
+			user.setAvatar("upload/"+user.getAccount()+".png");           //
+
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+
+		return  userService.save(user);
+		
+	}
 
 	/*
 	 * 閼惧嘲绶辫ぐ鎾冲閻€劍鍩�
