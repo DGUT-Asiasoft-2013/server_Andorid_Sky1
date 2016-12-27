@@ -3,6 +3,7 @@ package com.cloudage.membercenter.repository;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
@@ -37,4 +38,8 @@ public interface IBookRepository extends PagingAndSortingRepository<Book, Intege
 	//根据标签(类型)获取图书
 	@Query("from Book book where book.tag like %?1%")
 	Page<Book> getBooksByType(String tag,Pageable page);
+
+	//根据关键字搜索(在类型中搜索)
+	@Query("from Book book where (book.title like %?1% or book.author like %?1% or book.isbn like %?1% or book.user.name like %?1% or book.publisher like %?1%) and book.tag like %?2%" )
+	Page<Book> getBooksByKeywordAndType(String keyword, String tag, Pageable page);
 }
