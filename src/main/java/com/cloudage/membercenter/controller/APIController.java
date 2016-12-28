@@ -634,7 +634,7 @@ public class APIController {
 	//订单
 	@RequestMapping(value = "/books/orders", method = RequestMethod.POST)
 	public OrderLists addToOrderList(
-			@RequestParam Bookbus bookbus ,
+			@RequestParam Book book,
 			@RequestParam String payway,
 			@RequestParam String finish,
 			@RequestParam String orderId,//订单号
@@ -642,7 +642,7 @@ public class APIController {
 			@RequestParam float payMoney,
 			HttpServletRequest request) {
 		OrderLists orderList = new OrderLists();
-		orderList.setBookbus(bookbus);
+		orderList.setBook(book);
 		orderList.setPayway(payway);
 		orderList.setFinish(finish);
 		orderList.setBooksAdded(booksAdded);

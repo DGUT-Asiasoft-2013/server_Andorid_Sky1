@@ -13,6 +13,9 @@ import com.cloudage.membercenter.entity.OrderLists;
 @Repository
 public interface IOrderListRepository extends PagingAndSortingRepository<OrderLists, Integer>{
 
+	@Query("select count(*) from OrderLists orders where orders.bookbus.id.user.id = ?1")
+	int countOrdersNumber(int userid);
+	
 	@Query("from OrderLists orders where orders.bookbus.user.id = ?1")
 	Page<OrderLists> findAllbyUser(int userId,Pageable page);
 

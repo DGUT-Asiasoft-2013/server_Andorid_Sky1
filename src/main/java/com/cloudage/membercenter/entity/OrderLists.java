@@ -7,6 +7,7 @@ import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.PrePersist;
 
+import com.cloudage.membercenter.entity.Bookbus;
 import com.cloudage.membercenter.util.BaseEntity;
 
 
@@ -15,15 +16,16 @@ public class OrderLists extends BaseEntity{
 
 	String orderId;//订单号
 
-	Bookbus bookbus;//购物车
+	Book book;//Book and seller
+
 	int booksAdded; //添加到购物车的书的数量
 	float payMoney;//交易金额
 	String payway;//交易方式
 	String finish;//交易状态(已/未提交->是否缺货->已/未结算'已提交'->待处理->处理中->已发货->已完成/已取消/送货失败)
 	Date createDate;
-	
-	
-	
+
+
+
 	public float getPayMoney() {
 		return payMoney;
 	}
@@ -43,18 +45,19 @@ public class OrderLists extends BaseEntity{
 	public void setOrderId(String orderId) {
 		this.orderId = orderId;
 	}
-	
+
 	public String getFinish() {
 		return finish;
 	}
 	public void setFinish(String finish) {
 		this.finish = finish;
 	}
-	public Bookbus getBookbus() {
-		return bookbus;
+
+	public Book getBook() {
+		return book;
 	}
-	public void setBookbus(Bookbus bookbus) {
-		this.bookbus = bookbus;
+	public void setBook(Book book) {
+		this.book = book;
 	}
 	public String getPayway() {
 		return payway;
@@ -62,7 +65,7 @@ public class OrderLists extends BaseEntity{
 	public void setPayway(String payway) {
 		this.payway = payway;
 	}
-	
+
 	@Column(updatable=false)
 	public Date getCreateDate() {
 		return createDate;
@@ -70,12 +73,12 @@ public class OrderLists extends BaseEntity{
 	public void setCreateDate(Date createDate) {
 		this.createDate = createDate;
 	}
-	
+
 	@PrePersist
 	void onPrePersist()
 	{
 		createDate=new Date();
 	}
-	
-	
+
+
 }
