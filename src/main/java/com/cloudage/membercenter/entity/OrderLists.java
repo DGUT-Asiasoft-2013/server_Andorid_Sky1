@@ -1,22 +1,60 @@
 package com.cloudage.membercenter.entity;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
+import javax.persistence.Embeddable;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
 import javax.persistence.PrePersist;
 
-import com.cloudage.membercenter.entity.Bookbus;
-import com.cloudage.membercenter.util.BaseEntity;
-
-
 @Entity
-public class OrderLists extends BaseEntity{
+public class OrderLists{
+
+	@Embeddable
+	public static class orders_Key implements Serializable {
+		//用户
+		User user;
+		Book book;              //书
+
+		@ManyToOne(optional=false)
+		public User getUser() {
+			return user;
+		}
+		public void setUser(User user) {
+			this.user = user;
+		}
+
+		@ManyToOne(optional=false)
+		public Book getBook() {
+			return book;
+		}
+		public void setBook(Book book) {
+			this.book = book;
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if(obj instanceof orders_Key){
+				orders_Key other = (orders_Key)obj;
+				return book.getId() == other.book.getId() && user.getId() == other.user.getId();
+			}else{
+				return false;
+			}
+		}
+
+		@Override
+		public int hashCode() {
+			return book.getId();
+		}
+
+	}
+
+	orders_Key id;
 
 	String orderId;//订单号
-
-	Book book;//Book and seller
 
 	int booksAdded; //添加到购物车的书的数量
 	float payMoney;//交易金额
@@ -25,6 +63,13 @@ public class OrderLists extends BaseEntity{
 	Date createDate;
 
 
+	@EmbeddedId
+	public orders_Key getId() {
+		return id;
+	}
+	public void setId(orders_Key id) {
+		this.id = id;
+	}
 
 	public float getPayMoney() {
 		return payMoney;
@@ -38,7 +83,7 @@ public class OrderLists extends BaseEntity{
 	public void setBooksAdded(int booksAdded) {
 		this.booksAdded = booksAdded;
 	}
-	@EmbeddedId
+
 	public String getOrderId() {
 		return orderId;
 	}
@@ -53,12 +98,6 @@ public class OrderLists extends BaseEntity{
 		this.finish = finish;
 	}
 
-	public Book getBook() {
-		return book;
-	}
-	public void setBook(Book book) {
-		this.book = book;
-	}
 	public String getPayway() {
 		return payway;
 	}

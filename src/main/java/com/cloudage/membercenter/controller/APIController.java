@@ -86,7 +86,6 @@ public class APIController {
 	public int addToBookbus(
 			@PathVariable int book_id,
 			@RequestParam boolean isAddBookToBus,
-			@RequestParam int booksAdded,
 			HttpServletRequest request) {
 		//鑾峰緱褰撳墠鐢ㄦ埛
 		User currentuser=getCurrentUser(request);
@@ -632,17 +631,21 @@ public class APIController {
 	}
 
 	//订单
-	@RequestMapping(value = "/books/orders", method = RequestMethod.POST)
+	@RequestMapping(value = "/books/{book_id}/orders", method = RequestMethod.POST)
 	public OrderLists addToOrderList(
-			@RequestParam Book book,
+			@PathVariable int book_id,
 			@RequestParam String payway,
 			@RequestParam String finish,
 			@RequestParam String orderId,//订单号
 			@RequestParam int booksAdded,
 			@RequestParam float payMoney,
 			HttpServletRequest request) {
+		
+		User currentuser=getCurrentUser(request);
+		Book book=bookService.findOne(book_id);
+		orderListService.addOrders(currentuser, book);
+		
 		OrderLists orderList = new OrderLists();
-		orderList.setBook(book);
 		orderList.setPayway(payway);
 		orderList.setFinish(finish);
 		orderList.setBooksAdded(booksAdded);
