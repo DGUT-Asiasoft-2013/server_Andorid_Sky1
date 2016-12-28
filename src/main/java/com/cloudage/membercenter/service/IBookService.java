@@ -21,4 +21,6 @@ public interface IBookService {
 	Page<Book> findTextByKeyword(String keyword,int page);//通过关键字搜索图书
 	Page<Book> getBooksByType(String tag,int page);//根据标签(类型)获取图书
 
+	void updateSubscribeB(int book_saler_id);
+
 }

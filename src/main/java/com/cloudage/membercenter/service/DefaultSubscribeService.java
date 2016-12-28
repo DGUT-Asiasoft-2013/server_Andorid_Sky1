@@ -63,4 +63,22 @@ public class DefaultSubscribeService implements ISubscribeService{
 	public Subscribe findById(int saler_id) {
 		return subscribeRepo.findById(saler_id);
 	}
+
+
+	@Override
+	public void changeBoolean(int user_id, int saler_id, boolean b) {
+		subscribeRepo.changeB(user_id,saler_id,b);		
+	}
+
+
+	@Override
+	public int getUserCount(int user_id) {
+		return subscribeRepo.getCount(user_id);
+	}
+
+
+	@Override
+	public int isExistence(int user_id) {
+		return subscribeRepo.isExistence(user_id);
+	}
 }

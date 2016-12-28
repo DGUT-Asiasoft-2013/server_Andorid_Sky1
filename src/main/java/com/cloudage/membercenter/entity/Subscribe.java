@@ -18,6 +18,24 @@ import com.cloudage.membercenter.util.BaseEntity;
  */
 @Entity
 public class Subscribe{
+	boolean b = true;
+	int count = 0;
+	public boolean isB() {
+		return b;
+	}
+
+	public void setB(boolean b) {
+		this.b = b;
+	}
+	public int getCount() {
+		return count;
+	}
+
+	public void setCount(int count) {
+		this.count = count;
+	}
+	
+
 	@Embeddable
 	public static class Key implements Serializable{
 		User me;
@@ -55,6 +73,8 @@ public class Subscribe{
 		public int hashCode() {
 			return saler.getId();
 		}
+		
+		
 	}
 
 	Key id;

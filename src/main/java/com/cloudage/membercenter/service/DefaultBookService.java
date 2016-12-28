@@ -69,6 +69,14 @@ public class DefaultBookService implements IBookService{
 		PageRequest pageRequest = new PageRequest(page, 10, sort);
 		return iBookRepository.getBooksByType(tag,pageRequest);
 	}
+
+	@Override
+	public void updateSubscribeB(int book_saler_id) {
+		if(iBookRepository.find(book_saler_id)>0)
+		iBookRepository.updateSubscribe(book_saler_id);
+	}
+
 	
-	
+
+
 }

@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.io.FileUtils;
+import org.junit.runners.Parameterized.Parameters;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.data.domain.Page;
@@ -55,7 +56,7 @@ public class APIController {
 
 	@Autowired
 	IPrivateMessageService privateMessageService;
-	
+
 	@Autowired
 	IBookBusService bookBusService;
 
@@ -64,7 +65,7 @@ public class APIController {
 		return "HELLO WORLD";
 	}
 
-	
+
 	/**
 	 * 下面为加入购物车
 	 * @PathVariable int book_id必须与
@@ -83,9 +84,9 @@ public class APIController {
 		User currentuser=getCurrentUser(request);
 		//找到当前书
 		Book book=bookService.findOne(book_id);
-		
+
 		if (isAddBookToBus) {
-			
+
 			//加入购物车
 			bookBusService.addBookbus(currentuser, book);
 		}
@@ -94,7 +95,7 @@ public class APIController {
 			bookBusService.removeBookFromBus(currentuser, book);
 		}
 		return bookBusService.CountBook(book_id);          //return add to bookbus'number
-		
+
 	}
 
 
@@ -191,7 +192,7 @@ public class APIController {
 
 	}
 
-	
+
 	/**
 	 * 退出登录，去掉session
 	 */
@@ -353,6 +354,7 @@ public class APIController {
 			} catch (Exception e) {
 			}
 		}
+		bookService.updateSubscribeB(currentUser.getId());
 
 		return bookService.save(book);
 	}
@@ -366,7 +368,7 @@ public class APIController {
 	public Page<Book> getFeeds(){
 		return getFeeds(0);
 	}
-	
+
 	//鎼滅储鍥句功--------(鏍规嵁 鍥句功鍚嶇О|鍥句功浣滆�厊ISBN|鍗栧 鎼滅储)
 	@RequestMapping(value="/book/s/{keyword}")
 	public Page<Book> fingTextByKeyword(
@@ -381,7 +383,7 @@ public class APIController {
 			@PathVariable int page){
 		return bookService.findTextByKeyword(keyword, page);
 	}
-	
+
 	//根据图书标签搜索图书(图书分类)
 	@RequestMapping("/books/{tag}/class/{page}")
 	public Page<Book> findBooksByType(
@@ -401,68 +403,68 @@ public class APIController {
 	 * @param String receiverAccount :绉佷俊鎺ユ敹鑰呯殑甯愬彿
 	 * 
 	 */
-		@RequestMapping(value = "/privateMessage",method = RequestMethod.POST)
-		public PrivateMessage savePrivateMessage(@RequestParam String privateText,
-				@RequestParam String receiverAccount,
-				HttpServletRequest request
-				){
-			
-			User user = getCurrentUser(request);//鑾峰彇褰撳墠鐢ㄦ埛
-			
-			/*//娴嬭瘯
+	@RequestMapping(value = "/privateMessage",method = RequestMethod.POST)
+	public PrivateMessage savePrivateMessage(@RequestParam String privateText,
+			@RequestParam String receiverAccount,
+			HttpServletRequest request
+			){
+
+		User user = getCurrentUser(request);//鑾峰彇褰撳墠鐢ㄦ埛
+
+		/*//娴嬭瘯
 			User user = userService.findNum("gg");*/
-			User receiver = userService.findNum(receiverAccount);//鎵惧埌绉佷俊鎺ユ敹鑰�
-			PrivateMessage privateMessage = new PrivateMessage();
-			privateMessage.setPrivateMessageSender(user);
-			privateMessage.setPrivateMessageReceiver(receiver);
-			privateMessage.setPrivateText(privateText);
-			return privateMessageService.save(privateMessage);
+		User receiver = userService.findNum(receiverAccount);//鎵惧埌绉佷俊鎺ユ敹鑰�
+		PrivateMessage privateMessage = new PrivateMessage();
+		privateMessage.setPrivateMessageSender(user);
+		privateMessage.setPrivateMessageReceiver(receiver);
+		privateMessage.setPrivateText(privateText);
+		return privateMessageService.save(privateMessage);
 
-			}
-		
-		/**
-		 * 2016-12-22 19:06:02
-		 * 鏌ユ壘绉佷俊鐨勫唴瀹�
-		 * @param senderId
-		 * @param page
-		 * @param request
-		 * @return  Page<PrivateMessage>
-		 */
-		@RequestMapping(value= "/findPrivateMessage/{receiverId}")
-		public Page<PrivateMessage> findPrivateMessageByReceiverId( @PathVariable int receiverId,
-				@RequestParam(defaultValue="0") int page,
-				HttpServletRequest request
-			
-				){
-			//User user = userService.findNum("gg"); //娴嬭瘯鏁版嵁
-			User user = getCurrentUser(request);//
-		
-	    return privateMessageService.findPrivateMessagesByReveiverId(receiverId,user.getId(), page);
-		}
+	}
 
-		/**
-		 * 2016-12-23 18:28:39
-		 * 查找私信的列表
-		 * @param request
-		 * @return
-		 */
+	/**
+	 * 2016-12-22 19:06:02
+	 * 鏌ユ壘绉佷俊鐨勫唴瀹�
+	 * @param senderId
+	 * @param page
+	 * @param request
+	 * @return  Page<PrivateMessage>
+	 */
+	@RequestMapping(value= "/findPrivateMessage/{receiverId}")
+	public Page<PrivateMessage> findPrivateMessageByReceiverId( @PathVariable int receiverId,
+			@RequestParam(defaultValue="0") int page,
+			HttpServletRequest request
+
+			){
+		//User user = userService.findNum("gg"); //娴嬭瘯鏁版嵁
+		User user = getCurrentUser(request);//
+
+		return privateMessageService.findPrivateMessagesByReveiverId(receiverId,user.getId(), page);
+	}
+
+	/**
+	 * 2016-12-23 18:28:39
+	 * 查找私信的列表
+	 * @param request
+	 * @return
+	 */
 	/*	@RequestMapping(value = "/getPrivateMessageList")
 		public Page<PrivateMessage> getPrivateMessageList(@RequestParam(defaultValue="1") int a,
 				@RequestParam(defaultValue="0") int page,
 				HttpServletRequest request){
 			User user = getCurrentUser(request);
-			
+
 			return privateMessageService.getPrivateMessageList(a,page);
 		}*/
-		
-		@RequestMapping(value = "/getPrivateMessageList")
-		public Page<User> getPrivateMessageList(@RequestParam(defaultValue="0") int page,
-				HttpServletRequest request){
-			User user = getCurrentUser(request);
-			
-			return privateMessageService.findAllOtherUsersByNum(user.getAccount(),page);
-		}
-//	传卖家的id，返回卖家的订阅数
+
+	@RequestMapping(value = "/getPrivateMessageList")
+	public Page<User> getPrivateMessageList(@RequestParam(defaultValue="0") int page,
+			HttpServletRequest request){
+		User user = getCurrentUser(request);
+
+		return privateMessageService.findAllOtherUsersByNum(user.getAccount(),page);
+	}
+	//	传卖家的id，返回卖家的订阅数
 	@RequestMapping("/saler/{saler_id}/subscribe")
 	public int countSubscribe(@PathVariable int saler_id){
 		return subscribeService.countSubscribe(saler_id);
@@ -478,6 +480,12 @@ public class APIController {
 	public List<Subscribe> getSalerByUserName(@PathVariable int user_id){
 		return subscribeService.findAllByUser(user_id);
 	}
+	@RequestMapping(value="/subscribe/b",method=RequestMethod.POST)
+	public void changeB(@RequestParam int user_id,
+			@RequestParam int saler_id,
+			@RequestParam boolean b){
+		subscribeService.changeBoolean(user_id,saler_id,b);
+	}
 	//传一个boolean，为真，添加订阅关系，为假，取消订阅关系，并返回卖家的被订阅数
 	@RequestMapping(value="/saler/{saler_id}/subscribe",method = RequestMethod.POST)
 	public int changeSubscribe(
@@ -486,7 +494,7 @@ public class APIController {
 			HttpServletRequest request
 			){
 		User me = getCurrentUser(request);
-//		User saler =  subscribeService.findAllByUser(saler_id).get(0).getId().getSaler();
+		//		User saler =  subscribeService.findAllByUser(saler_id).get(0).getId().getSaler();
 		User saler = userService.findOne(saler_id);
 		if(subscribe)
 			subscribeService.addSubscribe(me, saler);
@@ -494,6 +502,14 @@ public class APIController {
 			subscribeService.removeSubscribe(me, saler);
 
 		return subscribeService.countSubscribe(saler_id);
+	}
+	@RequestMapping(value="subscribe/{user_id}/count")
+	public int getCount(@PathVariable int user_id){
+		if(subscribeService.isExistence(user_id)>0)
+			return subscribeService.getUserCount(user_id);
+		else
+			return 0;
+
 	}
 }
 
