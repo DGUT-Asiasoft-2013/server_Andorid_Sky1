@@ -79,6 +79,7 @@ public class APIController {
 	public int addToBookbus(
 			@PathVariable int book_id,
 			@RequestParam boolean isAddBookToBus,
+			@RequestParam int booksAdded,
 			HttpServletRequest request) {
 		//鑾峰緱褰撳墠鐢ㄦ埛
 		User currentuser=getCurrentUser(request);
@@ -88,11 +89,11 @@ public class APIController {
 		if (isAddBookToBus) {
 			
 			//鍔犲叆璐墿杞�
-			bookBusService.addBookbus(currentuser, book);
+			bookBusService.addBookbus(currentuser, book,booksAdded);
 		}
 		else {
 			//绉婚櫎璐墿杞�
-			bookBusService.removeBookFromBus(currentuser, book);
+			bookBusService.removeBookFromBus(currentuser, book,booksAdded);
 		}
 		return bookBusService.CountBook(book_id);          //return add to bookbus'number
 		
@@ -529,6 +530,8 @@ public class APIController {
 		return user.getSumMoney();
 		
 	}
+	
+	//订单
 
 }
 
