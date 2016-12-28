@@ -174,8 +174,101 @@ public class APIController {
 			return true;
 		}
 	}
+	
+	/**
+	 * change name
+	 * @param name
+	 * @param request
+	 * @return
+	 */
 
+	@RequestMapping(value="/change/name",method=RequestMethod.POST)
+	public boolean resetName(
+			@RequestParam String name,
+			HttpServletRequest request){
+		User user=getCurrentUser(request);
+		
+		user.setName(name);
+		userService.save(user);
+		return true;
+	}
+	
+	/**
+	 * change email
+	 * @param email
+	 * @param request
+	 * @return
+	 */
+	
+	@RequestMapping(value="/change/email",method=RequestMethod.POST)
+	public boolean resetEmail(
+			@RequestParam String email,
+			HttpServletRequest request){
+		User user=getCurrentUser(request);
+		
+		user.setEmail(email);
+		userService.save(user);
+		return true;
+	}
+	
+	/**
+	 * change phone
+	 * @param phone
+	 * @param request
+	 * @return
+	 */
+	
+	@RequestMapping(value="/change/phone",method=RequestMethod.POST)
+	public boolean resetPhone(
+			@RequestParam String phone,
+			HttpServletRequest request){
+		User user=getCurrentUser(request);
+		
+		user.setPhoneNumb(phone);
+		userService.save(user);
+		return true;
+	}
+	
+	/**
+	 * change qq
+	 * @param qq
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value="/change/qq",method=RequestMethod.POST)
+	public boolean resetQq(
+			@RequestParam String qq,
+			HttpServletRequest request){
+		User user=getCurrentUser(request);
+		
+		user.setQq(qq);
+		userService.save(user);
+		return true;
+	}
+	
+	/**
+	 * change qq
+	 * @param qq
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value="/change/avatar",method=RequestMethod.POST)
+	public User resetAvatar(
+			MultipartFile avatar,
+			HttpServletRequest request){
+		User user=getCurrentUser(request);
+		try {
+			String realPath=request.getSession().getServletContext().getRealPath("/WEB-INF/upload");
+			FileUtils.copyInputStreamToFile(avatar.getInputStream(), new File(realPath,user.getAccount()+".png"));
+			user.setAvatar("upload/"+user.getAccount()+".png");           //
 
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+
+		return  userService.save(user);
+		
+	}
 
 	/*
 	 * 閼惧嘲绶辫ぐ鎾冲閻€劍鍩�
