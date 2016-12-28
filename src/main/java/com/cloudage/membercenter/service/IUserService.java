@@ -5,15 +5,19 @@ import com.cloudage.membercenter.entity.User;
 public interface IUserService {
 	User create(String account, String passwordHash);
 	
-	User save(User user);              //����user��save()������ʹ��ע���ʱ�򱣴�����
-	User findNum(String num);           //����user��findNum()������ʹ�õ�¼��ʱ���ҵ�һ��ע�������
-	User findEmail(String email);       //����user��findEmail()������ʹ�õ�¼��ʱ���ҵ�һ��ע���email
+	User save(User user);              //锟斤拷锟斤拷user锟斤拷save()锟斤拷锟斤拷锟斤拷使锟斤拷注锟斤拷锟绞憋拷虮４锟斤拷锟斤拷锟�
+	User findNum(String num);           //锟斤拷锟斤拷user锟斤拷findNum()锟斤拷锟斤拷锟斤拷使锟矫碉拷录锟斤拷时锟斤拷锟揭碉拷一锟斤拷注锟斤拷锟斤拷锟斤拷锟�
+	User findEmail(String email);       //锟斤拷锟斤拷user锟斤拷findEmail()锟斤拷锟斤拷锟斤拷使锟矫碉拷录锟斤拷时锟斤拷锟揭碉拷一锟斤拷注锟斤拷锟絜mail
 	
-	User findOne(int userId);//通过id寻找user
+	User creat(User user);
+	
+	User findOne(int userId);//閫氳繃id瀵绘壘user
 	void login(String account, String passwordHash);
 	User getCurrentUser();
 	boolean changePassword(String newPasswordHash);
 	void logout();
+	
+	User findSum(float sumMoney);
 
 	
 

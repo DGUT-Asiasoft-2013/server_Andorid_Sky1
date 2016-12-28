@@ -13,14 +13,21 @@ import com.cloudage.membercenter.util.BaseEntity;
 @Entity
 public class User extends BaseEntity{
 	
-	String account;               //账号
-	String passwordHash;          //密码
-	String name;                  //用户名
-	String avatar;                //头像
-	String email;                 //邮箱
-	String phoneNumb;            //电话号码
+	String account;               //璐﹀彿
+	String passwordHash;          //瀵嗙爜
+	String name;                  //鐢ㄦ埛鍚�
+	String avatar;                //澶村儚
+	String email;                 //閭
+	String phoneNumb;            //鐢佃瘽鍙风爜
 	String qq;                   //qq
+	float sumMoney;
 
+	public float getSumMoney() {
+		return sumMoney;
+	}
+	public void setSumMoney(float sumMoney) {
+		this.sumMoney = sumMoney;
+	}
 	@Column(nullable=false)
 	public String getPhoneNumb() {
 		return phoneNumb;

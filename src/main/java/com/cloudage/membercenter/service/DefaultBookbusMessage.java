@@ -36,6 +36,7 @@ public class DefaultBookbusMessage implements IBookBusService{
 		key.setBook(book);
 		key.setUser(user);
 		
+		
 		Bookbus bookbus=new Bookbus();
 		//设置id
 		bookbus.setId(key);

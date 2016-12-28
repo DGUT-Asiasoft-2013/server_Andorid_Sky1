@@ -35,12 +35,13 @@
 	</nav>
 
 	<div class="container">
-		<br/>
+		<br />
 		<div class="jumbotron">
 			<h1>Hello, world!</h1>
 			<p>Here is the admin dashboard.</p>
 			<p>
-				<a class="btn btn-primary btn-lg" href="api/hello" role="button">API Hello</a>
+				<a class="btn btn-primary btn-lg" href="api/hello" role="button">API
+					Hello</a>
 			</p>
 		</div>
 	</div>
