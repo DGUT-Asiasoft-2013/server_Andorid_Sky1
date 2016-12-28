@@ -22,14 +22,6 @@ public class Bookbus {
 		User user;
 		Book book;              //书
 		
-		int booksAdded; //添加到购物车的数量
-		
-		public int getBooksAdded() {
-			return booksAdded;
-		}
-		public void setBooksAdded(int booksAdded) {
-			this.booksAdded = booksAdded;
-		}
 		@ManyToOne(optional=false)
 		public User getUser() {
 			return user;

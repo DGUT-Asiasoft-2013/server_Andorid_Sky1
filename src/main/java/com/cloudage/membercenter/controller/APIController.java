@@ -21,6 +21,7 @@ import com.cloudage.membercenter.entity.Book;
 import com.cloudage.membercenter.entity.Bookbus;
 import com.cloudage.membercenter.entity.Comment;
 import com.cloudage.membercenter.entity.Money;
+import com.cloudage.membercenter.entity.OrderLists;
 import com.cloudage.membercenter.entity.PrivateMessage;
 import com.cloudage.membercenter.entity.Subscribe;
 import com.cloudage.membercenter.entity.User;
@@ -28,9 +29,11 @@ import com.cloudage.membercenter.service.IBookBusService;
 import com.cloudage.membercenter.service.IBookService;
 import com.cloudage.membercenter.service.ICommentService;
 import com.cloudage.membercenter.service.IMoneyService;
+import com.cloudage.membercenter.service.IOrderListService;
 import com.cloudage.membercenter.service.IPrivateMessageService;
 import com.cloudage.membercenter.service.ISubscribeService;
 import com.cloudage.membercenter.service.IUserService;
+import com.fasterxml.jackson.databind.ser.std.StdKeySerializers.Default;
 
 /*
  * 閹貉冨煑缁紮绱濋悽銊ょ艾鐎圭偟骞囬崥鍕潚閺傝纭�
@@ -53,19 +56,23 @@ public class APIController {
 
 	@Autowired
 	IPrivateMessageService privateMessageService;
-	
+
 	@Autowired
 	IBookBusService bookBusService;
-	
+
 	@Autowired
 	IMoneyService moneyService;
-	
+
+	@Autowired
+	IOrderListService orderListService;
+
+
 	@RequestMapping(value = "/hello", method = RequestMethod.GET)
 	public @ResponseBody String hello() {
 		return "HELLO WORLD";
 	}
 
-	
+
 	/**
 	 * 涓嬮潰涓哄姞鍏ヨ喘鐗╄溅
 	 * @PathVariable int book_id蹇呴』涓�
@@ -85,18 +92,18 @@ public class APIController {
 		User currentuser=getCurrentUser(request);
 		//鎵惧埌褰撳墠涔�
 		Book book=bookService.findOne(book_id);
-		
+
 		if (isAddBookToBus) {
-			
+
 			//鍔犲叆璐墿杞�
-			bookBusService.addBookbus(currentuser, book,booksAdded);
+			bookBusService.addBookbus(currentuser, book);
 		}
 		else {
 			//绉婚櫎璐墿杞�
-			bookBusService.removeBookFromBus(currentuser, book,booksAdded);
+			bookBusService.removeBookFromBus(currentuser, book);
 		}
 		return bookBusService.CountBook(book_id);          //return add to bookbus'number
-		
+
 	}
 
 
@@ -174,7 +181,7 @@ public class APIController {
 			return true;
 		}
 	}
-	
+
 	/**
 	 * change name
 	 * @param name
@@ -187,48 +194,48 @@ public class APIController {
 			@RequestParam String name,
 			HttpServletRequest request){
 		User user=getCurrentUser(request);
-		
+
 		user.setName(name);
 		userService.save(user);
 		return true;
 	}
-	
+
 	/**
 	 * change email
 	 * @param email
 	 * @param request
 	 * @return
 	 */
-	
+
 	@RequestMapping(value="/change/email",method=RequestMethod.POST)
 	public boolean resetEmail(
 			@RequestParam String email,
 			HttpServletRequest request){
 		User user=getCurrentUser(request);
-		
+
 		user.setEmail(email);
 		userService.save(user);
 		return true;
 	}
-	
+
 	/**
 	 * change phone
 	 * @param phone
 	 * @param request
 	 * @return
 	 */
-	
+
 	@RequestMapping(value="/change/phone",method=RequestMethod.POST)
 	public boolean resetPhone(
 			@RequestParam String phone,
 			HttpServletRequest request){
 		User user=getCurrentUser(request);
-		
+
 		user.setPhoneNumb(phone);
 		userService.save(user);
 		return true;
 	}
-	
+
 	/**
 	 * change qq
 	 * @param qq
@@ -240,12 +247,12 @@ public class APIController {
 			@RequestParam String qq,
 			HttpServletRequest request){
 		User user=getCurrentUser(request);
-		
+
 		user.setQq(qq);
 		userService.save(user);
 		return true;
 	}
-	
+
 	/**
 	 * change qq
 	 * @param qq
@@ -267,7 +274,7 @@ public class APIController {
 		}
 
 		return  userService.save(user);
-		
+
 	}
 
 	/*
@@ -286,7 +293,7 @@ public class APIController {
 
 	}
 
-	
+
 	/**
 	 * 閫�鍑虹櫥褰曪紝鍘绘帀session
 	 */
@@ -461,7 +468,7 @@ public class APIController {
 	public Page<Book> getFeeds(){
 		return getFeeds(0);
 	}
-	
+
 	//閹兼粎鍌ㄩ崶鍙ュ姛--------(閺嶈宓� 閸ュ彞鍔熼崥宥囆瀨閸ュ彞鍔熸担婊嗭拷鍘奍SBN|閸楁牕顔� 閹兼粎鍌�)
 	@RequestMapping(value="/book/s/{keyword}")
 	public Page<Book> fingTextByKeyword(
@@ -476,7 +483,7 @@ public class APIController {
 			@PathVariable int page){
 		return bookService.findTextByKeyword(keyword, page);
 	}
-	
+
 	//鏍规嵁鍥句功鏍囩鎼滅储鍥句功(鍥句功鍒嗙被)
 	@RequestMapping("/books/{tag}/class/{page}")
 	public Page<Book> findBooksByType(
@@ -488,7 +495,7 @@ public class APIController {
 	public Page<Book> getBooksByType(@PathVariable String tag){
 		return findBooksByType(tag,0);
 	}
-	
+
 	//鏍规嵁鍥句功鏍囩鍜屽叧閿瓧鎼滅储鍥句功
 	@RequestMapping("/books/{keyword}/and/{tag}/class/{page}")
 	public Page<Book> findBooksByKeywordAndType(
@@ -511,68 +518,68 @@ public class APIController {
 	 * @param String receiverAccount :缁変椒淇婇幒銉︽暪閼板懐娈戠敮鎰娇
 	 * 
 	 */
-		@RequestMapping(value = "/privateMessage",method = RequestMethod.POST)
-		public PrivateMessage savePrivateMessage(@RequestParam String privateText,
-				@RequestParam String receiverAccount,
-				HttpServletRequest request
-				){
-			
-			User user = getCurrentUser(request);//閼惧嘲褰囪ぐ鎾冲閻€劍鍩�
-			
-			/*//濞村鐦�
+	@RequestMapping(value = "/privateMessage",method = RequestMethod.POST)
+	public PrivateMessage savePrivateMessage(@RequestParam String privateText,
+			@RequestParam String receiverAccount,
+			HttpServletRequest request
+			){
+
+		User user = getCurrentUser(request);//閼惧嘲褰囪ぐ鎾冲閻€劍鍩�
+
+		/*//濞村鐦�
 			User user = userService.findNum("gg");*/
-			User receiver = userService.findNum(receiverAccount);//閹垫儳鍩岀粔浣蜂繆閹恒儲鏁归懓锟�
-			PrivateMessage privateMessage = new PrivateMessage();
-			privateMessage.setPrivateMessageSender(user);
-			privateMessage.setPrivateMessageReceiver(receiver);
-			privateMessage.setPrivateText(privateText);
-			return privateMessageService.save(privateMessage);
+		User receiver = userService.findNum(receiverAccount);//閹垫儳鍩岀粔浣蜂繆閹恒儲鏁归懓锟�
+		PrivateMessage privateMessage = new PrivateMessage();
+		privateMessage.setPrivateMessageSender(user);
+		privateMessage.setPrivateMessageReceiver(receiver);
+		privateMessage.setPrivateText(privateText);
+		return privateMessageService.save(privateMessage);
 
-			}
-		
-		/**
-		 * 2016-12-22 19:06:02
-		 * 閺屻儲澹樼粔浣蜂繆閻ㄥ嫬鍞寸�癸拷
-		 * @param senderId
-		 * @param page
-		 * @param request
-		 * @return  Page<PrivateMessage>
-		 */
-		@RequestMapping(value= "/findPrivateMessage/{receiverId}")
-		public Page<PrivateMessage> findPrivateMessageByReceiverId( @PathVariable int receiverId,
-				@RequestParam(defaultValue="0") int page,
-				HttpServletRequest request
-			
-				){
-			//User user = userService.findNum("gg"); //濞村鐦弫鐗堝祦
-			User user = getCurrentUser(request);//
-		
-	    return privateMessageService.findPrivateMessagesByReveiverId(receiverId,user.getId(), page);
-		}
+	}
 
-		/**
-		 * 2016-12-23 18:28:39
-		 * 鏌ユ壘绉佷俊鐨勫垪琛�
-		 * @param request
-		 * @return
-		 */
+	/**
+	 * 2016-12-22 19:06:02
+	 * 閺屻儲澹樼粔浣蜂繆閻ㄥ嫬鍞寸�癸拷
+	 * @param senderId
+	 * @param page
+	 * @param request
+	 * @return  Page<PrivateMessage>
+	 */
+	@RequestMapping(value= "/findPrivateMessage/{receiverId}")
+	public Page<PrivateMessage> findPrivateMessageByReceiverId( @PathVariable int receiverId,
+			@RequestParam(defaultValue="0") int page,
+			HttpServletRequest request
+
+			){
+		//User user = userService.findNum("gg"); //濞村鐦弫鐗堝祦
+		User user = getCurrentUser(request);//
+
+		return privateMessageService.findPrivateMessagesByReveiverId(receiverId,user.getId(), page);
+	}
+
+	/**
+	 * 2016-12-23 18:28:39
+	 * 鏌ユ壘绉佷俊鐨勫垪琛�
+	 * @param request
+	 * @return
+	 */
 	/*	@RequestMapping(value = "/getPrivateMessageList")
 		public Page<PrivateMessage> getPrivateMessageList(@RequestParam(defaultValue="1") int a,
 				@RequestParam(defaultValue="0") int page,
 				HttpServletRequest request){
 			User user = getCurrentUser(request);
-			
+
 			return privateMessageService.getPrivateMessageList(a,page);
 		}*/
-		
-		@RequestMapping(value = "/getPrivateMessageList")
-		public Page<User> getPrivateMessageList(@RequestParam(defaultValue="0") int page,
-				HttpServletRequest request){
-			User user = getCurrentUser(request);
-			
-			return privateMessageService.findAllOtherUsersByNum(user.getAccount(),page);
-		}
-//	浼犲崠瀹剁殑id锛岃繑鍥炲崠瀹剁殑璁㈤槄鏁�
+
+	@RequestMapping(value = "/getPrivateMessageList")
+	public Page<User> getPrivateMessageList(@RequestParam(defaultValue="0") int page,
+			HttpServletRequest request){
+		User user = getCurrentUser(request);
+
+		return privateMessageService.findAllOtherUsersByNum(user.getAccount(),page);
+	}
+	//	浼犲崠瀹剁殑id锛岃繑鍥炲崠瀹剁殑璁㈤槄鏁�
 	@RequestMapping("/saler/{saler_id}/subscribe")
 	public int countSubscribe(@PathVariable int saler_id){
 		return subscribeService.countSubscribe(saler_id);
@@ -596,7 +603,7 @@ public class APIController {
 			HttpServletRequest request
 			){
 		User me = getCurrentUser(request);
-//		User saler =  subscribeService.findAllByUser(saler_id).get(0).getId().getSaler();
+		//		User saler =  subscribeService.findAllByUser(saler_id).get(0).getId().getSaler();
 		User saler = userService.findOne(saler_id);
 		if(subscribe)
 			subscribeService.addSubscribe(me, saler);
@@ -605,7 +612,7 @@ public class APIController {
 
 		return subscribeService.countSubscribe(saler_id);
 	}
-	
+
 	@RequestMapping(value="/me/recharge",method = RequestMethod.POST)
 	public User saveMoney(
 			/*@RequestParam String currentUser,*/
@@ -616,15 +623,53 @@ public class APIController {
 
 		return userService.save(user);
 	}
-	
+
 	@RequestMapping(value="/me/money",method=RequestMethod.GET)
 	public float getCurrentMoney(HttpServletRequest request) {
 		User user = getCurrentUser(request);
 		return user.getSumMoney();
+
+	}
+
+	//订单
+	@RequestMapping(value = "/books/orders", method = RequestMethod.POST)
+	public OrderLists addToOrderList(
+			@RequestParam Bookbus bookbus ,
+			@RequestParam String payway,
+			@RequestParam String finish,
+			@RequestParam String orderId,//订单号
+			@RequestParam int booksAdded,
+			@RequestParam float payMoney,
+			HttpServletRequest request) {
+		OrderLists orderList = new OrderLists();
+		orderList.setBookbus(bookbus);
+		orderList.setPayway(payway);
+		orderList.setFinish(finish);
+		orderList.setBooksAdded(booksAdded);
+		orderList.setOrderId(orderId);
+		orderList.setPayMoney(payMoney);
 		
+		return orderListService.save(orderList);
+
+	}
+
+	@RequestMapping("/orders/{page}")
+	public Page<OrderLists> getOrders(
+			@PathVariable() int page,
+			HttpServletRequest request){
+		User user = getCurrentUser(request);
+		int userId = user.getId();
+		return orderListService.getLists(userId,page);
+	}
+
+	@RequestMapping("/orders")
+	public Page<OrderLists> getOrders(
+			HttpServletRequest request){
+		User user = getCurrentUser(request);
+		int userId = user.getId();
+		return orderListService.getLists(userId,0);
 	}
 	
-	//订单
-
+	
 }
 

@@ -14,12 +14,28 @@ import com.cloudage.membercenter.util.BaseEntity;
 public class OrderLists extends BaseEntity{
 
 	String orderId;//订单号
-	
+
 	Bookbus bookbus;//购物车
+	int booksAdded; //添加到购物车的书的数量
+	float payMoney;//交易金额
 	String payway;//交易方式
 	String finish;//交易状态(已/未提交->是否缺货->已/未结算'已提交'->待处理->处理中->已发货->已完成/已取消/送货失败)
 	Date createDate;
 	
+	
+	
+	public float getPayMoney() {
+		return payMoney;
+	}
+	public void setPayMoney(float payMoney) {
+		this.payMoney = payMoney;
+	}
+	public int getBooksAdded() {
+		return booksAdded;
+	}
+	public void setBooksAdded(int booksAdded) {
+		this.booksAdded = booksAdded;
+	}
 	@EmbeddedId
 	public String getOrderId() {
 		return orderId;

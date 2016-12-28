@@ -31,11 +31,11 @@ public class DefaultBookbusMessage implements IBookBusService{
 	
 	//add book to bus
 	@Override
-	public void addBookbus(User user, Book book, int booksAdded) {
+	public void addBookbus(User user, Book book) {
 		Bookbus.Bus_Key key=new Bus_Key();               //获得对象
 		key.setBook(book);
 		key.setUser(user);
-		key.setBooksAdded(booksAdded);
+		
 		
 		Bookbus bookbus=new Bookbus();
 		//设置id
@@ -46,11 +46,10 @@ public class DefaultBookbusMessage implements IBookBusService{
 
 	//remove book From Bus
 	@Override
-	public void removeBookFromBus(User user, Book book,int booksAdded) {
+	public void removeBookFromBus(User user, Book book) {
 		Bookbus.Bus_Key key=new Bus_Key();
 		key.setBook(book);
 		key.setUser(user);
-		key.setBooksAdded(booksAdded);
 		
 		iBookBusRepository.delete(key);           //remove book from bus
 	}
