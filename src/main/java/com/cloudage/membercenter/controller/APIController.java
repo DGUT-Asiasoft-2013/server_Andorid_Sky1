@@ -20,7 +20,6 @@ import org.springframework.web.multipart.MultipartFile;
 import com.cloudage.membercenter.entity.Book;
 import com.cloudage.membercenter.entity.Bookbus;
 import com.cloudage.membercenter.entity.Comment;
-import com.cloudage.membercenter.entity.Money;
 import com.cloudage.membercenter.entity.OrderLists;
 import com.cloudage.membercenter.entity.PrivateMessage;
 import com.cloudage.membercenter.entity.Subscribe;
@@ -33,7 +32,6 @@ import com.cloudage.membercenter.service.IOrderListService;
 import com.cloudage.membercenter.service.IPrivateMessageService;
 import com.cloudage.membercenter.service.ISubscribeService;
 import com.cloudage.membercenter.service.IUserService;
-import com.fasterxml.jackson.databind.ser.std.StdKeySerializers.Default;
 
 /*
  * 闁硅矇鍐ㄧ厬缂侇偂绱槐婵嬫偨閵娿倗鑹鹃悗鍦仧楠炲洭宕ラ崟顓ф綒闁哄倽顫夌涵锟�
@@ -74,10 +72,10 @@ public class APIController {
 
 
 	/**
-	 * 娑撳娼版稉鍝勫閸忋儴鍠橀悧鈺勬簠
-	 * @PathVariable int book_id韫囧懘銆忔稉锟�
+	 * @PathVariable int book_idmust the same as
 	 * @RequestMapping(value = "/book/{book_id}/bookbus", method = RequestMethod.POST)
-	 * 闁插矂娼伴惃鍒ok_id閻╃鎮撻敍灞芥儊閸掓瑥姘ㄨ箛鍛淬�忛崝鐕朠athVariable(value = "book_id") int book_id閿涘矂鍣烽棃銏㈡畱value韫囧懘銆忔稉宥equestMapping闁插矂娼伴惃鍕祲閸氾拷
+	 * if it dont't want to the same as,or PathVariable(value = "book_id") int book_id;the (value = "book_id")must the same as
+	 * @RequestMapping(value = "/book/{book_id}/bookbus", method = RequestMethod.POST)
 	 * @return
 	 * @RequestParam(name="content") String content,its content is client need to add
 	 * @PathVariable(value="article_id") ,its content is client not need to add
@@ -107,7 +105,6 @@ public class APIController {
 
 
 	/*
-	 * 婵炲鍔岄崬浠嬪箼瀹ュ嫮绋�
 	 * @RequestParam(name="content") String content,its content is client need to add
 	 * @PathVariable(value="article_id") ,its content is client not need to add
 	 */
@@ -349,14 +346,13 @@ public class APIController {
 	}
 	
 	/**
-	 * @RequestMapping(value = "/book/{book_id}/comment")闂佹彃鐭傚浼存儍閸掝摰ok_id闊洤鎳橀妴蹇曟崉閿燂拷
-	 * @PathVariable(value = "book_id") int book_id濞戞搩鍙忕槐婕t闁汇劌瀚ぐ澶愭煂韫囧海顏遍柡宥呭殩缁辨繃淇婇崒娑氫函闁诡垰鍘栫粭澶嬬▔閿熶粙寮介崙銈囩闁告帪鎷�
-	 * 闁革负鍔岄崣楣冨礈瀹ュ妗ㄩ柛鏃傚灊alue = "book_id"闁挎稑濂旂徊鐐交濞嗗酣鍤嬮煫鍥ф嚇閵嗗繒鎹勯敓锟�
-	 *  @RequestMapping(value = "/book/{book_id}/comment")闂佹彃鐭傚浼存儍閸掝摰ok_id濞戞搫鎷烽柡宥忔嫹
-	 * @param content
-	 * @param book_id
-	 * @param request
+	 * @PathVariable int book_idmust the same as
+	 * @RequestMapping(value = "/book/{book_id}/comment", method = RequestMethod.POST)
+	 * if it dont't want to the same as,or PathVariable(value = "book_id") int book_id;the (value = "book_id")must the same as
+	 * @RequestMapping(value = "/book/{book_id}/comment", method = RequestMethod.POST)
 	 * @return
+	 * @RequestParam(name="content") String content,its content is client need to add
+	 * @PathVariable(value="book_id") ,its content is client not need to add
 	 */
 	@RequestMapping(value = "/book/{book_id}/comment", method = RequestMethod.POST)
 	public Comment addComment(@RequestParam(name = "content") String content,
@@ -374,14 +370,13 @@ public class APIController {
 	}
 
 	/**
-	 * @RequestMapping(value = "/book/{book_id}/comment")闂佹彃鐭傚浼存儍閸掝摰ok_id闊洤鎳橀妴蹇曟崉閿燂拷
-	 * @PathVariable(value = "book_id") int book_id濞戞搩鍙忕槐婕t闁汇劌瀚ぐ澶愭煂韫囧海顏遍柡宥呭殩缁辨繃淇婇崒娑氫函闁诡垰鍘栫粭澶嬬▔閿熶粙寮介崙銈囩闁告帪鎷�
-	 * 闁革负鍔岄崣楣冨礈瀹ュ妗ㄩ柛鏃傚灊alue = "book_id"闁挎稑濂旂徊鐐交濞嗗酣鍤嬮煫鍥ф嚇閵嗗繒鎹勯敓锟�
-	 *  @RequestMapping(value = "/book/{book_id}/comment")闂佹彃鐭傚浼存儍閸掝摰ok_id濞戞搫鎷烽柡宥忔嫹
-	 * @param content
-	 * @param book_id
-	 * @param request
+	  @PathVariable int book_idmust the same as
+	 * @RequestMapping(value = "/book/{book_id}/comment/{page}", method = RequestMethod.POST)
+	 * if it dont't want to the same as,or PathVariable(value = "book_id") int book_id;the (value = "book_id")must the same as
+	 * @RequestMapping(value = "/book/{book_id}/comment/{page}", method = RequestMethod.POST)
 	 * @return
+	 * @RequestParam(name="content") String content,its content is client need to add
+	 * @PathVariable(value="book_id") ,its content is client not need to addn
 	 */
 	@RequestMapping(value= "/book/{book_id}/comment/{page}")
 	public Page<Comment> getCommentofArtical(
@@ -392,14 +387,13 @@ public class APIController {
 	}
 
 	/*
-	 * @RequestMapping(value = "/book/{book_id}/comment")闂佹彃鐭傚浼存儍閸掝摰ok_id闊洤鎳橀妴蹇曟崉閿燂拷
-	 * @PathVariable(value = "book_id") int book_id濞戞搩鍙忕槐婕t闁汇劌瀚ぐ澶愭煂韫囧海顏遍柡宥呭殩缁辨繃淇婇崒娑氫函闁诡垰鍘栫粭澶嬬▔閿熶粙寮介崙銈囩闁告帪鎷�
-	 * 闁革负鍔岄崣楣冨礈瀹ュ妗ㄩ柛鏃傚灊alue = "book_id"闁挎稑濂旂徊鐐交濞嗗酣鍤嬮煫鍥ф嚇閵嗗繒鎹勯敓锟�
-	 *  @RequestMapping(value = "/book/{book_id}/comment")闂佹彃鐭傚浼存儍閸掝摰ok_id濞戞搫鎷烽柡宥忔嫹
-	 * @param content
-	 * @param book_id
-	 * @param request
+	 * @PathVariable int book_idmust the same as
+	 * @RequestMapping(value = "/book/{book_id}/comment", method = RequestMethod.POST)
+	 * if it dont't want to the same as,or PathVariable(value = "book_id") int book_id;the (value = "book_id")must the same as
+	 * @RequestMapping(value = "/book/{book_id}/comment", method = RequestMethod.POST)
 	 * @return
+	 * @RequestParam(name="content") String content,its content is client need to add
+	 * @PathVariable(value="book_id") ,its content is client not need to addn
 	 */
 	@RequestMapping(value="/book/{book_id}/comment")
 	public Page<Comment> getCommentofArtical(
@@ -409,13 +403,13 @@ public class APIController {
 	}
 
 	/**
-	 * @RequestMapping(value = "/book/{book_id}/comment")闁插矂娼伴惃鍒ok_id韫囧懘銆忔稉锟�
-	 * @PathVariable(value = "book_id") int book_id闁插矂娼伴惃鍒琻t缁鐎烽惃鍕祲閸氬矉绱濇俊鍌涚亯鐟曚椒绗夐崥锟�
-	 * 閸氾箑鍨亸杈啎缂冪晬alue = "book_id"娑擄拷/{book_id}閻╃鎮�
-	 *  @RequestMapping(value = "/book/{book_id}/comment")闂佹彃鐭傚浼存儍閸掝摰ok_id濞戞搫鎷烽柡宥忔嫹
-	 * @param content
-	 * @param book_id
-	 * @param request
+	 * @PathVariable int book_idmust the same as
+	 * @RequestMapping(value = "/book/{book_id}/comment", method = RequestMethod.POST)
+	 * if it dont't want to the same as,or PathVariable(value = "book_id") int book_id;the (value = "book_id")must the same as
+	 * @RequestMapping(value = "/book/{book_id}/comment", method = RequestMethod.POST)
+	 * @return
+	 * @RequestParam(name="content") String content,its content is client need to add
+	 * @PathVariable(value="book_id") ,its content is client not need to addn
 	 * @return
 	 */
 	@RequestMapping(value="/comments")
