@@ -45,4 +45,9 @@ public class DefaultCommentService implements ICommentService {
 
 		return iCommentRepository.findAllCommentofAuthor(userId, request);
 	}
+
+	@Override
+	public int CountCommentsNumber(int comment_id) {	
+		return iCommentRepository.countCommentsNumber(comment_id);
+	}
 }

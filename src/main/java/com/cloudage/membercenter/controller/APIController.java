@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.test.annotation.IfProfileValue;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -583,6 +584,7 @@ public class APIController {
 	public int countSubscribe(@PathVariable int saler_id){
 		return subscribeService.countSubscribe(saler_id);
 	}
+	
 	//	浼犲崠瀹剁殑id锛屾鏌ユ垜鏄惁璁㈤槄璇ュ崠瀹�
 	@RequestMapping("/saler/{saler_id}/issubscribe")
 	public boolean checkSubscribe(@PathVariable int saler_id,HttpServletRequest request){
@@ -673,6 +675,11 @@ public class APIController {
 		return orderListService.getLists(userId,0);
 	}
 	
+	//get count of comment about book
+	@RequestMapping("/count/{comment_id}/comments")
+	public int countComments(@PathVariable int comment_id){
+		return commentService.CountCommentsNumber(comment_id);
+	}
 	
 }
 

@@ -7,6 +7,7 @@ import com.cloudage.membercenter.entity.Comment;
 
 public interface ICommentService {
 
+	int CountCommentsNumber(int comment_id);
 	Comment save(Comment comment);
 	Page<Comment> findCommentNumofBook(int userId, int page); 
 	Page<Comment> findAllCommentofAuthor(int userId, int page);
