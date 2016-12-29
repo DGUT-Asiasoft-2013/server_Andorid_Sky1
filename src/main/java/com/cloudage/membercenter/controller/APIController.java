@@ -25,6 +25,7 @@ import com.cloudage.membercenter.entity.OrderLists;
 import com.cloudage.membercenter.entity.PrivateMessage;
 import com.cloudage.membercenter.entity.Subscribe;
 import com.cloudage.membercenter.entity.User;
+import com.cloudage.membercenter.entity.OrderLists.orders_Key;
 import com.cloudage.membercenter.service.IBookBusService;
 import com.cloudage.membercenter.service.IBookService;
 import com.cloudage.membercenter.service.ICommentService;
@@ -653,18 +654,23 @@ public class APIController {
 			@RequestParam String payway,
 			@RequestParam String finish,
 			@RequestParam String orderId,//璁㈠崟鍙�
-			@RequestParam int booksAdded,
-			@RequestParam float payMoney,
+//			@RequestParam int booksAdded,
+			@RequestParam String payMoney,
 			HttpServletRequest request) {
 		
 		User currentuser=getCurrentUser(request);
 		Book book=bookService.findOne(book_id);
-		orderListService.addOrders(currentuser, book);
+		
+		OrderLists.orders_Key key=new orders_Key();               //获得对象
+		key.setBook(book);
+		key.setUser(currentuser);
 		
 		OrderLists orderList = new OrderLists();
+		orderList.setId(key);
+		
 		orderList.setPayway(payway);
 		orderList.setFinish(finish);
-		orderList.setBooksAdded(booksAdded);
+//		orderList.setBooksAdded(booksAdded);
 		orderList.setOrderId(orderId);
 		orderList.setPayMoney(payMoney);
 		

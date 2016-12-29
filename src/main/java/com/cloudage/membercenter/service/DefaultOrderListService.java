@@ -42,7 +42,7 @@ public class DefaultOrderListService  implements IOrderListService{
 	@Override
 	public Page<OrderLists> getLists(int userId,int page) {
 		Sort sort = new Sort(Direction.DESC, "createDate");
-		PageRequest pageRequest = new PageRequest(page, 5, sort);
+		PageRequest pageRequest = new PageRequest(page, 25, sort);
 		return iOrderListRepository.findAllbyUser(userId,pageRequest);
 	}
 
