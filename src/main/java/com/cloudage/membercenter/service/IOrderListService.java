@@ -11,6 +11,7 @@ public interface IOrderListService {
 	OrderLists save(OrderLists orderList);//保存订单信息
 	OrderLists changeState(OrderLists orderList, String finish);//改变订单状态
 	Page<OrderLists> getLists(int userId, int page);
-	public void addOrders(User user,Book book);
+//	public void addOrders(User user,Book book);
+	OrderLists findOrdersByOrderNumb(String order_numb);
 //	public void removeOrders(User user, Book book);
 }

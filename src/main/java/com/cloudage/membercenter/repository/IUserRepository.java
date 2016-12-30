@@ -31,5 +31,8 @@ public interface IUserRepository extends PagingAndSortingRepository<User, Intege
 	@Query("from User u where u.account=?1")
 	User findSum(float sumMoney);
 
+	@Query("from User u where u.phoneNumb=?1")
+	User findPhone(String phone);
+	
 
 }

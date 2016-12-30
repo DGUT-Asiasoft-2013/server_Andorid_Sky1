@@ -9,7 +9,7 @@ import com.cloudage.membercenter.entity.User;
 import com.cloudage.membercenter.repository.IUserRepository;
 
 /*
- *  实锟斤拷锟斤拷
+ *  瀹為敓鏂ゆ嫹閿熸枻鎷�
  */
 @Component
 @Service
@@ -20,7 +20,7 @@ public class DefaultUserService implements IUserService {
 	IUserRepository userRepo;
 	
 	/*
-	 * 实锟斤拷锟斤拷save(User user)锟斤拷锟斤拷
+	 * 瀹為敓鏂ゆ嫹閿熸枻鎷穝ave(User user)閿熸枻鎷烽敓鏂ゆ嫹
 	 * (non-Javadoc)
 	 * @see com.cloudage.membercenter.service.IUserService#save(com.cloudage.membercenter.entity.User)
 	 */
@@ -29,7 +29,7 @@ public class DefaultUserService implements IUserService {
 	}
 	
 	/*
-	 * 实锟斤拷锟斤拷findNum(String num)锟斤拷锟斤拷
+	 * 瀹為敓鏂ゆ嫹閿熸枻鎷穎indNum(String num)閿熸枻鎷烽敓鏂ゆ嫹
 	 * (non-Javadoc)
 	 * @see com.cloudage.membercenter.service.IUserService#findNum(com.cloudage.membercenter.entity.User)
 	 */
@@ -39,13 +39,13 @@ public class DefaultUserService implements IUserService {
 	}
 
 	/*
-	 * 实锟斤拷锟斤拷findEmail(String email)锟斤拷锟斤拷
+	 * 瀹為敓鏂ゆ嫹閿熸枻鎷穎indEmail(String email)閿熸枻鎷烽敓鏂ゆ嫹
 	 * (non-Javadoc)
 	 * @see com.cloudage.membercenter.service.IUserService#findEmail(java.lang.String)
 	 */
 	@Override
 	public User findEmail(String email) {
-		// 锟斤拷锟斤拷userRepo锟斤拷锟斤拷findEmail()锟斤拷锟斤拷锟斤拷锟斤拷为锟斤拷锟斤拷IUserRepository锟斤拷锟斤拷锟斤拷select...锟斤拷锟�
+		// 閿熸枻鎷烽敓鏂ゆ嫹userRepo閿熸枻鎷烽敓鏂ゆ嫹findEmail()閿熸枻鎷烽敓鏂ゆ嫹閿熸枻鎷烽敓鏂ゆ嫹涓洪敓鏂ゆ嫹閿熸枻鎷稩UserRepository閿熸枻鎷烽敓鏂ゆ嫹閿熸枻鎷穝elect...閿熸枻鎷烽敓锟�
 		return userRepo.findEmail(email);
 	}
 
@@ -98,6 +98,12 @@ public class DefaultUserService implements IUserService {
 	public User findSum(float sumMoney) {
 		// TODO Auto-generated method stub
 		return userRepo.findSum(sumMoney);
+	}
+
+	@Override
+	public User findPhone(String phone) {
+		// TODO Auto-generated method stub
+		return userRepo.findPhone(phone);
 	}
 	
 

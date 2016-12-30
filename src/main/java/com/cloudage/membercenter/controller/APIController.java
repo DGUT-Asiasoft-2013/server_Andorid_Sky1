@@ -21,7 +21,6 @@ import org.springframework.web.multipart.MultipartFile;
 import com.cloudage.membercenter.entity.Book;
 import com.cloudage.membercenter.entity.Bookbus;
 import com.cloudage.membercenter.entity.Comment;
-import com.cloudage.membercenter.entity.Money;
 import com.cloudage.membercenter.entity.OrderLists;
 import com.cloudage.membercenter.entity.PrivateMessage;
 import com.cloudage.membercenter.entity.Subscribe;
@@ -34,10 +33,9 @@ import com.cloudage.membercenter.service.IOrderListService;
 import com.cloudage.membercenter.service.IPrivateMessageService;
 import com.cloudage.membercenter.service.ISubscribeService;
 import com.cloudage.membercenter.service.IUserService;
-import com.fasterxml.jackson.databind.ser.std.StdKeySerializers.Default;
 
 /*
- * 閹貉冨煑缁紮绱濋悽銊ょ艾鐎圭偟骞囬崥鍕潚閺傝纭�
+ * 闁硅矇鍐ㄧ厬缂侇偂绱槐婵嬫偨閵娿倗鑹鹃悗鍦仧楠炲洭宕ラ崟顓ф綒闁哄倽顫夌涵锟�
  */
 @RestController
 @RequestMapping("/api")
@@ -75,10 +73,10 @@ public class APIController {
 
 
 	/**
-	 * 涓嬮潰涓哄姞鍏ヨ喘鐗╄溅
-	 * @PathVariable int book_id蹇呴』涓�
+	 * @PathVariable int book_idmust the same as
 	 * @RequestMapping(value = "/book/{book_id}/bookbus", method = RequestMethod.POST)
-	 * 閲岄潰鐨刡ook_id鐩稿悓锛屽惁鍒欏氨蹇呴』鍔燖PathVariable(value = "book_id") int book_id锛岄噷闈㈢殑value蹇呴』涓嶡RequestMapping閲岄潰鐨勭浉鍚�
+	 * if it dont't want to the same as,or PathVariable(value = "book_id") int book_id;the (value = "book_id")must the same as
+	 * @RequestMapping(value = "/book/{book_id}/bookbus", method = RequestMethod.POST)
 	 * @return
 	 * @RequestParam(name="content") String content,its content is client need to add
 	 * @PathVariable(value="article_id") ,its content is client not need to add
@@ -88,16 +86,16 @@ public class APIController {
 			@PathVariable int book_id,
 			@RequestParam boolean isAddBookToBus,
 			HttpServletRequest request) {
-		//鑾峰緱褰撳墠鐢ㄦ埛
+		//閼惧嘲绶辫ぐ鎾冲閻€劍鍩�
 		User currentuser=getCurrentUser(request);
-		//鎵惧埌褰撳墠涔�
+		//閹垫儳鍩岃ぐ鎾冲娑旓拷
 		Book book=bookService.findOne(book_id);
 		if (isAddBookToBus) {
 			//加入购物车
 			bookBusService.addBookbus(currentuser, book);
 		}
 		else {
-			//绉婚櫎璐墿杞�
+			//缁夊娅庣拹顓犲⒖鏉烇拷
 			bookBusService.removeBookFromBus(currentuser, book);
 		}
 		return bookBusService.CountBook(book_id);          //return add to bookbus'number
@@ -106,17 +104,16 @@ public class APIController {
 
 
 	/*
-	 * 濞夈劌鍞介幙宥勭稊
 	 * @RequestParam(name="content") String content,its content is client need to add
 	 * @PathVariable(value="article_id") ,its content is client not need to add
 	 */
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
 	public User register(
-			@RequestParam(name = "num") String num,//鐠愶箑褰�
-			@RequestParam(name = "password") String password, //鐎靛棛鐖�
-			@RequestParam(name = "email") String email,//闁喚顔�
-			@RequestParam(name = "name") String name,//閺勭數袨
-			@RequestParam(name = "phoneNumb") String phoneNumb,//閻絻鐦介崣椋庣垳
+			@RequestParam(name = "num") String num,//閻犳劧绠戣ぐ锟�
+			@RequestParam(name = "password") String password, //閻庨潧妫涢悥锟�
+			@RequestParam(name = "email") String email,//闂侇収鍠氶锟�
+			@RequestParam(name = "name") String name,//闁哄嫮鏁歌ⅷ
+			@RequestParam(name = "phoneNumb") String phoneNumb,//闁活澀绲婚惁浠嬪矗妞嬪海鍨�
 			@RequestParam(name = "qq") String qq,//QQ
 			MultipartFile avatar,
 			HttpServletRequest request) {
@@ -144,7 +141,7 @@ public class APIController {
 	}
 
 	/*
-	 * 閻ц缍嶉幙宥勭稊
+	 * 闁谎嗩嚙缂嶅秹骞欏鍕▕
 	 */
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public User Login(
@@ -165,12 +162,12 @@ public class APIController {
 
 	}
 
-	//韫囨顔囩�靛棛鐖滈敍宀勫櫢鐠佹儳鐦戦惍锟�
+	//闊洦顭堥鍥╋拷闈涙閻栨粓鏁嶅畝鍕閻犱焦鍎抽惁鎴︽儘閿燂拷
 	@RequestMapping(value="/passwordrecover",method=RequestMethod.POST)
 	public boolean resetPassword(
-			@RequestParam String email,
+			@RequestParam String phone,
 			@RequestParam String passwordHash){
-		User user=userService.findEmail(email);
+		User user=userService.findPhone(phone);
 		if(user==null){
 			return false;
 		}else{
@@ -276,7 +273,7 @@ public class APIController {
 	}
 
 	/*
-	 * 閼惧嘲绶辫ぐ鎾冲閻€劍鍩�
+	 * 闁兼儳鍢茬欢杈亹閹惧啿顤呴柣鈧妽閸╋拷
 	 */
 	@RequestMapping(value = "/me", method = RequestMethod.GET)
 	public User getCurrentUser(HttpServletRequest request) {
@@ -293,7 +290,7 @@ public class APIController {
 
 
 	/**
-	 * 閫�鍑虹櫥褰曪紝鍘绘帀session
+	 * 闁拷閸戣櫣娅ヨぐ鏇礉閸樼粯甯�session
 	 */
 	@RequestMapping(value="/exit")
 	public void exit(HttpServletRequest request){
@@ -304,7 +301,7 @@ public class APIController {
 	}
 
 	/*
-	 * 閼惧嘲绶遍柇顔绘
+	 * 闁兼儳鍢茬欢閬嶆焽椤旂粯顐�
 	 */
 	@RequestMapping(value = "/email", method = RequestMethod.POST)
 	public boolean Email(
@@ -326,15 +323,35 @@ public class APIController {
 
 	}
 
+
+	@RequestMapping(value = "/phone", method = RequestMethod.POST)
+	public boolean Phone(
+			@RequestParam String phone,
+			//@RequestParam String password,
+			HttpServletRequest request) {
+
+		User user =userService.findPhone(phone);           //
+		//
+		if (user==null) {
+			return false;
+		}else {
+			//
+			//user.setPasswordHash(password);
+			//
+			userService.save(user);
+			return true;
+		}
+
+	}
+
 	/**
-	 * @RequestMapping(value = "/book/{book_id}/comment")闁插矂娼伴惃鍒ok_id韫囧懘銆忕捄锟�
-	 * @PathVariable(value = "book_id") int book_id娑擃叏绱漣nt閻ㄥ嫬褰夐柌蹇庣閺嶅嚖绱濇俊鍌涚亯閹厖绗夋稉锟介弽鍑ょ礉閸掞拷
-	 * 閸︺劌鍙鹃崜宥夋桨閸旂垝alue = "book_id"閿涘奔绲炬潻娆庨嚋韫囧懘銆忕捄锟�
-	 *  @RequestMapping(value = "/book/{book_id}/comment")闁插矂娼伴惃鍒ok_id娑擄拷閺嶏拷
-	 * @param content
-	 * @param book_id
-	 * @param request
+	 * @PathVariable int book_idmust the same as
+	 * @RequestMapping(value = "/book/{book_id}/comment", method = RequestMethod.POST)
+	 * if it dont't want to the same as,or PathVariable(value = "book_id") int book_id;the (value = "book_id")must the same as
+	 * @RequestMapping(value = "/book/{book_id}/comment", method = RequestMethod.POST)
 	 * @return
+	 * @RequestParam(name="content") String content,its content is client need to add
+	 * @PathVariable(value="book_id") ,its content is client not need to add
 	 */
 	@RequestMapping(value = "/book/{book_id}/comment", method = RequestMethod.POST)
 	public Comment addComment(@RequestParam(name = "content") String content,
@@ -352,14 +369,13 @@ public class APIController {
 	}
 
 	/**
-	 * @RequestMapping(value = "/book/{book_id}/comment")闁插矂娼伴惃鍒ok_id韫囧懘銆忕捄锟�
-	 * @PathVariable(value = "book_id") int book_id娑擃叏绱漣nt閻ㄥ嫬褰夐柌蹇庣閺嶅嚖绱濇俊鍌涚亯閹厖绗夋稉锟介弽鍑ょ礉閸掞拷
-	 * 閸︺劌鍙鹃崜宥夋桨閸旂垝alue = "book_id"閿涘奔绲炬潻娆庨嚋韫囧懘銆忕捄锟�
-	 *  @RequestMapping(value = "/book/{book_id}/comment")闁插矂娼伴惃鍒ok_id娑擄拷閺嶏拷
-	 * @param content
-	 * @param book_id
-	 * @param request
+	  @PathVariable int book_idmust the same as
+	 * @RequestMapping(value = "/book/{book_id}/comment/{page}", method = RequestMethod.POST)
+	 * if it dont't want to the same as,or PathVariable(value = "book_id") int book_id;the (value = "book_id")must the same as
+	 * @RequestMapping(value = "/book/{book_id}/comment/{page}", method = RequestMethod.POST)
 	 * @return
+	 * @RequestParam(name="content") String content,its content is client need to add
+	 * @PathVariable(value="book_id") ,its content is client not need to addn
 	 */
 	@RequestMapping(value= "/book/{book_id}/comment/{page}")
 	public Page<Comment> getCommentofArtical(
@@ -370,14 +386,13 @@ public class APIController {
 	}
 
 	/*
-	 * @RequestMapping(value = "/book/{book_id}/comment")闁插矂娼伴惃鍒ok_id韫囧懘銆忕捄锟�
-	 * @PathVariable(value = "book_id") int book_id娑擃叏绱漣nt閻ㄥ嫬褰夐柌蹇庣閺嶅嚖绱濇俊鍌涚亯閹厖绗夋稉锟介弽鍑ょ礉閸掞拷
-	 * 閸︺劌鍙鹃崜宥夋桨閸旂垝alue = "book_id"閿涘奔绲炬潻娆庨嚋韫囧懘銆忕捄锟�
-	 *  @RequestMapping(value = "/book/{book_id}/comment")闁插矂娼伴惃鍒ok_id娑擄拷閺嶏拷
-	 * @param content
-	 * @param book_id
-	 * @param request
+	 * @PathVariable int book_idmust the same as
+	 * @RequestMapping(value = "/book/{book_id}/comment", method = RequestMethod.POST)
+	 * if it dont't want to the same as,or PathVariable(value = "book_id") int book_id;the (value = "book_id")must the same as
+	 * @RequestMapping(value = "/book/{book_id}/comment", method = RequestMethod.POST)
 	 * @return
+	 * @RequestParam(name="content") String content,its content is client need to add
+	 * @PathVariable(value="book_id") ,its content is client not need to addn
 	 */
 	@RequestMapping(value="/book/{book_id}/comment")
 	public Page<Comment> getCommentofArtical(
@@ -387,25 +402,25 @@ public class APIController {
 	}
 
 	/**
-	 * @RequestMapping(value = "/book/{book_id}/comment")閲岄潰鐨刡ook_id蹇呴』涓�
-	 * @PathVariable(value = "book_id") int book_id閲岄潰鐨刬nt绫诲瀷鐨勭浉鍚岋紝濡傛灉瑕佷笉鍚�
-	 * 鍚﹀垯灏辫缃畍alue = "book_id"涓�/{book_id}鐩稿悓
-	 *  @RequestMapping(value = "/book/{book_id}/comment")闁插矂娼伴惃鍒ok_id娑擄拷閺嶏拷
-	 * @param content
-	 * @param book_id
-	 * @param request
+	 * @PathVariable int book_idmust the same as
+	 * @RequestMapping(value = "/book/{book_id}/comment", method = RequestMethod.POST)
+	 * if it dont't want to the same as,or PathVariable(value = "book_id") int book_id;the (value = "book_id")must the same as
+	 * @RequestMapping(value = "/book/{book_id}/comment", method = RequestMethod.POST)
+	 * @return
+	 * @RequestParam(name="content") String content,its content is client need to add
+	 * @PathVariable(value="book_id") ,its content is client not need to addn
 	 * @return
 	 */
 	@RequestMapping(value="/comments")
 	public Page<Comment> getAllCommentsOfAuthor(HttpServletRequest request)
 	{
-		//閼惧嘲绶辫ぐ鎾冲閻€劍鍩�
+		//闁兼儳鍢茬欢杈亹閹惧啿顤呴柣鈧妽閸╋拷
 		User user=getCurrentUser(request);
 		return commentService.findAllCommentofAuthor(user.getId(), 0);
 	}
 
 	/**
-	 * get CurrentUser鈥榮 all add to bookbus'book
+	 * get CurrentUser閳ユΞ all add to bookbus'book
 	 */
 	@RequestMapping(value="/bookbus")
 	public Page<Bookbus> getAllbookAddtoBookBus(HttpServletRequest request)
@@ -416,7 +431,7 @@ public class APIController {
 	}
 	/***
 	 * 
-	 * 鐎涙ê鍙嗛崶鍙ュ姛娣団剝浼�
+	 * 閻庢稒锚閸欏棝宕堕崣銉ュ濞ｅ洠鍓濇导锟�
 	 * 
 	 * */
 	@RequestMapping(value="/sellbooks",method=RequestMethod.POST)
@@ -430,7 +445,7 @@ public class APIController {
 			@RequestParam String tag,
 			@RequestParam String summary,
 			@RequestParam int booknumber, 
-			MultipartFile bookavatar,//鐎涙ɑ鏂侀崶鍓у
+			MultipartFile bookavatar,//閻庢稒蓱閺備線宕堕崜褍顣�
 			HttpServletRequest request){
 		User currentUser = getCurrentUser(request);
 		Book book = new Book();
@@ -448,7 +463,7 @@ public class APIController {
 			try {
 				String realPath=request.getSession().getServletContext().getRealPath("/WEB-INF/upload/books");
 				FileUtils.copyInputStreamToFile(bookavatar.getInputStream(), new File(realPath,title+".png"));
-				book.setBookavatar("upload/books/"+title+".png");           //鐎涙ɑ鏂侀崶鍓у閻ㄥ嫯鐭惧锟�
+				book.setBookavatar("upload/books/"+title+".png");           //閻庢稒蓱閺備線宕堕崜褍顣婚柣銊ュ閻儳顕ラ敓锟�
 
 			} catch (Exception e) {
 			}
@@ -458,7 +473,7 @@ public class APIController {
 		return bookService.save(book);
 	}
 
-	//閼惧嘲褰囬崙鍝勬暛閸ュ彞鍔熼崚妤勩��
+	//闁兼儳鍢茶ぐ鍥礄閸濆嫭鏆涢柛銉ュ綖閸旂喖宕氬Δ鍕╋拷锟�
 	@RequestMapping("/books/{page}")
 	public Page<Book> getFeeds(@PathVariable int page){
 		return bookService.getBooks(page);
@@ -474,7 +489,7 @@ public class APIController {
 			@RequestParam(defaultValue="0") int page){
 		return findTextByKeyword(keyword, page);
 	}
-	//鎼滅储鐨勫姞杞芥洿澶�
+	//閹兼粎鍌ㄩ惃鍕鏉炶姤娲挎径锟�
 	@RequestMapping(value="/book/s/{keyword}/{page}")
 	public Page<Book> findTextByKeyword(
 			@PathVariable String keyword,
@@ -494,7 +509,7 @@ public class APIController {
 		return findBooksByType(tag,0);
 	}
 
-	//鏍规嵁鍥句功鏍囩鍜屽叧閿瓧鎼滅储鍥句功
+	//閺嶈宓侀崶鍙ュ姛閺嶅洨顒烽崪灞藉彠闁款喖鐡ч幖婊呭偍閸ュ彞鍔�
 	@RequestMapping("/books/{keyword}/and/{tag}/class/{page}")
 	public Page<Book> findBooksByKeywordAndType(
 			@PathVariable String keyword,
@@ -511,9 +526,9 @@ public class APIController {
 
 	/**
 	 * 2016-12-22 19:01:20
-	 * 閹恒儲鏁归崣鎴︼拷浣圭Х閹垳娈戦幒銉ュ經
-	 * @param String private:缁変椒淇婇惃鍕徔娴ｆ挸鍞寸�癸拷
-	 * @param String receiverAccount :缁変椒淇婇幒銉︽暪閼板懐娈戠敮鎰娇
+	 * 闁规亽鍎查弫褰掑矗閹达讣鎷锋担鍦ラ柟顓у灣濞堟垿骞掗妷銉ョ稉
+	 * @param String private:缂佸妞掓穱濠囨儍閸曨偄寰斿ù锝嗘尭閸炲锟界櫢鎷�
+	 * @param String receiverAccount :缂佸妞掓穱濠囧箳閵夛附鏆柤鏉挎噽濞堟垹鏁幇顒�濞�
 	 * 
 	 */
 	@RequestMapping(value = "/privateMessage",method = RequestMethod.POST)
@@ -522,11 +537,11 @@ public class APIController {
 			HttpServletRequest request
 			){
 
-		User user = getCurrentUser(request);//閼惧嘲褰囪ぐ鎾冲閻€劍鍩�
+		User user = getCurrentUser(request);//闁兼儳鍢茶ぐ鍥亹閹惧啿顤呴柣鈧妽閸╋拷
 
-		/*//濞村鐦�
+		/*//婵炴潙顑堥惁锟�
 			User user = userService.findNum("gg");*/
-		User receiver = userService.findNum(receiverAccount);//閹垫儳鍩岀粔浣蜂繆閹恒儲鏁归懓锟�
+		User receiver = userService.findNum(receiverAccount);//闁瑰灚鍎抽崺宀�绮旀担铚傜箚闁规亽鍎查弫褰掓嚀閿燂拷
 		PrivateMessage privateMessage = new PrivateMessage();
 		privateMessage.setPrivateMessageSender(user);
 		privateMessage.setPrivateMessageReceiver(receiver);
@@ -537,7 +552,7 @@ public class APIController {
 
 	/**
 	 * 2016-12-22 19:06:02
-	 * 閺屻儲澹樼粔浣蜂繆閻ㄥ嫬鍞寸�癸拷
+	 * 闁哄被鍎叉竟妯肩矓娴ｈ渹绻嗛柣銊ュ閸炲锟界櫢鎷�
 	 * @param senderId
 	 * @param page
 	 * @param request
@@ -549,7 +564,7 @@ public class APIController {
 			HttpServletRequest request
 
 			){
-		//User user = userService.findNum("gg"); //濞村鐦弫鐗堝祦
+		//User user = userService.findNum("gg"); //婵炴潙顑堥惁顖炲极閻楀牆绁�
 		User user = getCurrentUser(request);//
 
 		return privateMessageService.findPrivateMessagesByReveiverId(receiverId,user.getId(), page);
@@ -557,7 +572,7 @@ public class APIController {
 
 	/**
 	 * 2016-12-23 18:28:39
-	 * 鏌ユ壘绉佷俊鐨勫垪琛�
+	 * 閺屻儲澹樼粔浣蜂繆閻ㄥ嫬鍨悰锟�
 	 * @param request
 	 * @return
 	 */
@@ -582,13 +597,13 @@ public class APIController {
 	public int countSubscribe(@PathVariable int saler_id){
 		return subscribeService.countSubscribe(saler_id);
 	}
-	//	浼犲崠瀹剁殑id锛屾鏌ユ垜鏄惁璁㈤槄璇ュ崠瀹�
+	//	娴肩姴宕犵�瑰墎娈慽d閿涘本顥呴弻銉﹀灉閺勵垰鎯佺拋銏ゆ鐠囥儱宕犵�癸拷
 	@RequestMapping("/saler/{saler_id}/issubscribe")
 	public boolean checkSubscribe(@PathVariable int saler_id,HttpServletRequest request){
 		User me = getCurrentUser(request);
 		return subscribeService.checkSubscribe(me.getId(), saler_id);
 	}
-	//	浼犵敤鎴凤紝杩斿洖鐢ㄦ埛璁㈤槄鐨勫崠瀹�
+	//	娴肩姷鏁ら幋鍑ょ礉鏉╂柨娲栭悽銊﹀煕鐠併垽妲勯惃鍕礌鐎癸拷
 	@RequestMapping(value="/{user_id}/subscribe")
 	public List<Subscribe> getSalerByUserName(@PathVariable int user_id){
 		return subscribeService.findAllByUser(user_id);
@@ -652,28 +667,37 @@ public class APIController {
 
 	}
 
-	//订单
+	//璁㈠崟
 	@RequestMapping(value = "/books/{book_id}/orders", method = RequestMethod.POST)
 	public OrderLists addToOrderList(
 			@PathVariable int book_id,
 			@RequestParam String payway,
 			@RequestParam String finish,
-			@RequestParam String orderId,//订单号
-			@RequestParam int booksAdded,
-			@RequestParam float payMoney,
+			@RequestParam String orderId,//璁㈠崟鍙�
+			//			@RequestParam int booksAdded,
+			@RequestParam String payMoney,
 			HttpServletRequest request) {
-		
+
 		User currentuser=getCurrentUser(request);
 		Book book=bookService.findOne(book_id);
-		orderListService.addOrders(currentuser, book);
-		
+
+		//		OrderLists.orders_Key key=new orders_Key();               //获得对象
+		//		key.setBook(book);
+		//		key.setUser(currentuser);
+
 		OrderLists orderList = new OrderLists();
+		//		orderList.setId(key);
+		orderList.setBook(book);
+		orderList.setUser(currentuser);
+		//----------------------
 		orderList.setPayway(payway);
 		orderList.setFinish(finish);
-		orderList.setBooksAdded(booksAdded);
+		//		orderList.setBooksAdded(booksAdded);
 		orderList.setOrderId(orderId);
 		orderList.setPayMoney(payMoney);
-		
+		//删除购物车
+		bookBusService.removeBookFromBus(currentuser, book);
+
 		return orderListService.save(orderList);
 
 	}
@@ -694,7 +718,34 @@ public class APIController {
 		int userId = user.getId();
 		return orderListService.getLists(userId,0);
 	}
-	
-	
+
+	//
+	//-get orders------
+	@RequestMapping("/orders/get/{order_numb}")
+	public OrderLists getOrders(@PathVariable String order_numb){
+		return orderListService.findOrdersByOrderNumb(order_numb);
+	}
+
+	//get count of comment about book
+	@RequestMapping("/count/{comment_id}/comments")
+	public int countComments(@PathVariable int comment_id){
+		return commentService.CountCommentsNumber(comment_id);
+	}
+
+	//---------余额
+	@RequestMapping(value="/me/recharge/use",method = RequestMethod.POST)
+	public User saveMoneyUse(
+			/*@RequestParam String currentUser,*/
+			@RequestParam float useMoney,
+//			@RequestParam String orderId,
+			HttpServletRequest request){
+		User user = getCurrentUser(request);
+		user.setSumMoney(user.getSumMoney()-useMoney);
+		
+
+		return userService.save(user);
+	}
+
+
 }
 

@@ -11,13 +11,15 @@ import com.cloudage.membercenter.entity.Comment;
 //PagingAndSortingRepository
 @Repository
 public interface ICommentRepository extends PagingAndSortingRepository<Comment, Integer>{
-
+	//get count of comments
+	@Query("select count(*) from Comment comment where comment.book.id = ?1")
+	int countCommentsNumber(int comment_id);
 	
-	//ÕÒÄ³±¾ÊéµÄËùÓĞÆÀÂÛ
+	//ï¿½ï¿½Ä³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	@Query("from Comment comment where comment.book.id = ?1")
 	Page<Comment> findCommentNum(int userId,Pageable page);        
 	
-	//ÕÒÄ³¸öÈËµÄËùÓĞÆÀÂÛ
+	//ï¿½ï¿½Ä³ï¿½ï¿½ï¿½Ëµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	@Query("from Comment comment where comment.book.user.id = ?1")
 	Page<Comment> findAllCommentofAuthor(int userId,Pageable page);
 }
