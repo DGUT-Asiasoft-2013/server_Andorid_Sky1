@@ -34,4 +34,10 @@ public interface ISubscribeRepository extends PagingAndSortingRepository<Subscri
 	
 	@Query("select count(*) from Subscribe subscribe where subscribe.id.me.id = ?1 and subscribe.b = true")
 	int isExistence(int user_id);
+	@Modifying
+	@Query("update Subscribe subscribe set subscribe.count=0 where subscribe.id.me.id=?1 and subscribe.id.saler.id=?2")
+	void setCountZero(int user_id, int saler_id);
+	
+	@Query("select subscribe.count from Subscribe subscribe where subscribe.id.me.id=?1 and subscribe.id.saler.id=?2 and subscribe.b=true")
+	int getCountWithSalerId(int user_id, int saler_id);
 }

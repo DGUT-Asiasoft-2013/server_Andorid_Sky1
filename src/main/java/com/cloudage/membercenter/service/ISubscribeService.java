@@ -17,4 +17,6 @@ public interface ISubscribeService {
 	void changeBoolean(int user_id, int saler_id, boolean b);
 	int getUserCount(int user_id);
 	int isExistence(int user_id);
+	void setCountZero(int user_id, int saler_id);
+	int getCountWithSalerId(int user_id, int saler_id);
 }

@@ -81,4 +81,16 @@ public class DefaultSubscribeService implements ISubscribeService{
 	public int isExistence(int user_id) {
 		return subscribeRepo.isExistence(user_id);
 	}
+
+
+	@Override
+	public void setCountZero(int user_id, int saler_id) {
+		subscribeRepo.setCountZero(user_id,saler_id);
+	}
+
+
+	@Override
+	public int getCountWithSalerId(int user_id, int saler_id) {
+		return subscribeRepo.getCountWithSalerId(user_id,saler_id);
+	}
 }

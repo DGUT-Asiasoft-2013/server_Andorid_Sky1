@@ -616,13 +616,22 @@ public class APIController {
 
 		return subscribeService.countSubscribe(saler_id);
 	}
-	@RequestMapping(value="subscribe/{user_id}/count")
+	@RequestMapping(value="/subscribe/{user_id}/count")
 	public int getCount(@PathVariable int user_id){
 		if(subscribeService.isExistence(user_id)>0)
 			return subscribeService.getUserCount(user_id);
 		else
 			return 0;
 
+	}
+	@RequestMapping(value = "/subscribe/{user_id}/{saler_id}")
+	public void setCountZero(@PathVariable int user_id,
+			@PathVariable int saler_id){
+		subscribeService.setCountZero(user_id,saler_id);
+	}
+	@RequestMapping(value="/subscribe/{user_id}/{saler_id}/count")
+	public int getCountWithSalerId(@PathVariable int user_id,@PathVariable int saler_id){
+		return subscribeService.getCountWithSalerId(user_id,saler_id);
 	}
 
 	@RequestMapping(value="/me/recharge",method = RequestMethod.POST)
