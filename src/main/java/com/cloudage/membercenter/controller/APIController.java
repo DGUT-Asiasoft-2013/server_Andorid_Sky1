@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.test.annotation.IfProfileValue;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -25,7 +24,6 @@ import com.cloudage.membercenter.entity.OrderLists;
 import com.cloudage.membercenter.entity.PrivateMessage;
 import com.cloudage.membercenter.entity.Subscribe;
 import com.cloudage.membercenter.entity.User;
-import com.cloudage.membercenter.entity.OrderLists.orders_Key;
 import com.cloudage.membercenter.service.IBookBusService;
 import com.cloudage.membercenter.service.IBookService;
 import com.cloudage.membercenter.service.ICommentService;
@@ -326,7 +324,7 @@ public class APIController {
 
 	}
 
-	
+
 	@RequestMapping(value = "/phone", method = RequestMethod.POST)
 	public boolean Phone(
 			@RequestParam String phone,
@@ -346,7 +344,7 @@ public class APIController {
 		}
 
 	}
-	
+
 	/**
 	 * @PathVariable int book_idmust the same as
 	 * @RequestMapping(value = "/book/{book_id}/comment", method = RequestMethod.POST)
@@ -654,26 +652,30 @@ public class APIController {
 			@RequestParam String payway,
 			@RequestParam String finish,
 			@RequestParam String orderId,//璁㈠崟鍙�
-//			@RequestParam int booksAdded,
+			//			@RequestParam int booksAdded,
 			@RequestParam String payMoney,
 			HttpServletRequest request) {
-		
+
 		User currentuser=getCurrentUser(request);
 		Book book=bookService.findOne(book_id);
-		
-		OrderLists.orders_Key key=new orders_Key();               //获得对象
-		key.setBook(book);
-		key.setUser(currentuser);
-		
+
+		//		OrderLists.orders_Key key=new orders_Key();               //获得对象
+		//		key.setBook(book);
+		//		key.setUser(currentuser);
+
 		OrderLists orderList = new OrderLists();
-		orderList.setId(key);
-		
+		//		orderList.setId(key);
+		orderList.setBook(book);
+		orderList.setUser(currentuser);
+		//----------------------
 		orderList.setPayway(payway);
 		orderList.setFinish(finish);
-//		orderList.setBooksAdded(booksAdded);
+		//		orderList.setBooksAdded(booksAdded);
 		orderList.setOrderId(orderId);
 		orderList.setPayMoney(payMoney);
-		
+		//删除购物车
+		bookBusService.removeBookFromBus(currentuser, book);
+
 		return orderListService.save(orderList);
 
 	}
@@ -694,12 +696,34 @@ public class APIController {
 		int userId = user.getId();
 		return orderListService.getLists(userId,0);
 	}
-	
+
+	//
+	//-get orders------
+	@RequestMapping("/orders/get/{order_numb}")
+	public OrderLists getOrders(@PathVariable String order_numb){
+		return orderListService.findOrdersByOrderNumb(order_numb);
+	}
+
 	//get count of comment about book
 	@RequestMapping("/count/{comment_id}/comments")
 	public int countComments(@PathVariable int comment_id){
 		return commentService.CountCommentsNumber(comment_id);
 	}
-	
+
+	//---------余额
+	@RequestMapping(value="/me/recharge/use",method = RequestMethod.POST)
+	public User saveMoneyUse(
+			/*@RequestParam String currentUser,*/
+			@RequestParam float useMoney,
+//			@RequestParam String orderId,
+			HttpServletRequest request){
+		User user = getCurrentUser(request);
+		user.setSumMoney(user.getSumMoney()-useMoney);
+		
+
+		return userService.save(user);
+	}
+
+
 }
 
