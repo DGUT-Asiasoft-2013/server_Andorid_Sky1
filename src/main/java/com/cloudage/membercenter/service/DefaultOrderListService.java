@@ -11,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.cloudage.membercenter.entity.Book;
 import com.cloudage.membercenter.entity.OrderLists;
-import com.cloudage.membercenter.entity.OrderLists.orders_Key;
 import com.cloudage.membercenter.entity.User;
 import com.cloudage.membercenter.repository.IOrderListRepository;
 
@@ -47,19 +46,29 @@ public class DefaultOrderListService  implements IOrderListService{
 	}
 
 
-	//add
+//	//add
+//	@Override
+//	public void addOrders(User user, Book book) {
+//		OrderLists.orders_Key key=new orders_Key();               //获得对象
+//		key.setBook(book);
+//		key.setUser(user);
+//		
+//		
+//		OrderLists orders=new OrderLists();
+//		//设置id
+//		orders.setId(key);
+//		iOrderListRepository.save(orders); 
+//		
+//	}
+
+
+
 	@Override
-	public void addOrders(User user, Book book) {
-		OrderLists.orders_Key key=new orders_Key();               //获得对象
-		key.setBook(book);
-		key.setUser(user);
-		
-		
-		OrderLists orders=new OrderLists();
-		//设置id
-		orders.setId(key);
-		iOrderListRepository.save(orders); 
-		
+	public OrderLists findOrdersByOrderNumb(String order_numb) {
+		return iOrderListRepository.getOrderByOnumb(order_numb);
 	}
+
+
+
 
 }
