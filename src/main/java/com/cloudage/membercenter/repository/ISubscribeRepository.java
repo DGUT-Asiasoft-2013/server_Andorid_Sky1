@@ -3,6 +3,7 @@ package com.cloudage.membercenter.repository;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
@@ -24,4 +25,19 @@ public interface ISubscribeRepository extends PagingAndSortingRepository<Subscri
 //	通过卖家id寻找卖家
 	@Query("from Subscribe subscribe where subscribe.id.saler.id = ?1")
 	Subscribe findById(int saler_id);
+	@Modifying
+	@Query("update Subscribe subscribe set subscribe.b =?3  where subscribe.id.me.id=?1 and subscribe.id.saler.id=?2")
+	void changeB(int user_id, int saler_id, boolean b);
+	
+	@Query("select sum(subscribe.count) from Subscribe subscribe where subscribe.id.me.id = ?1 and subscribe.b = true")
+	int getCount(int user_id);
+	
+	@Query("select count(*) from Subscribe subscribe where subscribe.id.me.id = ?1 and subscribe.b = true")
+	int isExistence(int user_id);
+	@Modifying
+	@Query("update Subscribe subscribe set subscribe.count=0 where subscribe.id.me.id=?1 and subscribe.id.saler.id=?2")
+	void setCountZero(int user_id, int saler_id);
+	
+	@Query("select subscribe.count from Subscribe subscribe where subscribe.id.me.id=?1 and subscribe.id.saler.id=?2 and subscribe.b=true")
+	int getCountWithSalerId(int user_id, int saler_id);
 }

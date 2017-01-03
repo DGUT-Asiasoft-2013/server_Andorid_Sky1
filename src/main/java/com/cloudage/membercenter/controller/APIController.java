@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.io.FileUtils;
+import org.junit.runners.Parameterized.Parameters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -89,10 +90,8 @@ public class APIController {
 		User currentuser=getCurrentUser(request);
 		//閹垫儳鍩岃ぐ鎾冲娑旓拷
 		Book book=bookService.findOne(book_id);
-
 		if (isAddBookToBus) {
-
-			//閸旂姴鍙嗙拹顓犲⒖鏉烇拷
+			//加入购物车
 			bookBusService.addBookbus(currentuser, book);
 		}
 		else {
@@ -489,6 +488,7 @@ public class APIController {
 			} catch (Exception e) {
 			}
 		}
+		bookService.updateSubscribeB(currentUser.getId());
 
 		return bookService.save(book);
 	}
@@ -503,7 +503,6 @@ public class APIController {
 		return getFeeds(0);
 	}
 
-	//闁瑰吋绮庨崒銊╁炊閸欍儱濮�--------(闁哄秷顫夊畵锟� 闁搞儱褰為崝鐔煎触瀹ュ泦鐎ㄩ柛銉ュ綖閸旂喐鎷呭鍡嫹閸樺SBN|闁告鐗曢锟� 闁瑰吋绮庨崒锟�)
 	@RequestMapping(value="/book/s/{keyword}")
 	public Page<Book> fingTextByKeyword(
 			@PathVariable String keyword,
@@ -518,7 +517,7 @@ public class APIController {
 		return bookService.findTextByKeyword(keyword, page);
 	}
 
-	//閺嶈宓侀崶鍙ュ姛閺嶅洨顒烽幖婊呭偍閸ュ彞鍔�(閸ュ彞鍔熼崚鍡欒)
+	//根据图书标签搜索图书(图书分类)
 	@RequestMapping("/books/{tag}/class/{page}")
 	public Page<Book> findBooksByType(
 			@PathVariable String tag,
@@ -613,7 +612,7 @@ public class APIController {
 
 		return privateMessageService.findAllOtherUsersByNum(user.getAccount(),page);
 	}
-	//	娴肩姴宕犵�瑰墎娈慽d閿涘矁绻戦崶鐐插礌鐎瑰墎娈戠拋銏ゆ閺侊拷
+	//	传卖家的id，返回卖家的订阅数
 	@RequestMapping("/saler/{saler_id}/subscribe")
 	public int countSubscribe(@PathVariable int saler_id){
 		return subscribeService.countSubscribe(saler_id);
@@ -629,7 +628,13 @@ public class APIController {
 	public List<Subscribe> getSalerByUserName(@PathVariable int user_id){
 		return subscribeService.findAllByUser(user_id);
 	}
-	//娴肩姳绔存稉鐚檕olean閿涘奔璐熼惇鐕傜礉濞ｈ濮炵拋銏ゆ閸忓磭閮撮敍灞艰礋閸嬪浄绱濋崣鏍ㄧХ鐠併垽妲勯崗宕囬兇閿涘苯鑻熸潻鏂挎礀閸楁牕顔嶉惃鍕潶鐠併垽妲勯弫锟�
+	@RequestMapping(value="/subscribe/b",method=RequestMethod.POST)
+	public void changeB(@RequestParam int user_id,
+			@RequestParam int saler_id,
+			@RequestParam boolean b){
+		subscribeService.changeBoolean(user_id,saler_id,b);
+	}
+	//传一个boolean，为真，添加订阅关系，为假，取消订阅关系，并返回卖家的被订阅数
 	@RequestMapping(value="/saler/{saler_id}/subscribe",method = RequestMethod.POST)
 	public int changeSubscribe(
 			@PathVariable int saler_id,
@@ -645,6 +650,23 @@ public class APIController {
 			subscribeService.removeSubscribe(me, saler);
 
 		return subscribeService.countSubscribe(saler_id);
+	}
+	@RequestMapping(value="/subscribe/{user_id}/count")
+	public int getCount(@PathVariable int user_id){
+		if(subscribeService.isExistence(user_id)>0)
+			return subscribeService.getUserCount(user_id);
+		else
+			return 0;
+
+	}
+	@RequestMapping(value = "/subscribe/{user_id}/{saler_id}")
+	public void setCountZero(@PathVariable int user_id,
+			@PathVariable int saler_id){
+		subscribeService.setCountZero(user_id,saler_id);
+	}
+	@RequestMapping(value="/subscribe/{user_id}/{saler_id}/count")
+	public int getCountWithSalerId(@PathVariable int user_id,@PathVariable int saler_id){
+		return subscribeService.getCountWithSalerId(user_id,saler_id);
 	}
 
 	@RequestMapping(value="/me/recharge",method = RequestMethod.POST)
