@@ -12,5 +12,6 @@ public interface IBookBusService {
 	void addBookbus(User user,Book book);             //加入购物车
 	void removeBookFromBus(User user,Book book);            //移除购物车
 	int CountBook(int book_id);                             //统计数量
+	Bookbus save(Bookbus bookbus);                        //save bookbus
 	Page<Bookbus> findCurrentUserAllBookAddtoBookBus(int userId,int page);//找到用户的所有加入购物车的书
 }

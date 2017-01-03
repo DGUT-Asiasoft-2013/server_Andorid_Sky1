@@ -102,7 +102,27 @@ public class APIController {
 		return bookBusService.CountBook(book_id);          //return add to bookbus'number
 
 	}
-
+	
+	/**
+	 * remove from bookbus
+	 * @param isRemoveBookFromBus
+	 * @return
+	 */
+	@RequestMapping(value = "/book/{book_id}/removefrombookbus", method = RequestMethod.POST)
+	public void RemoveFromBookBus(
+			@PathVariable int book_id,
+			@RequestParam boolean isRemoveBookFromBus,
+			HttpServletRequest request) 
+	{
+		Bookbus bookbus=new Bookbus();
+		//get current user
+		User currentuser=getCurrentUser(request);
+		Book book=bookService.findOne(book_id);
+		if (isRemoveBookFromBus) {
+			
+			bookBusService.removeBookFromBus(currentuser, book);
+		}
+	}
 
 	/*
 	 * @RequestParam(name="content") String content,its content is client need to add
