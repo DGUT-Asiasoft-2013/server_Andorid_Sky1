@@ -10,6 +10,7 @@ import org.apache.commons.io.FileUtils;
 import org.junit.runners.Parameterized.Parameters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpMethod;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -33,6 +34,7 @@ import com.cloudage.membercenter.service.IOrderListService;
 import com.cloudage.membercenter.service.IPrivateMessageService;
 import com.cloudage.membercenter.service.ISubscribeService;
 import com.cloudage.membercenter.service.IUserService;
+import com.fasterxml.jackson.databind.ser.std.StdKeySerializers.Default;
 
 /*
  * 闁硅矇鍐ㄧ厬缂侇偂绱槐婵嬫偨閵娿倗鑹鹃悗鍦仧楠炲洭宕ラ崟顓ф綒闁哄倽顫夌涵锟�
@@ -722,22 +724,58 @@ public class APIController {
 
 	}
 
-	@RequestMapping("/orders/{page}")
+	@RequestMapping(value="/orders/{tag}/{page}")
 	public Page<OrderLists> getOrders(
-			@PathVariable() int page,
+			@PathVariable String tag,
+			@RequestParam(defaultValue="0") int page,
 			HttpServletRequest request){
-		User user = getCurrentUser(request);
-		int userId = user.getId();
-		return orderListService.getLists(userId,page);
+		if(tag.equals("BUY")){//我买到的书
+			User user = getCurrentUser(request);
+			int userId = user.getId();
+			return orderListService.getListsBuy(userId,page);
+		}
+		else//我卖出的书
+		{
+			User user = getCurrentUser(request);
+			int userId = user.getId();
+			return orderListService.getListsSale(userId,page);
+		}
 	}
 
-	@RequestMapping("/orders")
+	/*@RequestMapping(value="/orders")
 	public Page<OrderLists> getOrders(
 			HttpServletRequest request){
 		User user = getCurrentUser(request);
 		int userId = user.getId();
 		return orderListService.getLists(userId,0);
+	}*/
+	
+	//获取我买到的书
+	@RequestMapping(value="/orders/{tag}")
+	public Page<OrderLists> getOrderss(
+			@PathVariable String tag,
+			HttpServletRequest request){
+		if(tag.equals("BUY")){//我买到的书
+			User user = getCurrentUser(request);
+			int userId = user.getId();
+			return orderListService.getListsBuy(userId,0);
+		}
+		else//我卖出的书
+		{
+			User user = getCurrentUser(request);
+			int userId = user.getId();
+			return orderListService.getListsSale(userId,0);
+		}
+		
 	}
+	
+	
+	//删除指定的订单
+	@RequestMapping(value="/deleteOrder/{orderId}" ,method=RequestMethod.POST)
+	public boolean  deleteOrder(@PathVariable int orderId){
+		return orderListService.deleteOrderById(orderId);
+	}
+
 
 	//
 	//-get orders------
