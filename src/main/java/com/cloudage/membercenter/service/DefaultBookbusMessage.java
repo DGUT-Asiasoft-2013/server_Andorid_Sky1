@@ -70,4 +70,12 @@ public class DefaultBookbusMessage implements IBookBusService{
 		return iBookBusRepository.findCurrentUserAllBookAddtoBookBus(userId, request);
 	}
 
+
+	//save bookbus
+	@Override
+	public Bookbus save(Bookbus bookbus) {
+		
+		return iBookBusRepository.save(bookbus);
+	}
+
 }
