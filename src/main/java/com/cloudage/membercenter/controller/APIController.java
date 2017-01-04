@@ -21,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.cloudage.membercenter.entity.Book;
 import com.cloudage.membercenter.entity.Bookbus;
 import com.cloudage.membercenter.entity.Comment;
+import com.cloudage.membercenter.entity.Money;
 import com.cloudage.membercenter.entity.OrderLists;
 import com.cloudage.membercenter.entity.PrivateMessage;
 import com.cloudage.membercenter.entity.Subscribe;
@@ -35,7 +36,7 @@ import com.cloudage.membercenter.service.ISubscribeService;
 import com.cloudage.membercenter.service.IUserService;
 
 /*
- * 闁硅矇鍐ㄧ厬缂侇偂绱槐婵嬫偨閵娿倗鑹鹃悗鍦仧楠炲洭宕ラ崟顓ф綒闁哄倽顫夌涵锟�
+ * 闂佺鐭囬崘銊у幀缂備緡鍋傜槐顔炬濠靛鍋ㄩ柕濞垮�楅懝楣冩倵閸︻厼浠ф鐐叉喘瀹曘儵宕熼褎缍掗梺鍝勫�介～澶屾兜閿燂拷
  */
 @RestController
 @RequestMapping("/api")
@@ -86,16 +87,16 @@ public class APIController {
 			@PathVariable int book_id,
 			@RequestParam boolean isAddBookToBus,
 			HttpServletRequest request) {
-		//閼惧嘲绶辫ぐ鎾冲閻€劍鍩�
+		//闁兼儳鍢茬欢杈亹閹惧啿顤呴柣鈧妽閸╋拷
 		User currentuser=getCurrentUser(request);
-		//閹垫儳鍩岃ぐ鎾冲娑旓拷
+		//闁瑰灚鍎抽崺宀冦亹閹惧啿顤呭☉鏃撴嫹
 		Book book=bookService.findOne(book_id);
 		if (isAddBookToBus) {
-			//加入购物车
+			//鍔犲叆璐墿杞�
 			bookBusService.addBookbus(currentuser, book);
 		}
 		else {
-			//缁夊娅庣拹顓犲⒖鏉烇拷
+			//缂佸顭峰▍搴ｆ嫻椤撶姴鈷栭弶鐑囨嫹
 			bookBusService.removeBookFromBus(currentuser, book);
 		}
 		return bookBusService.CountBook(book_id);          //return add to bookbus'number
@@ -109,14 +110,15 @@ public class APIController {
 	 */
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
 	public User register(
-			@RequestParam(name = "num") String num,//閻犳劧绠戣ぐ锟�
-			@RequestParam(name = "password") String password, //閻庨潧妫涢悥锟�
-			@RequestParam(name = "email") String email,//闂侇収鍠氶锟�
-			@RequestParam(name = "name") String name,//闁哄嫮鏁歌ⅷ
-			@RequestParam(name = "phoneNumb") String phoneNumb,//闁活澀绲婚惁浠嬪矗妞嬪海鍨�
+			@RequestParam(name = "num") String num,//闁荤姵鍔х粻鎴ｃ亹閿燂拷
+			@RequestParam(name = "password") String password, //闁诲酣娼уΛ娑㈡偉閿燂拷
+			@RequestParam(name = "email") String email,//闂備緡鍙庨崰姘额敊閿燂拷
+			@RequestParam(name = "name") String name,//闂佸搫瀚弫姝屸叿
+			@RequestParam(name = "phoneNumb") String phoneNumb,//闂佹椿婢�缁插鎯佹禒瀣煑濡炲娴烽崹锟�
 			@RequestParam(name = "qq") String qq,//QQ
 			MultipartFile avatar,
 			HttpServletRequest request) {
+		
 		User user = new User();
 		user.setAccount(num);
 		user.setPasswordHash(password);
@@ -141,7 +143,7 @@ public class APIController {
 	}
 
 	/*
-	 * 闁谎嗩嚙缂嶅秹骞欏鍕▕
+	 * 闂佽皫鍡╁殭缂傚秴绉归獮娆忣吋閸曨厾鈻�
 	 */
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public User Login(
@@ -162,7 +164,7 @@ public class APIController {
 
 	}
 
-	//闊洦顭堥鍥╋拷闈涙閻栨粓鏁嶅畝鍕閻犱焦鍎抽惁鎴︽儘閿燂拷
+	//闂婎偄娲﹂…鍫ヮ敊閸モ晪鎷烽棃娑欘棤闁绘牗绮撻弫宥呯暆閸曨偅顏熼柣鐘辩劍閸庢娊鎯侀幋锔藉剺闁跨噦鎷�
 	@RequestMapping(value="/passwordrecover",method=RequestMethod.POST)
 	public boolean resetPassword(
 			@RequestParam String phone,
@@ -273,7 +275,7 @@ public class APIController {
 	}
 
 	/*
-	 * 闁兼儳鍢茬欢杈亹閹惧啿顤呴柣鈧妽閸╋拷
+	 * 闂佸吋鍎抽崲鑼鏉堫偁浜归柟鎯у暱椤ゅ懘鏌ｉ埀顒�濡介柛鈺嬫嫹
 	 */
 	@RequestMapping(value = "/me", method = RequestMethod.GET)
 	public User getCurrentUser(HttpServletRequest request) {
@@ -290,7 +292,7 @@ public class APIController {
 
 
 	/**
-	 * 闁拷閸戣櫣娅ヨぐ鏇礉閸樼粯甯�session
+	 * 闂侇偓鎷烽柛鎴ｆ濞呫儴銇愰弴顏嗙闁告绮敮锟絪ession
 	 */
 	@RequestMapping(value="/exit")
 	public void exit(HttpServletRequest request){
@@ -301,7 +303,7 @@ public class APIController {
 	}
 
 	/*
-	 * 闁兼儳鍢茬欢閬嶆焽椤旂粯顐�
+	 * 闂佸吋鍎抽崲鑼闁秵鐒芥い鏃傜帛椤愶拷
 	 */
 	@RequestMapping(value = "/email", method = RequestMethod.POST)
 	public boolean Email(
@@ -414,13 +416,13 @@ public class APIController {
 	@RequestMapping(value="/comments")
 	public Page<Comment> getAllCommentsOfAuthor(HttpServletRequest request)
 	{
-		//闁兼儳鍢茬欢杈亹閹惧啿顤呴柣鈧妽閸╋拷
+		//闂佸吋鍎抽崲鑼鏉堫偁浜归柟鎯у暱椤ゅ懘鏌ｉ埀顒�濡介柛鈺嬫嫹
 		User user=getCurrentUser(request);
 		return commentService.findAllCommentofAuthor(user.getId(), 0);
 	}
 
 	/**
-	 * get CurrentUser閳ユΞ all add to bookbus'book
+	 * get CurrentUser闁炽儲螢 all add to bookbus'book
 	 */
 	@RequestMapping(value="/bookbus")
 	public Page<Bookbus> getAllbookAddtoBookBus(HttpServletRequest request)
@@ -431,7 +433,7 @@ public class APIController {
 	}
 	/***
 	 * 
-	 * 閻庢稒锚閸欏棝宕堕崣銉ュ濞ｅ洠鍓濇导锟�
+	 * 闁诲孩绋掗敋闁告瑥妫濆畷鍫曞矗閵夈儱顫犳繛锝呮礌閸撴繃瀵奸敓锟�
 	 * 
 	 * */
 	@RequestMapping(value="/sellbooks",method=RequestMethod.POST)
@@ -445,7 +447,7 @@ public class APIController {
 			@RequestParam String tag,
 			@RequestParam String summary,
 			@RequestParam int booknumber, 
-			MultipartFile bookavatar,//閻庢稒蓱閺備線宕堕崜褍顣�
+			MultipartFile bookavatar,//闁诲孩绋掕摫闁哄倷绶氬畷鍫曞礈瑜嶉。锟�
 			HttpServletRequest request){
 		User currentUser = getCurrentUser(request);
 		Book book = new Book();
@@ -463,7 +465,7 @@ public class APIController {
 			try {
 				String realPath=request.getSession().getServletContext().getRealPath("/WEB-INF/upload/books");
 				FileUtils.copyInputStreamToFile(bookavatar.getInputStream(), new File(realPath,title+".png"));
-				book.setBookavatar("upload/books/"+title+".png");           //閻庢稒蓱閺備線宕堕崜褍顣婚柣銊ュ閻儳顕ラ敓锟�
+				book.setBookavatar("upload/books/"+title+".png");           //闁诲孩绋掕摫闁哄倷绶氬畷鍫曞礈瑜嶉。濠氭煟閵娿儱顏柣顓熷劤椤曘儵鏁撻敓锟�
 
 			} catch (Exception e) {
 			}
@@ -473,7 +475,7 @@ public class APIController {
 		return bookService.save(book);
 	}
 
-	//闁兼儳鍢茶ぐ鍥礄閸濆嫭鏆涢柛銉ュ綖閸旂喖宕氬Δ鍕╋拷锟�
+	//闂佸吋鍎抽崲鑼躲亹閸ヮ剙绀勯柛婵嗗閺嗘盯鏌涢妷銉ョ稏闁告梻鍠栧畷姘旈崟鈺嬫嫹閿燂拷
 	@RequestMapping("/books/{page}")
 	public Page<Book> getFeeds(@PathVariable int page){
 		return bookService.getBooks(page);
@@ -489,7 +491,7 @@ public class APIController {
 			@RequestParam(defaultValue="0") int page){
 		return findTextByKeyword(keyword, page);
 	}
-	//閹兼粎鍌ㄩ惃鍕鏉炶姤娲挎径锟�
+	//闁瑰吋绮庨崒銊╂儍閸曨偄顫ｉ弶鐐跺Г濞叉寧寰勯敓锟�
 	@RequestMapping(value="/book/s/{keyword}/{page}")
 	public Page<Book> findTextByKeyword(
 			@PathVariable String keyword,
@@ -497,7 +499,7 @@ public class APIController {
 		return bookService.findTextByKeyword(keyword, page);
 	}
 
-	//根据图书标签搜索图书(图书分类)
+	//鏍规嵁鍥句功鏍囩鎼滅储鍥句功(鍥句功鍒嗙被)
 	@RequestMapping("/books/{tag}/class/{page}")
 	public Page<Book> findBooksByType(
 			@PathVariable String tag,
@@ -509,7 +511,7 @@ public class APIController {
 		return findBooksByType(tag,0);
 	}
 
-	//閺嶈宓侀崶鍙ュ姛閺嶅洨顒烽崪灞藉彠闁款喖鐡ч幖婊呭偍閸ュ彞鍔�
+	//闁哄秷顫夊畵渚�宕堕崣銉ュ闁哄秴娲ㄩ鐑藉椽鐏炶棄褰犻梺娆惧枛閻⊙囧箹濠婂懎鍋嶉柛銉ュ綖閸旓拷
 	@RequestMapping("/books/{keyword}/and/{tag}/class/{page}")
 	public Page<Book> findBooksByKeywordAndType(
 			@PathVariable String keyword,
@@ -526,9 +528,9 @@ public class APIController {
 
 	/**
 	 * 2016-12-22 19:01:20
-	 * 闁规亽鍎查弫褰掑矗閹达讣鎷锋担鍦ラ柟顓у灣濞堟垿骞掗妷銉ョ稉
-	 * @param String private:缂佸妞掓穱濠囨儍閸曨偄寰斿ù锝嗘尭閸炲锟界櫢鎷�
-	 * @param String receiverAccount :缂佸妞掓穱濠囧箳閵夛附鏆柤鏉挎噽濞堟垹鏁幇顒�濞�
+	 * 闂佽浜介崕鏌ュ极瑜版帒鐭楅柟杈捐閹烽攱鎷呴崷顓夈儵鏌熼褍鐏ｆ繛鍫熷灴楠炴帡濡烽妷銉х▔
+	 * @param String private:缂備礁顦鎺撶┍婵犲洦鍎嶉柛鏇ㄥ亜瀵版柨霉閿濆棙灏柛鐐差嚟閿熺晫娅㈤幏锟�
+	 * @param String receiverAccount :缂備礁顦鎺撶┍婵犲洤绠抽柕澶涢檮閺嗩亪鏌ら弶鎸庡櫧婵炲牊鍨归弫顕�骞囬锟芥繛锟�
 	 * 
 	 */
 	@RequestMapping(value = "/privateMessage",method = RequestMethod.POST)
@@ -537,11 +539,11 @@ public class APIController {
 			HttpServletRequest request
 			){
 
-		User user = getCurrentUser(request);//闁兼儳鍢茶ぐ鍥亹閹惧啿顤呴柣鈧妽閸╋拷
+		User user = getCurrentUser(request);//闂佸吋鍎抽崲鑼躲亹閸ヮ亗浜归柟鎯у暱椤ゅ懘鏌ｉ埀顒�濡介柛鈺嬫嫹
 
-		/*//婵炴潙顑堥惁锟�
+		/*//濠电偞娼欓鍫ユ儊閿燂拷
 			User user = userService.findNum("gg");*/
-		User receiver = userService.findNum(receiverAccount);//闁瑰灚鍎抽崺宀�绮旀担铚傜箚闁规亽鍎查弫褰掓嚀閿燂拷
+		User receiver = userService.findNum(receiverAccount);//闂佺懓鐏氶崕鎶藉春瀹�锟界划鏃�鎷呴摎鍌滅畾闂佽浜介崕鏌ュ极瑜版帗鍤�闁跨噦鎷�
 		PrivateMessage privateMessage = new PrivateMessage();
 		privateMessage.setPrivateMessageSender(user);
 		privateMessage.setPrivateMessageReceiver(receiver);
@@ -552,7 +554,7 @@ public class APIController {
 
 	/**
 	 * 2016-12-22 19:06:02
-	 * 闁哄被鍎叉竟妯肩矓娴ｈ渹绻嗛柣銊ュ閸炲锟界櫢鎷�
+	 * 闂佸搫琚崕鍙夌珶濡偐鐭撳ù锝堟腹缁诲棝鏌ｉ妸銉ヮ仼闁哥偛顕敓鐣屾閹凤拷
 	 * @param senderId
 	 * @param page
 	 * @param request
@@ -564,7 +566,7 @@ public class APIController {
 			HttpServletRequest request
 
 			){
-		//User user = userService.findNum("gg"); //婵炴潙顑堥惁顖炲极閻楀牆绁�
+		//User user = userService.findNum("gg"); //濠电偞娼欓鍫ユ儊椤栫偛鏋侀柣妤�鐗嗙粊锟�
 		User user = getCurrentUser(request);//
 
 		return privateMessageService.findPrivateMessagesByReveiverId(receiverId,user.getId(), page);
@@ -572,7 +574,7 @@ public class APIController {
 
 	/**
 	 * 2016-12-23 18:28:39
-	 * 閺屻儲澹樼粔浣蜂繆閻ㄥ嫬鍨悰锟�
+	 * 闁哄被鍎叉竟妯肩矓娴ｈ渹绻嗛柣銊ュ閸亞鎮伴敓锟�
 	 * @param request
 	 * @return
 	 */
@@ -592,18 +594,18 @@ public class APIController {
 
 		return privateMessageService.findAllOtherUsersByNum(user.getAccount(),page);
 	}
-	//	传卖家的id，返回卖家的订阅数
+	//	浼犲崠瀹剁殑id锛岃繑鍥炲崠瀹剁殑璁㈤槄鏁�
 	@RequestMapping("/saler/{saler_id}/subscribe")
 	public int countSubscribe(@PathVariable int saler_id){
 		return subscribeService.countSubscribe(saler_id);
 	}
-	//	娴肩姴宕犵�瑰墎娈慽d閿涘本顥呴弻銉﹀灉閺勵垰鎯佺拋銏ゆ鐠囥儱宕犵�癸拷
+	//	濞磋偐濮村畷鐘碉拷鐟板濞堟吔d闁挎稑鏈ˉ鍛村蓟閵夛箑鐏夐柡鍕靛灠閹胶鎷嬮姀銈嗩潐閻犲洢鍎卞畷鐘碉拷鐧告嫹
 	@RequestMapping("/saler/{saler_id}/issubscribe")
 	public boolean checkSubscribe(@PathVariable int saler_id,HttpServletRequest request){
 		User me = getCurrentUser(request);
 		return subscribeService.checkSubscribe(me.getId(), saler_id);
 	}
-	//	娴肩姷鏁ら幋鍑ょ礉鏉╂柨娲栭悽銊﹀煕鐠併垽妲勯惃鍕礌鐎癸拷
+	//	濞磋偐濮烽弫銈夊箣閸戙倗绀夐弶鈺傛煥濞叉牠鎮介妸锕�鐓曢悹浣靛灲濡插嫰鎯冮崟顐㈢閻庣櫢鎷�
 	@RequestMapping(value="/{user_id}/subscribe")
 	public List<Subscribe> getSalerByUserName(@PathVariable int user_id){
 		return subscribeService.findAllByUser(user_id);
@@ -614,7 +616,7 @@ public class APIController {
 			@RequestParam boolean b){
 		subscribeService.changeBoolean(user_id,saler_id,b);
 	}
-	//传一个boolean，为真，添加订阅关系，为假，取消订阅关系，并返回卖家的被订阅数
+	//浼犱竴涓猙oolean锛屼负鐪燂紝娣诲姞璁㈤槄鍏崇郴锛屼负鍋囷紝鍙栨秷璁㈤槄鍏崇郴锛屽苟杩斿洖鍗栧鐨勮璁㈤槄鏁�
 	@RequestMapping(value="/saler/{saler_id}/subscribe",method = RequestMethod.POST)
 	public int changeSubscribe(
 			@PathVariable int saler_id,
@@ -657,6 +659,8 @@ public class APIController {
 		User user = getCurrentUser(request);
 		user.setSumMoney(user.getSumMoney()+recharge);
 
+		Money money=new Money();
+		saveMoneyList(recharge, request);
 		return userService.save(user);
 	}
 
@@ -666,14 +670,45 @@ public class APIController {
 		return user.getSumMoney();
 
 	}
+	
+	@RequestMapping(value="/{user_id}/money/list")
+	public Page<Money> getMoneyList(
+			HttpServletRequest request){
+		User user = getCurrentUser(request);
+		//int user_id = user.getId();
+		String cuser=user.getAccount();
+		return moneyService.getLists(cuser,0);
+	}
 
-	//璁㈠崟
+	
+	@RequestMapping(value="/me/recharge/list",method = RequestMethod.POST)
+	public Money saveMoneyList(
+			/*@RequestParam String currentUser,*/
+			@RequestParam float recharge,
+			HttpServletRequest request){
+		User user = getCurrentUser(request);
+		Money money=new Money();
+		/*float sumMoney=money.getSumMoney();
+		user.setSumMoney(sumMoney);
+		userService.save(user);*/
+		//user.setSumMoney(user.getSumMoney()+recharge);
+
+		
+		String currenUser=user.getAccount();
+		
+		money.setCurrentUser(currenUser);
+		money.setRecharge(recharge);
+		money.setSumMoney(user.getSumMoney());
+		
+		return moneyService.save(money);
+	}
+	//鐠併垹宕�
 	@RequestMapping(value = "/books/{book_id}/orders", method = RequestMethod.POST)
 	public OrderLists addToOrderList(
 			@PathVariable int book_id,
 			@RequestParam String payway,
 			@RequestParam String finish,
-			@RequestParam String orderId,//璁㈠崟鍙�
+			@RequestParam String orderId,//鐠併垹宕熼崣锟�
 			//			@RequestParam int booksAdded,
 			@RequestParam String payMoney,
 			HttpServletRequest request) {
@@ -681,7 +716,7 @@ public class APIController {
 		User currentuser=getCurrentUser(request);
 		Book book=bookService.findOne(book_id);
 
-		//		OrderLists.orders_Key key=new orders_Key();               //获得对象
+		//		OrderLists.orders_Key key=new orders_Key();               //鑾峰緱瀵硅薄
 		//		key.setBook(book);
 		//		key.setUser(currentuser);
 
@@ -695,7 +730,7 @@ public class APIController {
 		//		orderList.setBooksAdded(booksAdded);
 		orderList.setOrderId(orderId);
 		orderList.setPayMoney(payMoney);
-		//删除购物车
+		//鍒犻櫎璐墿杞�
 		bookBusService.removeBookFromBus(currentuser, book);
 
 		return orderListService.save(orderList);
@@ -732,7 +767,7 @@ public class APIController {
 		return commentService.CountCommentsNumber(comment_id);
 	}
 
-	//---------余额
+	//---------浣欓
 	@RequestMapping(value="/me/recharge/use",method = RequestMethod.POST)
 	public User saveMoneyUse(
 			/*@RequestParam String currentUser,*/
