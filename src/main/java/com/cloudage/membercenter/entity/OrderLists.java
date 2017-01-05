@@ -10,9 +10,12 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.PrePersist;
+import javax.persistence.UniqueConstraint;
+
+import com.cloudage.membercenter.util.BaseEntity;
 
 @Entity
-public class OrderLists{
+public class OrderLists extends BaseEntity{
 
 	//	@Embeddable
 	//	public static class orders_Key implements Serializable {
@@ -126,7 +129,9 @@ public class OrderLists{
 	{
 		createDate=new Date();
 	}
-	@Id
+	
+	
+	@Column(unique = true)
 	public String getOrderId() {
 		return orderId;
 	}
