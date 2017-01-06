@@ -2,6 +2,7 @@ package com.cloudage.membercenter.entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -17,49 +18,6 @@ import com.cloudage.membercenter.util.BaseEntity;
 @Entity
 public class OrderLists extends BaseEntity{
 
-	//	@Embeddable
-	//	public static class orders_Key implements Serializable {
-	//		//用户
-	//		User user;
-	//		Book book;              //书
-	//
-	//		@ManyToOne(optional=false)
-	//		public User getUser() {
-	//			return user;
-	//		}
-	//		public void setUser(User user) {
-	//			this.user = user;
-	//		}
-	//
-	//		@ManyToOne(optional=false)
-	//		public Book getBook() {
-	//			return book;
-	//		}
-	//		public void setBook(Book book) {
-	//			this.book = book;
-	//		}
-	//
-	//		@Override
-	//		public boolean equals(Object obj) {
-	//			if(obj instanceof orders_Key){
-	//				orders_Key other = (orders_Key)obj;
-	//				return book.getId() == other.book.getId() && user.getId() == other.user.getId();
-	//			}else{
-	//				return false;
-	//			}
-	//		}
-	//
-	//		@Override
-	//		public int hashCode() {
-	//			return book.getId();
-	//		}
-
-	//}
-
-	//	orders_Key id;
-
-
-
 	String orderId;//订单号
 
 	//用户
@@ -67,8 +25,9 @@ public class OrderLists extends BaseEntity{
 	Book book;              //书
 	//	int booksAdded; //添加到购物车的书的数量
 	String payMoney;//交易金额
-	String payway;//交易方式
-	String finish;//交易状态(已/未提交->是否缺货->已/未结算'已提交'->待处理->处理中->已发货->已完成/已取消/送货失败)
+	int payway;   //交易方式:0为在线交易，1为私下交易
+	int finish;   //交易状态:0为已提交未付款；1为已付款；2为处理中；3为已发货；4为订单已取消；5为订单已完成
+	
 	Date createDate;
 
 
@@ -93,29 +52,21 @@ public class OrderLists extends BaseEntity{
 	public void setPayMoney(String payMoney) {
 		this.payMoney = payMoney;
 	}
-	//	public int getBooksAdded() {
-	//		return booksAdded;
-	//	}
-	//	public void setBooksAdded(int booksAdded) {
-	//		this.booksAdded = booksAdded;
-	//	}
 
 
-
-	public String getFinish() {
-		return finish;
-	}
-	public void setFinish(String finish) {
-		this.finish = finish;
-	}
-
-	public String getPayway() {
+	public int getPayway() {
 		return payway;
 	}
-	public void setPayway(String payway) {
+	public void setPayway(int payway) {
 		this.payway = payway;
 	}
-
+	public int getFinish() {
+		return finish;
+	}
+	public void setFinish(int finish) {
+		this.finish = finish;
+	}
+	
 	@Column(updatable=false)
 	public Date getCreateDate() {
 		return createDate;
@@ -131,7 +82,7 @@ public class OrderLists extends BaseEntity{
 	}
 	
 	
-	@Column(unique = true)
+	@Column(unique = false)
 	public String getOrderId() {
 		return orderId;
 	}
