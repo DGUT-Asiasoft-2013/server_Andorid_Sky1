@@ -13,15 +13,24 @@ import com.cloudage.membercenter.util.BaseEntity;
 @Entity
 public class User extends BaseEntity{
 	
-	String account;               //璐﹀彿
-	String passwordHash;          //瀵嗙爜
-	String name;                  //鐢ㄦ埛鍚�
-	String avatar;                //澶村儚
-	String email;                 //閭
-	String phoneNumb;            //鐢佃瘽鍙风爜
+	String account;               //鐠愶箑褰�
+	String passwordHash;          //鐎靛棛鐖�
+	String name;                  //閻€劍鍩涢崥锟�
+	String avatar;                //婢舵潙鍎�
+	String email;                 //闁喚顔�
+	String phoneNumb;            //閻絻鐦介崣椋庣垳
 	String qq;                   //qq
 	float sumMoney;
-
+	//String payPassword;
+	
+	
+	
+	/*public String getPayPassword() {
+		return payPassword;
+	}
+	public void setPayPassword(String payPassword) {
+		this.payPassword = payPassword;
+	}*/
 	public float getSumMoney() {
 		return sumMoney;
 	}
