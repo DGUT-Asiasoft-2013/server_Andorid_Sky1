@@ -1,5 +1,7 @@
 package com.cloudage.membercenter.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -32,9 +34,8 @@ public class DefaultOrderListService  implements IOrderListService{
 
 
 	@Override
-	public OrderLists changeState(OrderLists orderList,int finish) {
-		orderList.setFinish(finish);
-		return iOrderListRepository.save(orderList);
+	public OrderLists changeState(String orderId,int finish) {
+		return iOrderListRepository.changeState(orderId,finish);
 	}
 
 
@@ -99,6 +100,11 @@ public class DefaultOrderListService  implements IOrderListService{
 			return false;
 		}
 		
+	}
+
+	@Override
+	public List<OrderLists> findOrdersByOrderNumblist(String order_numb) {
+		return iOrderListRepository.getOrderByOnumblist(order_numb);
 	}
 
 }
