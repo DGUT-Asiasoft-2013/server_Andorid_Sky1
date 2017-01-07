@@ -9,7 +9,7 @@ import com.cloudage.membercenter.entity.User;
 public interface IOrderListService {
 
 	OrderLists save(OrderLists orderList);//保存订单信息
-	OrderLists changeState(OrderLists orderList, String finish);//改变订单状态
+	OrderLists changeState(OrderLists orderList, int finish);//改变订单状态
 	Page<OrderLists> getLists(int userId, int page);
 //	public void addOrders(User user,Book book);
 	OrderLists findOrdersByOrderNumb(String order_numb);
@@ -18,5 +18,6 @@ public interface IOrderListService {
 	Page<OrderLists> getListsSale(int userId, int page);
 	
 	boolean deleteOrderById(Integer orderId);
+	
 	
 }

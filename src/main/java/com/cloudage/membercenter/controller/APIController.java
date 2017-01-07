@@ -728,9 +728,9 @@ public class APIController {
 	@RequestMapping(value = "/books/{book_id}/orders", method = RequestMethod.POST)
 	public OrderLists addToOrderList(
 			@PathVariable int book_id,
-			@RequestParam String payway,
-			@RequestParam String finish,
-			@RequestParam String orderId,//鐠併垹宕熼崣锟�
+			@RequestParam int payway,
+			@RequestParam int finish,
+			@RequestParam String orderId,
 			//			@RequestParam int booksAdded,
 			@RequestParam String payMoney,
 			HttpServletRequest request) {
@@ -738,21 +738,15 @@ public class APIController {
 		User currentuser=getCurrentUser(request);
 		Book book=bookService.findOne(book_id);
 
-		//		OrderLists.orders_Key key=new orders_Key();               //鑾峰緱瀵硅薄
-		//		key.setBook(book);
-		//		key.setUser(currentuser);
-
 		OrderLists orderList = new OrderLists();
-		//		orderList.setId(key);
 		orderList.setBook(book);
 		orderList.setUser(currentuser);
 		//----------------------
 		orderList.setPayway(payway);
 		orderList.setFinish(finish);
-		//		orderList.setBooksAdded(booksAdded);
 		orderList.setOrderId(orderId);
 		orderList.setPayMoney(payMoney);
-		//鍒犻櫎璐墿杞�
+		
 		bookBusService.removeBookFromBus(currentuser, book);
 
 		return orderListService.save(orderList);

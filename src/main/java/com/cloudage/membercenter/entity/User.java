@@ -50,7 +50,7 @@ public class User extends BaseEntity{
 	public void setQq(String qq) {
 		this.qq = qq;
 	}
-	@Column(nullable=false,unique=true)
+	@Column(nullable=false,unique=false)
 	public String getEmail() {
 		return email;
 	}

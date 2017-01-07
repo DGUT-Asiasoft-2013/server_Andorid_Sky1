@@ -32,7 +32,7 @@ public class DefaultOrderListService  implements IOrderListService{
 
 
 	@Override
-	public OrderLists changeState(OrderLists orderList,String finish) {
+	public OrderLists changeState(OrderLists orderList,int finish) {
 		orderList.setFinish(finish);
 		return iOrderListRepository.save(orderList);
 	}
