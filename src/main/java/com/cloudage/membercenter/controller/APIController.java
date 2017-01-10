@@ -640,7 +640,7 @@ public class APIController {
 		subscribeService.changeBoolean(user_id,saler_id,b);
 	}
 	//浼犱竴涓猙oolean锛屼负鐪燂紝娣诲姞璁㈤槄鍏崇郴锛屼负鍋囷紝鍙栨秷璁㈤槄鍏崇郴锛屽苟杩斿洖鍗栧鐨勮璁㈤槄鏁�
-	@RequestMapping(value="/saler/{saler_id}/subscribe",method = RequestMethod.POST)
+	@RequestMapping(value="/saler/{saler_id}/subscribe/s",method = RequestMethod.POST)
 	public int changeSubscribe(
 			@PathVariable int saler_id,
 			@RequestParam boolean subscribe,
