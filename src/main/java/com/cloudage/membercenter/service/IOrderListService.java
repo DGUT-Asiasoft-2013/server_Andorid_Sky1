@@ -17,6 +17,6 @@ public interface IOrderListService {
 	Page<OrderLists> getListsBuy(int userId, int page);
 	Page<OrderLists> getListsSale(int userId, int page);
 	
-	boolean deleteOrderById(int orderId);
+	boolean deleteOrderById(String orderId);
 	
 }

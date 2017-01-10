@@ -88,7 +88,7 @@ public class DefaultOrderListService  implements IOrderListService{
 
 
 	@Override
-	public boolean deleteOrderById(int orderId) {
+	public boolean deleteOrderById(String orderId) {
 		
 			
 		try {

@@ -807,7 +807,7 @@ public class APIController {
 	
 	//删除指定的订单
 	@RequestMapping(value="/deleteOrder/{orderId}" ,method=RequestMethod.POST)
-	public boolean  deleteOrder(@PathVariable int orderId){
+	public boolean  deleteOrder(@PathVariable String orderId){
 		return orderListService.deleteOrderById(orderId);
 	}
 
