@@ -1,6 +1,7 @@
 package com.cloudage.membercenter.controller;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -104,7 +105,7 @@ public class APIController {
 		return bookBusService.CountBook(book_id);          //return add to bookbus'number
 
 	}
-	
+
 	/**
 	 * remove from bookbus
 	 * @param isRemoveBookFromBus
@@ -121,7 +122,7 @@ public class APIController {
 		User currentuser=getCurrentUser(request);
 		Book book=bookService.findOne(book_id);
 		if (isRemoveBookFromBus) {
-			
+
 			bookBusService.removeBookFromBus(currentuser, book);
 		}
 	}
@@ -140,7 +141,7 @@ public class APIController {
 			@RequestParam(name = "qq") String qq,//QQ
 			MultipartFile avatar,
 			HttpServletRequest request) {
-		
+
 		User user = new User();
 		user.setAccount(num);
 		user.setPasswordHash(password);
@@ -639,7 +640,7 @@ public class APIController {
 		subscribeService.changeBoolean(user_id,saler_id,b);
 	}
 	//浼犱竴涓猙oolean锛屼负鐪燂紝娣诲姞璁㈤槄鍏崇郴锛屼负鍋囷紝鍙栨秷璁㈤槄鍏崇郴锛屽苟杩斿洖鍗栧鐨勮璁㈤槄鏁�
-	@RequestMapping(value="/saler/{saler_id}/subscribe",method = RequestMethod.POST)
+	@RequestMapping(value="/saler/{saler_id}/subscribe/s",method = RequestMethod.POST)
 	public int changeSubscribe(
 			@PathVariable int saler_id,
 			@RequestParam boolean subscribe,
@@ -692,7 +693,7 @@ public class APIController {
 		return user.getSumMoney();
 
 	}
-	
+
 	@RequestMapping(value="/{user_id}/money/list")
 	public Page<Money> getMoneyList(
 			HttpServletRequest request){
@@ -702,7 +703,7 @@ public class APIController {
 		return moneyService.getLists(cuser,0);
 	}
 
-	
+
 	@RequestMapping(value="/me/recharge/list",method = RequestMethod.POST)
 	public Money saveMoneyList(
 			/*@RequestParam String currentUser,*/
@@ -715,22 +716,22 @@ public class APIController {
 		userService.save(user);*/
 		//user.setSumMoney(user.getSumMoney()+recharge);
 
-		
+
 		String currenUser=user.getAccount();
-		
+
 		money.setCurrentUser(currenUser);
 		money.setRecharge(recharge);
 		money.setSumMoney(user.getSumMoney());
-		
+
 		return moneyService.save(money);
 	}
 	//鐠併垹宕�
 	@RequestMapping(value = "/books/{book_id}/orders", method = RequestMethod.POST)
 	public OrderLists addToOrderList(
 			@PathVariable int book_id,
-			@RequestParam String payway,
-			@RequestParam String finish,
-			@RequestParam String orderId,//鐠併垹宕熼崣锟�
+			@RequestParam int payway,
+			@RequestParam int finish,
+			@RequestParam String orderId,
 			//			@RequestParam int booksAdded,
 			@RequestParam String payMoney,
 			HttpServletRequest request) {
@@ -738,21 +739,15 @@ public class APIController {
 		User currentuser=getCurrentUser(request);
 		Book book=bookService.findOne(book_id);
 
-		//		OrderLists.orders_Key key=new orders_Key();               //鑾峰緱瀵硅薄
-		//		key.setBook(book);
-		//		key.setUser(currentuser);
-
 		OrderLists orderList = new OrderLists();
-		//		orderList.setId(key);
 		orderList.setBook(book);
 		orderList.setUser(currentuser);
 		//----------------------
 		orderList.setPayway(payway);
 		orderList.setFinish(finish);
-		//		orderList.setBooksAdded(booksAdded);
 		orderList.setOrderId(orderId);
 		orderList.setPayMoney(payMoney);
-		//鍒犻櫎璐墿杞�
+
 		bookBusService.removeBookFromBus(currentuser, book);
 
 		return orderListService.save(orderList);
@@ -784,7 +779,7 @@ public class APIController {
 		int userId = user.getId();
 		return orderListService.getLists(userId,0);
 	}*/
-	
+
 	//获取我买到的书
 	@RequestMapping(value="/orders/{tag}")
 	public Page<OrderLists> getOrderss(
@@ -801,13 +796,13 @@ public class APIController {
 			int userId = user.getId();
 			return orderListService.getListsSale(userId,0);
 		}
-		
+
 	}
-	
-	
+
+
 	//删除指定的订单
-	@RequestMapping(value="/deleteOrder/{orderId}" ,method=RequestMethod.POST)
-	public boolean  deleteOrder(@PathVariable String orderId){
+	@RequestMapping(value="/deleteOrder" ,method=RequestMethod.POST)
+	public boolean  deleteOrder(@RequestParam Integer orderId){
 		return orderListService.deleteOrderById(orderId);
 	}
 
@@ -830,13 +825,32 @@ public class APIController {
 	public User saveMoneyUse(
 			/*@RequestParam String currentUser,*/
 			@RequestParam float useMoney,
-//			@RequestParam String orderId,
+			//			@RequestParam String orderId,
 			HttpServletRequest request){
 		User user = getCurrentUser(request);
 		user.setSumMoney(user.getSumMoney()-useMoney);
-		
+
 
 		return userService.save(user);
+	}
+
+	//改变订单状态------------
+	//交易状态:0为已提交未付款；1为已付款；2为处理中；3为已发货；4为订单已取消；5为订单已完成
+	@RequestMapping(value="/order/changeState",method = RequestMethod.POST)
+	public void changeState(
+			@RequestParam String orderId,
+			@RequestParam int finish,
+			HttpServletRequest request){
+		List<OrderLists> orderlist = (List<OrderLists>) orderListService.findOrdersByOrderNumblist(orderId);
+		OrderLists order = new OrderLists();
+		for(int i =0;i<orderlist.size();i++){
+			order = orderlist.get(i);
+			order.setFinish(finish);
+			orderListService.save(order);
+			System.out.println(order.toString());
+		}
+		
+
 	}
 
 

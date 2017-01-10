@@ -1,5 +1,7 @@
 package com.cloudage.membercenter.repository;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -23,5 +25,11 @@ public interface IOrderListRepository extends PagingAndSortingRepository<OrderLi
 
 	@Query("from OrderLists orders where orders.book.user.id = ?1")
 	Page<OrderLists> findAllbyUserSale(int userId, Pageable page);
+
+	@Query("from OrderLists orders where orders.orderId like %?1%")
+	OrderLists changeState(String orderId,int finish);
+
+	@Query("from OrderLists orders where orders.orderId = ?1")
+	List<OrderLists> getOrderByOnumblist(String order_numb);
 
 }
