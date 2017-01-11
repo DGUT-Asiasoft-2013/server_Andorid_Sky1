@@ -7,6 +7,7 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
 import com.cloudage.membercenter.entity.PrivateMessage;
+import com.cloudage.membercenter.entity.Subscribe;
 import com.cloudage.membercenter.entity.User;
 @Repository
 public interface IPrivateMessageRepository extends PagingAndSortingRepository<PrivateMessage, Integer>{
@@ -17,6 +18,8 @@ public interface IPrivateMessageRepository extends PagingAndSortingRepository<Pr
 	@Query("from PrivateMessage p where p.privateMessageReceiver.id=?1 or p.privateMessageSender.id = ?1")
 	Page<PrivateMessage> findPrivateMessageListBySenderId(int id, Pageable page);
 
-	@Query("from User u where u.account !=?1")
-	Page<User> findAllOtherUserByNum(String num,Pageable page);//查找其他的所有用户
+//	@Query("from User u where u.account !=?1")
+//	Page<User> findAllOtherUserByNum(String num,Pageable page);//查找其他的所有用户
+	@Query("from Subscribe subscribe where subscribe.id.me.id = ?1")
+	Page<Subscribe> findAllOtherUserByNum(int num,Pageable page);//查找其他的所有用户
 }

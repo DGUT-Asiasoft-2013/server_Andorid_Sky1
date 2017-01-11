@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.cloudage.membercenter.entity.PrivateMessage;
+import com.cloudage.membercenter.entity.Subscribe;
 import com.cloudage.membercenter.entity.User;
 import com.cloudage.membercenter.repository.IPrivateMessageRepository;
 import com.cloudage.membercenter.repository.IUserRepository;
@@ -38,9 +39,14 @@ public class DefaultPrivateMessage implements IPrivateMessageService {
 		PageRequest pageRequest=new PageRequest(page,30, sort);
 		return iPrivateMessageRepo.findPrivateMessageListBySenderId(id,pageRequest);
 	}
+//	@Override
+//	public Page<User> findAllOtherUsersByNum(String num , int page) {
+//		Sort sort =new Sort(Direction.ASC,"account");
+//		PageRequest pageRequest=new PageRequest(page,30, sort);
+//		return iPrivateMessageRepo.findAllOtherUserByNum(num,pageRequest);
 	@Override
-	public Page<User> findAllOtherUsersByNum(String num , int page) {
-		Sort sort =new Sort(Direction.ASC,"account");
+	public Page<Subscribe> findAllOtherUsersByNum(int num , int page) {
+		Sort sort =new Sort(Direction.ASC,"createDate");
 		PageRequest pageRequest=new PageRequest(page,30, sort);
 		return iPrivateMessageRepo.findAllOtherUserByNum(num,pageRequest);
 	}

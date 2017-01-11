@@ -610,12 +610,19 @@ public class APIController {
 			return privateMessageService.getPrivateMessageList(a,page);
 		}*/
 
+//	@RequestMapping(value = "/getPrivateMessageList")
+//	public Page<User> getPrivateMessageList(@RequestParam(defaultValue="0") int page,
+//			HttpServletRequest request){
+//		User user = getCurrentUser(request);
+//
+//		return privateMessageService.findAllOtherUsersByNum(user.getAccount(),page);
+//	}
 	@RequestMapping(value = "/getPrivateMessageList")
-	public Page<User> getPrivateMessageList(@RequestParam(defaultValue="0") int page,
+	public Page<Subscribe> getPrivateMessageList(@RequestParam(defaultValue="0") int page,
 			HttpServletRequest request){
 		User user = getCurrentUser(request);
 
-		return privateMessageService.findAllOtherUsersByNum(user.getAccount(),page);
+		return privateMessageService.findAllOtherUsersByNum(user.getId(),page);
 	}
 	//	浼犲崠瀹剁殑id锛岃繑鍥炲崠瀹剁殑璁㈤槄鏁�
 	@RequestMapping("/saler/{saler_id}/subscribe")
