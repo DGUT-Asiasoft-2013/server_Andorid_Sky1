@@ -21,16 +21,15 @@ public class User extends BaseEntity{
 	String phoneNumb;            //閻絻鐦介崣椋庣垳
 	String qq;                   //qq
 	float sumMoney;
-	//String payPassword;
+	String payPassword;
 	
 	
-	
-	/*public String getPayPassword() {
+	public String getPayPassword() {
 		return payPassword;
 	}
 	public void setPayPassword(String payPassword) {
 		this.payPassword = payPassword;
-	}*/
+	}
 	public float getSumMoney() {
 		return sumMoney;
 	}
