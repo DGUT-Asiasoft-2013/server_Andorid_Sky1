@@ -24,7 +24,6 @@ public class User extends BaseEntity{
 	String payPassword;
 	
 	
-	
 	public String getPayPassword() {
 		return payPassword;
 	}

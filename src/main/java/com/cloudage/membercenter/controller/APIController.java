@@ -319,7 +319,7 @@ public class APIController {
 		
 		String payPassword=me.getPayPassword();
 		
-		if (payPassword.isEmpty()) {
+		if (payPassword==null) {
 			//
 			return false;
 		}
